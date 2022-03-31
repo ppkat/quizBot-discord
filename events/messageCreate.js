@@ -10,16 +10,17 @@ module.exports = {
         if(message.author.bot) return
 
         //command handling
-        const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'))
-        const commandName = message.content.slice(1) //remove prefix
+        const commandWithoutPrefix = message.content.slice(1)
+        const commandName = commandWithoutPrefix.split(' ')[0]
+        const commandParams = commandWithoutPrefix.split(' ').splice(1)
 
         let command
         try{
             command = require(`../commands/${commandName}`)
-            command.execute(client, message)
+            command.execute({client, message, commandParams})
         } catch(err){
             console.log(err)
-            message.channel.send('Comando não existe!')
+            message.channel.send('Comando inexistente!')
         }
     }
 
