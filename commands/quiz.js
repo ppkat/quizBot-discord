@@ -153,6 +153,7 @@ module.exports = {
             }
 
             await message.channel.send({ embeds: [embedResults] })
+            messageEmbedResponse.delete()
         }
 
         const intervalID = setInterval(() => {
