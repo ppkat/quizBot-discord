@@ -1,0 +1,19 @@
+{
+    "categoria1": {
+        "pergunta1": ["resposta 1", "resposta 2", "resposta n"],
+        "pergunta2": ["resposta 1", "resposta 2", "resposta n"],
+        "perguntaN": ["resposta 1", "resposta 2", "resposta n"]
+    },
+
+    "categoria2": {
+        "pergunta1": ["resposta 1", "resposta 2", "resposta n"],
+        "pergunta2": ["resposta 1", "resposta 2", "resposta n"],
+        "perguntaN": ["resposta 1", "resposta 2", "resposta n"]
+    },
+
+    "categoria3": {
+        "pergunta1": ["resposta 1", "resposta 2", "resposta n"],
+        "pergunta2": ["resposta 1", "resposta 2", "resposta n"],
+        "perguntaN": ["resposta 1", "resposta 2", "resposta n"]
+    }
+}

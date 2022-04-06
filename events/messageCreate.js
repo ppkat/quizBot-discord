@@ -12,7 +12,8 @@ module.exports = {
         //command handling
         const commandWithoutPrefix = message.content.slice(1)
         const commandName = commandWithoutPrefix.split(' ')[0]
-        const commandParams = commandWithoutPrefix.split(' ').splice(1)
+        const dirtyCommandParams = commandWithoutPrefix.split(' ').splice(1)
+        const commandParams = dirtyCommandParams.filter(item => item !== '')
 
         let command
         try{
