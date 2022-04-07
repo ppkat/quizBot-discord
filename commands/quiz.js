@@ -1,6 +1,6 @@
 const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js')
+const quiz = require('../quiz.json')
 
-let messageEmbedsResponses = []
 let globalRegisteredUsers = []
 let activeChannels = []
 
@@ -35,12 +35,13 @@ module.exports = {
                 .setTimestamp()
                 .setAuthor({ name: message.author.tag.toString(), iconURL: message.author.avatarURL() })
                 .setTitle(message.author.username + ' Iniciou um game quiz')
+                .setDescription('Reaja para votar em uma ou mais categorias')
                 .setFooter({ text: 'Game Quiz', iconURL: 'https://cdn.discordapp.com/avatars/958377729936457728/6582edbd65772f832a6fe7d3de39e627.png?size=1024' })
                 .addFields(
                     { name: 'Numero de questões', value: String(questionNumber), inline: true },
-                    { name: 'Tempo para responder', value: String(timeForAnswers / 1000) + ' segundos', inline: true },
+                    { name: 'Tempo das rodadas', value: String(timeForAnswers / 1000) + ' segundos', inline: true },
                     { name: 'Tempo para começar', value: String(timeForStart / 1000) + ' segundos', inline: true },
-                    { name: 'Pessoas inscritas', value: localRegisteredUsers.length + ' pessoas', inline: true }
+                    { name: 'Pessoas inscritas', value: localRegisteredUsers.length + ' pessoas', inline: true },
                 )
 
             return embedResponse
@@ -59,32 +60,75 @@ module.exports = {
         }
 
         const localMessagEmbedResponse = await message.channel.send({ embeds: [embedResponse()], components: [button()] }).then(msg => msg)
-        messageEmbedsResponses.push(localMessagEmbedResponse)
+        localMessagEmbedResponse.react('<:valorant:961355782018957353>')
+        localMessagEmbedResponse.react('<:csgo:961355723747508225>')
+        localMessagEmbedResponse.react('<:LeageOfLegends:961356872047280178> ')
+
+        async function getButtonInteraction() {
+
+            function upadateRegisteredUsers(interaction) {
+
+                if (!globalRegisteredUsers.find(user => user.id === interaction.member.id)) {
+
+                    const inscribedParticipant = new Participant(interaction.member.user.username, interaction.member.id, 0, interaction.member.toString(),
+                        interaction.member.user.avatarURL(), interaction.channelId)
+                    globalRegisteredUsers.push(inscribedParticipant)
+
+                    localRegisteredUsers = globalRegisteredUsers.filter(participant => participant.channel === interaction.channelId)
+                    localMessagEmbedResponse.embeds[0].fields[3].value = String(localRegisteredUsers.length)
+                    localMessagEmbedResponse.edit({ embeds: [localMessagEmbedResponse.embeds[0]] })
+
+                    interaction.reply({ content: 'Você foi inscrito no quiz! Boa sorte!', ephemeral: true })
+                } else {
+                    interaction.reply({ content: 'Você já está inscrito em um quiz', ephemeral: true })
+                }
+                getButtonInteraction()
+            }
+
+            let filter = i => i.customId === 'entrar'
+            await localMessagEmbedResponse.awaitMessageComponent({ filter, componentType: 'BUTTON' })
+                .then(interaction => upadateRegisteredUsers(interaction))
+                .catch(err => console.log('sem inscrinções'))
+        }
+        getButtonInteraction()
 
         async function quizStart() {
-
-            localRegisteredUsers = globalRegisteredUsers.filter(participant => participant.channel === message.channelId)
             if (localRegisteredUsers.length === 0) return await endQuiz()
 
             const [firstPoints, secondPoints, thirdPoints, forthPoints, restPoints] = [50, 30, 20, 10, 5]
-            let questions = [ //it will be the API response
-                { asking: 'Qual é o nome da irmã da Vi', answer: 'Jinx' },
-                { asking: 'Quantos campeões possuiam o lol em sua fase alpha', answer: '17' },
-                { asking: 'Quanto tempo a spike demora para explodir no valorant', answer: '45 segundos' },
-                { asking: 'Quanto tempo leva para desarmar a spike sem kit de desarme no CS:GO', answer: '10 segundos' }
-            ]
 
+            function choseCategory(){
+
+                let reactionsCounts = localMessagEmbedResponse.reactions.cache.map(reaction => reaction.count)
+                const categoryWinnerIndex = reactionsCounts.findIndex(item => item === Math.max(...reactionsCounts))
+                const categoryWinnerNames = localMessagEmbedResponse.reactions.cache.map(reaction => reaction.emoji.name)
+                const categoryWinnerName = categoryWinnerNames[categoryWinnerIndex]
+
+                const categoryWinnerJSONIndex = quiz.findIndex(item => item.categoryName === categoryWinnerName)
+                const categoryWinnerJSON = quiz[categoryWinnerJSONIndex]
+                
+                return categoryWinnerJSON.questions
+            }
+            const questions = choseCategory()
+
+            let questionsAlreadySendeds = []
             let index = 0
             while (index < questionNumber) {
                 index++;
 
-                const question = questions[Math.floor(Math.random() * questions.length)]
+                function choseQuestion(){
+                    
+                    const question = questions[Math.floor(Math.random() * questions.length)]
+                    if(questionsAlreadySendeds.some(q => q === question) && questions.length > questionsAlreadySendeds.length) return choseQuestion()
+
+                    return question
+                }
+
+                const question = choseQuestion()
+                
                 const questionEmbed = new MessageEmbed()
-                    //.setAuthor({ name: `Player's Bank Quiz`, iconURL: `https://cdn.discordapp.com/avatars/958377729936457728/6582edbd65772f832a6fe7d3de39e627.png?size=1024` })
-                    .setTitle('❓❓' + question.asking + '❓❓')
+                    .setTitle('❓❓' + question.question + '❓❓')
                     .setColor('DARK_RED')
-                //.setTimestamp()
-                //.setFooter({ text: 'Game Quiz', iconURL: 'https://cdn.discordapp.com/avatars/958377729936457728/6582edbd65772f832a6fe7d3de39e627.png?size=1024' })
 
                 await message.channel.send({ embeds: [questionEmbed] })
 
@@ -103,10 +147,10 @@ module.exports = {
                         .then(async msg => {
 
                             msg = msg.first()
-                            const formatedCorrectAnswer = question.answer.toLowerCase().split(' ').join('')
+                            const formatedCorrectAnswers = question.answers.map(answer => answer.toString().toLowerCase().split(' ').join(''))
                             const formatedUserAnswer = msg.content.toLowerCase().split(' ').join('')
 
-                            if (formatedUserAnswer === formatedCorrectAnswer) {
+                            if (formatedCorrectAnswers.some(answer => answer === formatedUserAnswer)) {
                                 msg.delete()
 
                                 const correctAnswerUser = localRegisteredUsers.find(participant => participant.id === msg.author.id)
@@ -123,15 +167,14 @@ module.exports = {
                                 correctAnswerUser.score += addScore
                                 msg.channel.send(`${msg.author} ganhou ${addScore} pontos`)
 
-                                await usersAnswersHandle()
                             } else {
                                 msg.react('❌')
                                 wrongAnswersCount++;
-                                await usersAnswersHandle()
                             }
+                            await usersAnswersHandle()
                         })
-                        .catch(() => {
-
+                        .catch((error) => {
+                            
                             if (scoredParticipants.length === 0) {
                                 localMessagEmbedResponse.channel.send(`Sem acertos nesta rodada! ${wrongAnswersCount} Respostas erradas`)
                                     .then(m => m.react('😔'))
@@ -191,7 +234,6 @@ module.exports = {
                 await showResults()
                 globalRegisteredUsers = globalRegisteredUsers.filter(participant => participant.channel !== message.channelId)
                 activeChannels.splice(activeChannels.findIndex(channel => channel === message.channelId), 1)
-                messageEmbedsResponses.splice(messageEmbedsResponses.findIndex(msg => msg.channelId === message.channelId), 1)
                 localMessagEmbedResponse.delete()
             }
             await endQuiz()
@@ -210,25 +252,5 @@ module.exports = {
                 quizStart()
             }
         }, 1000)
-    },
-
-    updateGlobalRegisteredUsers: function (interaction) {
-
-        if (!globalRegisteredUsers.find(user => user.id === interaction.member.id)) {
-
-            const inscribedParticipant = new Participant(interaction.member.user.username, interaction.member.id, 0, interaction.member.toString(),
-                interaction.member.user.avatarURL(), interaction.channelId)
-            globalRegisteredUsers.push(inscribedParticipant)
-
-            let thisChannelEmbedResponse = messageEmbedsResponses.find(msg => msg.channelId === interaction.channelId)
-            let thisChannelRegisteredUsers = globalRegisteredUsers.filter(participant => participant.channel === interaction.channelId)
-
-            thisChannelEmbedResponse.embeds[0].fields[3].value = String(thisChannelRegisteredUsers.length)
-            thisChannelEmbedResponse.edit({ embeds: [thisChannelEmbedResponse.embeds[0]] })
-
-            interaction.reply({ content: 'Você foi inscrito no quiz! Boa sorte!', ephemeral: true })
-        } else {
-            interaction.reply({ content: 'Você já está inscrito em um quiz', ephemeral: true })
-        }
     },
 }

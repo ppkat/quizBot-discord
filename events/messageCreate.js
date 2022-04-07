@@ -17,7 +17,7 @@ module.exports = {
 
         let command
         try{
-            command = require(`../commands/${commandName}`)
+            command = require(`../commands/${commandName.toUpperCase()}`)
             command.execute({client, message, commandParams})
         } catch(err){
             console.log(err)

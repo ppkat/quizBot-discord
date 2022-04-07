@@ -1,19 +1,185 @@
-{
-    "categoria1": {
-        "pergunta1": ["resposta 1", "resposta 2", "resposta n"],
-        "pergunta2": ["resposta 1", "resposta 2", "resposta n"],
-        "perguntaN": ["resposta 1", "resposta 2", "resposta n"]
+[
+    {
+        "categoryName": "LeagueOfLegends",
+        "questions" : [
+            {
+                "question" : "Qual é o nome da irmã da Vi" ,
+                "answers" : ["jinx"],
+                "dificulty" : "nível de dificuldade"
+            },
+            {
+                "question" : "Quantos campeões possuiam o lol em sua fase alpha" ,
+                "answers" : [17, "17 segundos", "17 s"],
+                "dificulty" : "nível de dificuldade"
+            }
+        ]
     },
 
-    "categoria2": {
-        "pergunta1": ["resposta 1", "resposta 2", "resposta n"],
-        "pergunta2": ["resposta 1", "resposta 2", "resposta n"],
-        "perguntaN": ["resposta 1", "resposta 2", "resposta n"]
+    {
+        "categoryName": "Valorant",
+        "questions" : [
+            {
+                "question" : "Quanto tempo a spike demora para explodir no valorant" ,
+                "answers" : [45, "45 segundos", "45 s"],
+                "dificulty" : "nível de dificuldade"
+            }
+        ]
     },
 
-    "categoria3": {
-        "pergunta1": ["resposta 1", "resposta 2", "resposta n"],
-        "pergunta2": ["resposta 1", "resposta 2", "resposta n"],
-        "perguntaN": ["resposta 1", "resposta 2", "resposta n"]
-    }
-}
+    {
+        "categoryName": "CSGO",
+        "questions" : [
+            {
+                "question" : "Quanto tempo leva para desarmar a spike sem kit de desarme no CS:GO" ,
+                "answers" : [10, "10 segundos", "10 s"],
+                "dificulty" : "nível de dificuldade"
+            }
+        ]
+    },
+
+    {
+        "categoryName": "Fortnite",
+        "questions" : [
+            {
+                "question" : "Quantas temporadas tiveram no Fortnite até hoje (data 06/04/22)" ,
+                "answers" : ["20", "vinte","20 temporadas","Vinte temporadas"],
+                "dificulty" : "nível de dificuldade"
+            },
+            {
+                "question" : "Quem é a desenvolvedora de Fortnite" ,
+                "answers" : ["Epic","Epic Games"],
+                "dificulty" : "nível de dificuldade"
+            },
+            {
+                "question" : "Em que ano Lançou Fortnite Battle Royale" ,
+                "answers" : ["2017","Dois mil e desessete"],
+                "dificulty" : "nível de dificuldade"
+            },
+            {
+                "question" : "Em que temporada Lançou Fortnite Criativo" ,
+                "answers" : ["Temporada 7, Capítulo 1","Temporada 7","Season 7","Season Sete","Temporada Sete","Season 7, Capítulo 1"],
+                "dificulty" : "nível de dificuldade"
+            },
+            {
+                "question" : "Quem é a Lider da Equipe Ordem Imaginada" ,
+                "answers" : ["Slone","Doutora Slone","Dra Slone"],
+                "dificulty" : "nível de dificuldade"
+            },
+            {
+                "question" : "Qual foi a primeira parceria de Fortnite" ,
+                "answers" : ["Marvel","Vingadores Guerra Infinita","Vingadores","Avengers","infinity War","Avengers infinity War","Thanos","Manopla"],
+                "dificulty" : "nível de dificuldade"
+            },
+            {
+                "question" : "Qual é o nome da moeda utilizada na Loja de Itens de Fortnite" ,
+                "answers" : ["V-Bucks","Vbucks"],
+                "dificulty" : "nível de dificuldade"
+            },
+            {
+                "question" : "Quantos tipos de materiais estão disponíveis em Fortnite para construção" ,
+                "answers" :  ["3","Três"],
+                "dificulty" : "nível de dificuldade"
+            },
+            {
+                "question" : "Qual a verdadeira identidade da skin Lendaria Fundação" ,
+                "answers" : ["The Rock","Rock","Dwayne Johnson","Dwayne Rock Johnson"],
+                "dificulty" : "nível de dificuldade"
+            },
+            {
+                "question" : "Quantas temporadas tiveram no Fortnite durante o capítulo 2" ,
+                "answers" : ["8","Oito","8 Temporadas","8 seasons"],
+                "dificulty" : "nível de dificuldade"
+            },
+            {
+                "question" : "Qual foi o primeiro animal lançado no Fortnite Battle Royale" ,
+                "answers" : ["Tubarões","Tubarão"],
+                "dificulty" : "nível de dificuldade"
+            },
+            {
+                "question" : "Em que Temporada lançou os Bots" ,
+                "answers" : ["Temporada 1 Capítulo 2", "Season 1 Cap 2","Season 1 Capítulo 2", "Season 1 Chapter 2","Temporada 11","Season 11"],
+                "dificulty" : "nível de dificuldade"
+            },
+            {
+                "question" : "Quem era o chefe do lugar conhecido como Agência, na temporada 2, Capítulo 2" ,
+                "answers" : ["Midas","Agente Midas"],
+                "dificulty" : "nível de dificuldade"
+            },
+            {
+                "question" : "Quantos Shows ao vivo houveram no fortnite até hoje (data 06/04/22)" ,
+                "answers" : ["3","Três"],
+                "dificulty" : "nível de dificuldade"
+            },
+            {
+                "question" : "Quantas categorias teve o Passe de Batalha da Temporada 2, Capítulo 1" ,
+                "answers" : ["70","Setenta"],
+                "dificulty" : "nível de dificuldade"
+            },
+            {
+                "question" : "Quanto custa, em V-bucks, o Passe de Batalha no Fortnite" ,
+                "answers" : ["950 V-Bucks","950 vbucks","950"],
+                "dificulty" : "nível de dificuldade"
+            },
+            {
+                "question" : "Em que temporada foi lançado Deadpool como Skin Secreta do Passe de Batalha" ,
+                "answers" : ["Temporada 2 Capítulo 2","Season 2 Cap 2","Season 2 Chapter 2","Temporada 12","Season 12"],
+                "dificulty" : "nível de dificuldade"
+            },
+            {
+                "question" : "Quantas fases a Tempestade de Fortnite possui durante uma partida" ,
+                "answers" : ["9 fases","9"],
+                "dificulty" : "nível de dificuldade"
+            },
+            {
+                "question" : "Qual foi o nome do Evento ao Vivo que trouxe o Buraco Negro?" ,
+                "answers" : ["O Fim"],
+                "dificulty" : "nível de dificuldade"
+            },
+            {
+                "question" : "Quando Foi lançada a skin da Rainha do Cubo" ,
+                "answers" : ["Temporada 8, Capítulo 2","Season 8 Capitulo 2","Season 8 Cap 2","Season 8 Chapter 2","Season 18","Temporada 18","Ao Cubo"],
+                "dificulty" : "nível de dificuldade"
+            },
+            {
+                "question" : "No Capítulo 3 de Fortnite, qual o nome do animal gigante lançado no jogo" ,
+                "answers" : ["Klimbo"],
+                "dificulty" : "nível de dificuldade"
+            },
+            {
+                "question" : "Que ameaça surgiu na ilha do Fortnite durante a temporada 4, Capítulo 2" ,
+                "answers" : ["Galactus"],
+                "dificulty" : "nível de dificuldade"
+            },
+            {
+                "question" : "Em que temporada foi lançado os NPCs" ,
+                "answers" : ["Temporada 5 Capítulo 2","Temporada 15","Season 5 Cap 2","Season 5 Chapter 2","Season 5 Capitulo 2","Season 15"],
+                "dificulty" : "nível de dificuldade"
+            },
+            {
+                "question" : "Qual o nome da Skin secreta da Temporada 7 Capitulo 2" ,
+                "answers" : ["Superman","Super homem","Superhomem","Super man","Clark Kent","Clark"],
+                "dificulty" : "nível de dificuldade"
+            },
+            {
+                "question" : "Quantas Skins são lançadas de graça no Fortnite durante o Natal todo ano" ,
+                "answers" : ["2","Dois","duas"],
+                "dificulty" : "nível de dificuldade"
+            },
+            {
+                "question" : "Quanto tempo leva para desarmar a spike sem kit de desarme no CS:GO" ,
+                "answers" : [10, "10 segundos", "10 s"],
+                "dificulty" : "nível de dificuldade"
+            },
+            {
+                "question" : "Quanto tempo leva para desarmar a spike sem kit de desarme no CS:GO" ,
+                "answers" : [10, "10 segundos", "10 s"],
+                "dificulty" : "nível de dificuldade"
+            },
+            {
+                "question" : "Quanto tempo leva para desarmar a spike sem kit de desarme no CS:GO" ,
+                "answers" : [10, "10 segundos", "10 s"],
+                "dificulty" : "nível de dificuldade"
+            }
+        ]
+    },
+]
