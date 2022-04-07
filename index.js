@@ -12,6 +12,7 @@ const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'
 eventFiles.forEach((file => {
 
     const event = require(`./events/${file}`)
+    if(event.name === 'interactionCreate') return
     if(event.once){
         client.once(event.name, (...args) => event.listen(client, ...args))
     } else {

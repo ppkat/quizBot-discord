@@ -8,7 +8,8 @@ module.exports = {
         if (!interaction.isButton()) return
 
         if (interaction.customId === 'entrar') {
-            quiz.updateGlobalRegisteredUsers(interaction)
+            // quiz.updateGlobalRegisteredUsers(interaction)
+            interaction.deferUpdate()
         }
     }
 }
