@@ -47,57 +47,47 @@ module.exports = {
             return embedResponse
         }
 
-        const button = () => {
-
-            const row = new MessageActionRow().addComponents(
-                new MessageButton()
-                    .setStyle('SUCCESS')
-                    .setCustomId('entrar')
-                    .setLabel('entrar')
-            )
-
-            return row
-        }
-
-        const localMessagEmbedResponse = await message.channel.send({ embeds: [embedResponse()], components: [button()] }).then(msg => msg)
+        const localMessagEmbedResponse = await message.channel.send({ embeds: [embedResponse()] }).then(msg => msg)
         localMessagEmbedResponse.react('<:valorant:961355782018957353>')
         localMessagEmbedResponse.react('<:csgo:961355723747508225>')
-        localMessagEmbedResponse.react('<:LeageOfLegends:961356872047280178> ')
+        localMessagEmbedResponse.react('<:JogosClassicos:961417061383434331>')
+        localMessagEmbedResponse.react('<:Fortnite:961415475693252629>')
+        localMessagEmbedResponse.react('<:Freefire:961415685920157716>')
+        localMessagEmbedResponse.react('<:LeageOfLegends:961356872047280178>')
 
-        async function getButtonInteraction() {
+        async function getEmojInteraction() {
 
-            function upadateRegisteredUsers(interaction) {
+            function upadateRegisteredUsers(reaction, user) {
+                if (user.bot) return
+                if (!globalRegisteredUsers.find(participant => participant.id === user.id)) {
 
-                if (!globalRegisteredUsers.find(user => user.id === interaction.member.id)) {
-
-                    const inscribedParticipant = new Participant(interaction.member.user.username, interaction.member.id, 0, interaction.member.toString(),
-                        interaction.member.user.avatarURL(), interaction.channelId)
+                    const inscribedParticipant = new Participant(user.username, user.id, 0, user.toString(), user.avatarURL(), reaction.message.channelId)
                     globalRegisteredUsers.push(inscribedParticipant)
+                    localRegisteredUsers.push(inscribedParticipant)
 
-                    localRegisteredUsers = globalRegisteredUsers.filter(participant => participant.channel === interaction.channelId)
                     localMessagEmbedResponse.embeds[0].fields[3].value = String(localRegisteredUsers.length)
                     localMessagEmbedResponse.edit({ embeds: [localMessagEmbedResponse.embeds[0]] })
-
-                    interaction.reply({ content: 'Você foi inscrito no quiz! Boa sorte!', ephemeral: true })
-                } else {
-                    interaction.reply({ content: 'Você já está inscrito em um quiz', ephemeral: true })
+                } else if (globalRegisteredUsers.find(participant => participant.channel !== reaction.message.channelId)) {
+                    user.send('Você só pode se inscrever em um quiz de cada vez')
+                    reaction.users.remove(user)
                 }
-                getButtonInteraction()
             }
 
-            let filter = i => i.customId === 'entrar'
-            await localMessagEmbedResponse.awaitMessageComponent({ filter, componentType: 'BUTTON' })
-                .then(interaction => upadateRegisteredUsers(interaction))
-                .catch(err => console.log('sem inscrinções'))
+            const collector = localMessagEmbedResponse.createReactionCollector()
+            collector.on('collect', (reaction, user) => upadateRegisteredUsers(reaction, user));
+
+            collector.on('end', collected => {
+                console.log(`após coletar ${collected.size} reações e a mensagem ser excluida, este evento é encerrado`)
+            });
         }
-        getButtonInteraction()
+        getEmojInteraction()
 
         async function quizStart() {
             if (localRegisteredUsers.length === 0) return await endQuiz()
 
             const [firstPoints, secondPoints, thirdPoints, forthPoints, restPoints] = [50, 30, 20, 10, 5]
 
-            function choseCategory(){
+            function choseCategory() {
 
                 let reactionsCounts = localMessagEmbedResponse.reactions.cache.map(reaction => reaction.count)
                 const categoryWinnerIndex = reactionsCounts.findIndex(item => item === Math.max(...reactionsCounts))
@@ -106,26 +96,26 @@ module.exports = {
 
                 const categoryWinnerJSONIndex = quiz.findIndex(item => item.categoryName === categoryWinnerName)
                 const categoryWinnerJSON = quiz[categoryWinnerJSONIndex]
-                
+
                 return categoryWinnerJSON.questions
             }
             const questions = choseCategory()
 
-            let questionsAlreadySendeds = []
+            let questionsNoSendeds = []
             let index = 0
             while (index < questionNumber) {
                 index++;
 
-                function choseQuestion(){
-                    
-                    const question = questions[Math.floor(Math.random() * questions.length)]
-                    if(questionsAlreadySendeds.some(q => q === question) && questions.length > questionsAlreadySendeds.length) return choseQuestion()
+                function choseQuestion() {
+
+                    let question = questions[Math.floor(Math.random() * questions.length)]
+                    if (questionsAlreadySendeds.some(q => q === question) && questions.length > questionsAlreadySendeds.length) return choseQuestion()
 
                     return question
                 }
 
-                const question = choseQuestion()
-                
+                let question = choseQuestion()
+
                 const questionEmbed = new MessageEmbed()
                     .setTitle('❓❓' + question.question + '❓❓')
                     .setColor('DARK_RED')
@@ -137,8 +127,12 @@ module.exports = {
                 let scoredParticipants = []
 
                 const decressAnswerTimeLeftId = setInterval(() => {
-                    answerTimeLeft -= 10
-                }, 10)
+                    answerTimeLeft -= 100
+                    if (answerTimeLeft === 30 * 1000) localMessagEmbedResponse.channel.send('https://tenor.com/view/timer-gif-20006092')
+                    else if (answerTimeLeft === 20 * 1000) localMessagEmbedResponse.channel.send('https://media.tenor.com/images/a7342b5a85e2e4c7bb3463eddf4ccf63/tenor.gif')
+                    else if (answerTimeLeft === 10 * 1000) localMessagEmbedResponse.channel.send('https://tenor.com/view/obrecht-wecc-countdown-gif-18708336')
+                    else if (answerTimeLeft === 5 * 1000) localMessagEmbedResponse.channel.send('https://tenor.com/view/ujjval-gif-20607828')
+                }, 100)
 
                 async function usersAnswersHandle() { //round
 
@@ -174,7 +168,7 @@ module.exports = {
                             await usersAnswersHandle()
                         })
                         .catch((error) => {
-                            
+
                             if (scoredParticipants.length === 0) {
                                 localMessagEmbedResponse.channel.send(`Sem acertos nesta rodada! ${wrongAnswersCount} Respostas erradas`)
                                     .then(m => m.react('😔'))
@@ -195,21 +189,29 @@ module.exports = {
                 let scores = localRegisteredUsers.map(participant => participant.score)
 
                 let winnerIndex = scores.findIndex(score => score === Math.max(...scores))
-                scores.splice(winnerIndex, 1)
+                scores.splice(winnerIndex, 1, -1)
                 let secondIndex = scores.findIndex(score => score === Math.max(...scores))
-                scores.splice(secondIndex, 1)
+                scores.splice(secondIndex, 1, -1)
                 let thirdIndex = scores.findIndex(score => score === Math.max(...scores))
-                scores.splice(thirdIndex, 1)
+                scores.splice(thirdIndex, 1, -1)
 
                 let winner = localRegisteredUsers[winnerIndex]
-                let second = localRegisteredUsers[secondIndex]
-                let third = localRegisteredUsers[thirdIndex]
+                let second = winnerIndex === secondIndex ? null : localRegisteredUsers[secondIndex]
+                let third = secondIndex === thirdIndex ? null : localRegisteredUsers[thirdIndex]
 
-                return { winner, second, third }
+                let noWinners = localRegisteredUsers.filter(participant => participant.id !== winner.id && participant.id !== second.id && participant.id !== third.id)
+                let noWinnersScores = noWinners.map(nowinner => nowinner.score)
+                let descendingNoWinners = []
+                noWinners.forEach(() => {
+                    descendingNoWinners.push(noWinners.findIndex(nowinner => nowinner.score === Math.max(...noWinnersScores)))
+                    noWinnersScores.splice(noWinnersScores.findIndex(score => score === Math.max(...noWinnersScores)), 1)
+                })
+
+                return { winner, second, third, descendingNoWinners }
             }
 
             async function showResults() {
-                const { winner, second, third } = choseWinners()
+                const { winner, second, third, descendingNoWinners } = choseWinners()
 
                 const embedResults = new MessageEmbed()
                     .setColor('DARK_RED')
@@ -226,6 +228,21 @@ module.exports = {
 
                 if (second) embedResults.addField('2º Lugar', `${second.tag}, com ${second.score} pontos`)
                 if (third) embedResults.addField('3º Lugar', `${third.tag}, com ${third.score} pontos`)
+
+                if (descendingNoWinners.length !== 0) {
+
+                    noWinnersScores = descendingNoWinners.map(nowinner => nowinner.score)
+                    noWinnersTags = descendingNoWinners.map(nowinner => nowinner.tag)
+                    noWinnersPlaces = descendingNoWinners.map((nowinner, index) => index + 4)
+
+                    noWinnersTextArray = []
+                    for (i = 0; i < descendingNoWinners.length; i++) {
+                        noWinnersTextArray.push(`${noWinnersPlaces[i]}: ${noWinnersTags[i]}, com ${noWinnersScores[i]} pts`)
+                    }
+
+                    noWinnersText = noWinnersTextArray.join('/n')
+                    embedResults.addField('Restante', noWinnersText)
+                }
 
                 await message.channel.send({ embeds: [embedResults] })
             }
