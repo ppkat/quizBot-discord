@@ -101,15 +101,17 @@ module.exports = {
             }
             const questions = choseCategory()
 
-            let questionsNoSendeds = []
+            let questionsNoSendeds = [...questions]
             let index = 0
             while (index < questionNumber) {
                 index++;
 
                 function choseQuestion() {
 
-                    let question = questions[Math.floor(Math.random() * questions.length)]
-                    if (questionsAlreadySendeds.some(q => q === question) && questions.length > questionsAlreadySendeds.length) return choseQuestion()
+                    if(questionsNoSendeds.length === 0) questionsNoSendeds = [...questions]
+                    const randomIndex = Math.floor(Math.random() * questionsNoSendeds.length)
+                    let question = questionsNoSendeds[randomIndex]
+                    questionsNoSendeds.splice(randomIndex, 1)
 
                     return question
                 }
