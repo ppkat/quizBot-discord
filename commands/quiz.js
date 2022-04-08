@@ -24,8 +24,10 @@ module.exports = {
         activeChannels.push(message.channelId)
 
         const questionNumber = commandParams.length === 0 ? 20 : Number(commandParams[0])
-        const timeForAnswers = commandParams.length < 2 ? 60 * 1000 : Number(commandParams[1]) * 1000
-        let timeForStart = commandParams.length < 3 ? 60 * 1000 : Number(commandParams[2]) * 1000
+        const timeForAnswers = commandParams.length < 2 ? 30 * 1000 : Number(commandParams[1]) * 1000
+        let timeForStart = commandParams.length < 3 ? 40 * 1000 : Number(commandParams[2]) * 1000
+        const difficulty = commandParams.length < 4 ? 'growing' : commandParams[3]
+
         let localRegisteredUsers = []
 
         const embedResponse = () => {
@@ -59,7 +61,7 @@ module.exports = {
 
             function upadateRegisteredUsers(reaction, user) {
                 if (user.bot) return
-                if (!globalRegisteredUsers.find(participant => participant.id === user.id)) {
+                (!globalRegisteredUsers.find(participant => participant.id === user.id)) {
 
                     const inscribedParticipant = new Participant(user.username, user.id, 0, user.toString(), user.avatarURL(), reaction.message.channelId)
                     globalRegisteredUsers.push(inscribedParticipant)
@@ -130,10 +132,11 @@ module.exports = {
 
                 const decressAnswerTimeLeftId = setInterval(() => {
                     answerTimeLeft -= 100
-                    if (answerTimeLeft === 30 * 1000) localMessagEmbedResponse.channel.send('https://tenor.com/view/timer-gif-20006092')
-                    else if (answerTimeLeft === 20 * 1000) localMessagEmbedResponse.channel.send('https://media.tenor.com/images/a7342b5a85e2e4c7bb3463eddf4ccf63/tenor.gif')
-                    else if (answerTimeLeft === 10 * 1000) localMessagEmbedResponse.channel.send('https://tenor.com/view/obrecht-wecc-countdown-gif-18708336')
-                    else if (answerTimeLeft === 5 * 1000) localMessagEmbedResponse.channel.send('https://tenor.com/view/ujjval-gif-20607828')
+                    if (answerTimeLeft === 30 * 1000) localMessagEmbedResponse.channel.send('https://www.shareicon.net/data/2015/09/20/643693_30_512x512.png')
+                    else if (answerTimeLeft === 20 * 1000) localMessagEmbedResponse.channel.send('https://www.hit4hit.org/img/icon/256/20-seconds-timer.png')
+                    else if (answerTimeLeft === 10 * 1000) localMessagEmbedResponse.channel.send(
+                        'http://developer.mobilecaddy.net/wp-content/themes/mc-dev/assets/img/icons/stopwatch_10b.png')
+                    else if (answerTimeLeft === 5 * 1000) localMessagEmbedResponse.channel.send('https://cdn2.iconfinder.com/data/icons/ux-and-ui-coral-vol-1/256/5-second-test-512.png')
                 }, 100)
 
                 async function usersAnswersHandle() { //round
@@ -163,6 +166,7 @@ module.exports = {
                                 correctAnswerUser.score += addScore
                                 msg.channel.send(`${msg.author} ganhou ${addScore} pontos`)
 
+                                if(scoredParticipants.length === localRegisteredUsers.length) answerTimeLeft = 1000
                             } else {
                                 msg.react('❌')
                                 wrongAnswersCount++;
@@ -174,11 +178,16 @@ module.exports = {
                             if (scoredParticipants.length === 0) {
                                 localMessagEmbedResponse.channel.send(`Sem acertos nesta rodada! ${wrongAnswersCount} Respostas erradas`)
                                     .then(m => m.react('😔'))
-                            } else {
+
+                            } else if (scoredParticipants.length === localRegisteredUsers.length) localMessagEmbedResponse.channel.send(`**Todos acertaram!!**`)
+                            
+                            else {
                                 let scoredParticipantsNames = scoredParticipants.map(participant => participant.name)
                                 let singularPlural = scoredParticipantsNames.length === 1 ? 'acertou!!' : 'acertaram!!'
-                                localMessagEmbedResponse.channel.send(`✅ ${scoredParticipantsNames.join(', ')} ${singularPlural}`)
+                                localMessagEmbedResponse.channel.send(`✅ ${scoredParticipantsNames.map(item => `**${item}**`).join(', ')} ${singularPlural}`)
                             }
+                            let singularPlural = question.answers.length > 1 ? 'As respostas corretas eram' : 'A resposta correta era'
+                            localMessagEmbedResponse.channel.send(`${singularPlural} ${question.answers.map(item => `**${item}**`).join(', ')}`)
                         });
                 }
                 // console.log('chegou1 ', index)
@@ -189,24 +198,22 @@ module.exports = {
             function choseWinners() {
 
                 let scores = localRegisteredUsers.map(participant => participant.score)
+                let concurrents = [...localRegisteredUsers]
 
-                let winnerIndex = scores.findIndex(score => score === Math.max(...scores))
-                scores.splice(winnerIndex, 1, -1)
-                let secondIndex = scores.findIndex(score => score === Math.max(...scores))
-                scores.splice(secondIndex, 1, -1)
-                let thirdIndex = scores.findIndex(score => score === Math.max(...scores))
-                scores.splice(thirdIndex, 1, -1)
+                const winnerIndex = scores.findIndex(score => score === Math.max(...scores))
+                const [winner] = concurrents.splice(winnerIndex, 1)
+                scores.splice(winnerIndex, 1)
+                const secondIndex = scores.findIndex(score => score === Math.max(...scores))
+                const [second] = concurrents.splice(secondIndex, 1)
+                scores.splice(secondIndex, 1)
+                const thirdIndex = scores.findIndex(score => score === Math.max(...scores))
+                const [third] = concurrents.splice(thirdIndex, 1)
+                scores.splice(thirdIndex, 1)
 
-                let winner = localRegisteredUsers[winnerIndex]
-                let second = winnerIndex === secondIndex ? null : localRegisteredUsers[secondIndex]
-                let third = secondIndex === thirdIndex ? null : localRegisteredUsers[thirdIndex]
-
-                let noWinners = localRegisteredUsers.filter(participant => participant.id !== winner.id && participant.id !== second.id && participant.id !== third.id)
-                let noWinnersScores = noWinners.map(nowinner => nowinner.score)
                 let descendingNoWinners = []
-                noWinners.forEach(() => {
-                    descendingNoWinners.push(noWinners.findIndex(nowinner => nowinner.score === Math.max(...noWinnersScores)))
-                    noWinnersScores.splice(noWinnersScores.findIndex(score => score === Math.max(...noWinnersScores)), 1)
+                concurrents.forEach(() => {
+                    descendingNoWinners.push(concurrents.find(concurrent => concurrent.score === Math.max(...scores)))
+                    scores.splice(scores.findIndex(score => score === Math.max(...scores)), 1)
                 })
 
                 return { winner, second, third, descendingNoWinners }
@@ -232,6 +239,7 @@ module.exports = {
                 if (third) embedResults.addField('3º Lugar', `${third.tag}, com ${third.score} pontos`)
 
                 if (descendingNoWinners.length !== 0) {
+                    console.log(descendingNoWinners)
 
                     noWinnersScores = descendingNoWinners.map(nowinner => nowinner.score)
                     noWinnersTags = descendingNoWinners.map(nowinner => nowinner.tag)
@@ -242,8 +250,8 @@ module.exports = {
                         noWinnersTextArray.push(`${noWinnersPlaces[i]}: ${noWinnersTags[i]}, com ${noWinnersScores[i]} pts`)
                     }
 
-                    noWinnersText = noWinnersTextArray.join('/n')
-                    embedResults.addField('Restante', noWinnersText)
+                    noWinnersText = noWinnersTextArray.join('\n')
+                    embedResults.addField('\u200b', noWinnersText)
                 }
 
                 await message.channel.send({ embeds: [embedResults] })
