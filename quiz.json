@@ -10,7 +10,7 @@
                     "20 temporadas",
                     "Vinte temporadas"
                 ],
-                "dificulty": "medio"
+                "difficulty": "facil"
             },
             {
                 "question": "Quem é a desenvolvedora de Fortnite",
@@ -18,7 +18,7 @@
                     "Epic",
                     "Epic Games"
                 ],
-                "dificulty": "facil"
+                "difficulty": "facil"
             },
             {
                 "question": "Em que ano Lançou Fortnite Battle Royale",
@@ -26,7 +26,7 @@
                     "2017",
                     "Dois mil e desessete"
                 ],
-                "dificulty": "facil"
+                "difficulty": "facil"
             },
             {
                 "question": "Em que temporada Lançou Fortnite Criativo",
@@ -36,9 +36,10 @@
                     "Season 7",
                     "Season Sete",
                     "Temporada Sete",
-                    "Season 7, Capítulo 1"
+                    "Season 7, Capítulo 1",
+                    "7"
                 ],
-                "dificulty": "medio"
+                "difficulty": "medio"
             },
             {
                 "question": "Quem é a Lider da Equipe Ordem Imaginada",
@@ -47,7 +48,7 @@
                     "Doutora Slone",
                     "Dra Slone"
                 ],
-                "dificulty": "dificil"
+                "difficulty": "facil"
             },
             {
                 "question": "Qual foi a primeira parceria de Fortnite",
@@ -61,7 +62,7 @@
                     "Thanos",
                     "Manopla"
                 ],
-                "dificulty": "dificil"
+                "difficulty": "medio"
             },
             {
                 "question": "Qual é o nome da moeda utilizada na Loja de Itens de Fortnite",
@@ -69,7 +70,7 @@
                     "V-Bucks",
                     "Vbucks"
                 ],
-                "dificulty": "medio"
+                "difficulty": "facil"
             },
             {
                 "question": "Quantos tipos de materiais estão disponíveis em Fortnite para construção",
@@ -77,7 +78,7 @@
                     "3",
                     "Três"
                 ],
-                "dificulty": "medio"
+                "difficulty": "facil"
             },
             {
                 "question": "Qual a verdadeira identidade da skin Lendaria Fundação",
@@ -87,7 +88,7 @@
                     "Dwayne Johnson",
                     "Dwayne Rock Johnson"
                 ],
-                "dificulty": "dificil"
+                "difficulty": "medio"
             },
             {
                 "question": "Quantas temporadas tiveram no Fortnite durante o capítulo 2",
@@ -97,7 +98,7 @@
                     "8 Temporadas",
                     "8 seasons"
                 ],
-                "dificulty": "dificil"
+                "difficulty": "medio"
             },
             {
                 "question": "Qual foi o primeiro animal lançado no Fortnite Battle Royale",
@@ -105,7 +106,7 @@
                     "Tubarões",
                     "Tubarão"
                 ],
-                "dificulty": "medio"
+                "difficulty": "dificil"
             },
             {
                 "question": "Em que Temporada lançou os Bots",
@@ -115,9 +116,10 @@
                     "Season 1 Capítulo 2",
                     "Season 1 Chapter 2",
                     "Temporada 11",
-                    "Season 11"
+                    "Season 11",
+                    "1"
                 ],
-                "dificulty": "dificil"
+                "difficulty": "dificil"
             },
             {
                 "question": "Quem era o chefe do lugar conhecido como Agência, na temporada 2, Capítulo 2",
@@ -125,7 +127,7 @@
                     "Midas",
                     "Agente Midas"
                 ],
-                "dificulty": "dificil"
+                "difficulty": "medio"
             },
             {
                 "question": "Quantos Shows ao vivo houveram no fortnite até hoje (data 06/04/22)",
@@ -133,7 +135,7 @@
                     "3",
                     "Três"
                 ],
-                "dificulty": "medio"
+                "difficulty": "medio"
             },
             {
                 "question": "Quantas categorias teve o Passe de Batalha da Temporada 2, Capítulo 1",
@@ -141,7 +143,7 @@
                     "70",
                     "Setenta"
                 ],
-                "dificulty": "dificil"
+                "difficulty": "dificil"
             },
             {
                 "question": "Quanto custa, em V-bucks, o Passe de Batalha no Fortnite",
@@ -150,7 +152,7 @@
                     "950 vbucks",
                     "950"
                 ],
-                "dificulty": "medio"
+                "difficulty": "facil"
             },
             {
                 "question": "Em que temporada foi lançado Deadpool como Skin Secreta do Passe de Batalha",
@@ -159,9 +161,10 @@
                     "Season 2 Cap 2",
                     "Season 2 Chapter 2",
                     "Temporada 12",
-                    "Season 12"
+                    "Season 12",
+                    "2"
                 ],
-                "dificulty": "dificil"
+                "difficulty": "dificil"
             },
             {
                 "question": "Quantas fases a Tempestade de Fortnite possui durante uma partida",
@@ -169,14 +172,14 @@
                     "9 fases",
                     "9"
                 ],
-                "dificulty": "medio"
+                "difficulty": "dificil"
             },
             {
                 "question": "Qual foi o nome do Evento ao Vivo que trouxe o Buraco Negro?",
                 "answers": [
                     "O Fim"
                 ],
-                "dificulty": "medio"
+                "difficulty": "dificil"
             },
             {
                 "question": "Quando Foi lançada a skin da Rainha do Cubo",
@@ -187,23 +190,24 @@
                     "Season 8 Chapter 2",
                     "Season 18",
                     "Temporada 18",
-                    "Ao Cubo"
+                    "Ao Cubo",
+                    "8"
                 ],
-                "dificulty": "dificil"
+                "difficulty": "dificil"
             },
             {
                 "question": "No Capítulo 3 de Fortnite, qual o nome do animal gigante lançado no jogo",
                 "answers": [
                     "Klimbo"
                 ],
-                "dificulty": "medio"
+                "difficulty": "dificil"
             },
             {
                 "question": "Que ameaça surgiu na ilha do Fortnite durante a temporada 4, Capítulo 2",
                 "answers": [
                     "Galactus"
                 ],
-                "dificulty": "dificil"
+                "difficulty": "dificil"
             },
             {
                 "question": "Em que temporada foi lançado os NPCs",
@@ -215,7 +219,7 @@
                     "Season 5 Capitulo 2",
                     "Season 15"
                 ],
-                "dificulty": "medio"
+                "difficulty": "dificil"
             },
             {
                 "question": "Qual o nome da Skin secreta da Temporada 7 Capitulo 2",
@@ -227,7 +231,7 @@
                     "Clark Kent",
                     "Clark"
                 ],
-                "dificulty": "medio"
+                "difficulty": "dificil"
             },
             {
                 "question": "Quantas Skins são lançadas de graça no Fortnite durante o Natal todo ano",
@@ -236,7 +240,7 @@
                     "Dois",
                     "duas"
                 ],
-                "dificulty": "facil"
+                "difficulty": "medio"
             },
             {
                 "question": "Qual foi a primeira skin da Marvel a ser lançada no Fortnite",
@@ -247,14 +251,14 @@
                     "Natasha",
                     "Traje Viuva Negra"
                 ],
-                "dificulty": "medio"
+                "difficulty": "dificil"
             },
             {
                 "question": "Qual é a cor do Ônibus de Batalha",
                 "answers": [
                     "azul"
                 ],
-                "dificulty": "facil"
+                "difficulty": "facil"
             },
             {
                 "question": "Em que temporada a lhama se tornou viva, podendo correr do jogador",
@@ -266,14 +270,14 @@
                     "Season 7 Chapter 2",
                     "Invasão"
                 ],
-                "dificulty": "medio"
+                "difficulty": "dificil"
             },
             {
                 "question": "Qual o limite de cada material no modo Arena",
                 "answers": [
                     "500"
                 ],
-                "dificulty": "medio"
+                "difficulty": "medio"
             }
         ]
     },
@@ -285,7 +289,175 @@
                 "answers": [
                     "Kelly"
                 ],
-                "dificulty": "medio"
+                "difficulty": "dificil"
+            },
+            {
+                "question": "Qual é o nome da moeda de compra na loja do Free Fire",
+                "answers": [
+                    "diamantes",
+                    "Dimas",
+                    "dima",
+                    "diamante"
+                ],
+                "difficulty": "facil"
+            },
+            {
+                "question": "Quem é a empresa Dona de Free Fire",
+                "answers": [
+                    "Garena"
+                ],
+                "difficulty": "facil"
+            },
+            {
+                "question": "Quem é a desenvolvedora de Free Fire",
+                "answers": [
+                    "111dots",
+                    "dots",
+                    "111",
+                    "111dots studio"
+                ],
+                "difficulty": "dificil"
+            },
+            {
+                "question": "Qual foi a ultima parceria de Free Fire (data 07/04/22)",
+                "answers": [
+                    "bts"
+                ],
+                "difficulty": "medio"
+            },
+            {
+                "question": "Qual o nome do novo Personagem Mestre das laminas, da familia Yagami",
+                "answers": [
+                    "Kenta",
+                    "Quenta",
+                    "Kemta",
+                    "samurai"
+                ],
+                "difficulty": "medio"
+            },
+            {
+                "question": "Qual Grande jogador de futebol possui um personagem em parceria com Free Fire",
+                "answers": [
+                    "cr7",
+                    "Cristiano",
+                    "Ronaldo",
+                    "Cristiano Ronaldo",
+                    "cristiano ronaldo 7"
+                ],
+                "difficulty": "facil"
+            },
+            {
+                "question": "Em que ano foi lançado a skin do Alok",
+                "answers": [
+                    "2019",
+                    "19"
+                ],
+                "difficulty": "medio"
+            },
+            {
+                "question": "quantos mapas existem atualmente no Free Fire",
+                "answers": [
+                    "5",
+                    "cinco"
+                ],
+                "difficulty": "Facil"
+            },
+            {
+                "question": "Em que nivel é preciso estar para jogar ranqueada em conta vinculada",
+                "answers": [
+                    "8",
+                    "oito",
+                    "nivel 8",
+                    "nivel oito",
+                    "lvl 8",
+                    "8lvl"
+                ],
+                "difficulty": "medio"
+            },
+            {
+                "question": "Qual foi a primeira ilha de Free Fire",
+                "answers": [
+                    "Bermuda"
+                ],
+                "difficulty": "medio"
+            },
+            {
+                "question": "Quantas patentes possui Free Fire",
+                "answers": [
+                    "7",
+                    "sete"
+                ],
+                "difficulty": "facil"
+            },
+            {
+                "question": "Qual cidade brasileira foi homenageada no mapa purgatório",
+                "answers": [
+                    "Brasilia",
+                    "Brasília",
+                    "capital",
+                    "capital do brasil"
+                ],
+                "difficulty": "dificil"
+            },
+            {
+                "question": "Qual personagem de Free Fire possui habilidade chamada glutonaria",
+                "answers": [
+                    "Maxim",
+                    "Max"
+                ],
+                "difficulty": "dificil"
+            },
+            {
+                "question": "Qual foi o primeiro pet a chegar em Free Fire",
+                "answers": [
+                    "Gatinho",
+                    "Gato",
+                    "Cat"
+                ],
+                "difficulty": "medio"
+            },
+            {
+                "question": "Em qual mapa de Free Fire há uma referencia ao estado de Santa Catarina",
+                "answers": [
+                    "Kalahari",
+                    "Kalarrari",
+                    "Calahari"
+                ],
+                "difficulty": "dificil"
+            },
+            {
+                "question": "Em que ano ocorreu a primeira Copa Mundial de Free Fire",
+                "answers": [
+                    "2019"
+                ],
+                "difficulty": "medio"
+            },
+            {
+                "question": "Qual pet possui habilidade de dropar granadas de Gel",
+                "answers": [
+                    "Dom pisante",
+                    "Pinguim",
+                    "Dom",
+                    "Penguin",
+                    "Pisante",
+                    "Pinguin",
+                    "penguim"
+                ],
+                "difficulty": "dificil"
+            },
+            {
+                "question": "Qual o gel mais raro de Free Fire",
+                "answers": [
+                    "Gel Bunker"
+                ],
+                "difficulty": "dificil"
+            },
+            {
+                "question": "Quantos de hp cada player possui",
+                "answers": [
+                    "200"
+                ],
+                "difficulty": "facil"
             }
         ]
     },
@@ -295,11 +467,11 @@
             {
                 "question": "Quantas classes de campeões existem em LOL",
                 "answers": [
-                    "6",
-                    "Seis",
-                    "6 classes"
+                    "7",
+                    "Sete",
+                    "7 classes"
                 ],
-                "dificulty": "medio"
+                "difficulty": "facil"
             },
             {
                 "question": "Qual é o nome verdadeiro de Twisted Fate",
@@ -308,30 +480,30 @@
                     "Tobias Foxtrot",
                     "Roxtror"
                 ],
-                "dificulty": "dificil"
+                "difficulty": "dificil"
             },
             {
                 "question": "Qual o elo mais baixo nas Ranqueadas de LOL",
                 "answers": [
-                    "Ferro 4",
-                    "ferro iv",
-                    "ferro quatro"
+                    "Ferro",
+                    "Ferro IV",
+                    "Ferro 4"
                 ],
-                "dificulty": "facil"
+                "difficulty": "medio"
             },
             {
                 "question": "Qual campeão é nomeado Mestre da Estratégia",
                 "answers": [
                     "Jayce"
                 ],
-                "dificulty": "dificil"
+                "difficulty": "dificil"
             },
             {
                 "question": "Quem é conhecido como rival de Zilean",
                 "answers": [
                     "Volibear"
                 ],
-                "dificulty": "medio"
+                "difficulty": "dificil"
             },
             {
                 "question": "Quem são as duas Campeãs de LOL que protagonizam a série Arcane",
@@ -341,21 +513,21 @@
                     "Jinx Vi",
                     "Vi Jynx"
                 ],
-                "dificulty": "facil"
+                "difficulty": "facil"
             },
             {
                 "question": "Em que ano foi lançado em League of Legends o campeão Viktor",
                 "answers": [
                     "2011"
                 ],
-                "dificulty": "facil"
+                "difficulty": "medio"
             },
             {
                 "question": "Em que ano League of Legends foi lançado",
                 "answers": [
                     "2009"
                 ],
-                "dificulty": "facil"
+                "difficulty": "facil"
             },
             {
                 "question": "Quem é a empresa desenvolvedora de League Of Legends",
@@ -363,21 +535,21 @@
                     "Riot",
                     "Riot Games"
                 ],
-                "dificulty": "facil"
+                "difficulty": "facil"
             },
             {
                 "question": "Qual é o nome verdadeira da Campeã de LOL Miss Fortune ",
                 "answers": [
                     "Sarah"
                 ],
-                "dificulty": "dificil"
+                "difficulty": "dificil"
             },
             {
                 "question": "Como se chama o continente onde está Demacia",
                 "answers": [
                     "Valoran"
                 ],
-                "dificulty": "medio"
+                "difficulty": "medio"
             },
             {
                 "question": "Quem presenteou Riven com sua espada mágica",
@@ -386,7 +558,7 @@
                     "Boram",
                     "Darkwill"
                 ],
-                "dificulty": "dificil"
+                "difficulty": "dificil"
             },
             {
                 "question": "Quantos elementos possui na skin Lux Elementalista ",
@@ -394,15 +566,70 @@
                     "10",
                     "dez"
                 ],
-                "dificulty": "medio"
+                "difficulty": "medio"
             },
             {
                 "question": "De onde veio Ashe",
                 "answers": [
                     "Freljord",
-                    "Norte"
+                    "Norte",
+                    "norte de freljord",
+                    "Floresta"
                 ],
-                "dificulty": "medio"
+                "difficulty": "dificil"
+            },
+            {
+                "question": "Qual foi o primeiro personagem criado para League of Legends",
+                "answers": [
+                    "Singed"
+                ],
+                "difficulty": "medio "
+            },
+            {
+                "question": "Até quantos sinos Bardo pode pegar por vez",
+                "answers": [
+                    "3 sinos",
+                    "3",
+                    "tres"
+                ],
+                "difficulty": "dificil"
+            },
+            {
+                "question": "Qual é a moeda utilizada em compras no League of Legends",
+                "answers": [
+                    "Riot Points",
+                    "RP",
+                    "Pontos de combate",
+                    "Riotpoints"
+                ],
+                "difficulty": "facil"
+            },
+            {
+                "question": "Quanto custa, em moedas do jogo, os itens mais caros da loja de League of Legends",
+                "answers": [
+                    "3250",
+                    "3250 RP",
+                    "3250 Riot Points"
+                ],
+                "difficulty": "medio"
+            },
+            {
+                "question": "Qual é o nome do monumento no qual suas tropas surgem na partida",
+                "answers": [
+                    "Nexus"
+                ],
+                "difficulty": "facil"
+            },
+            {
+                "question": "Entre os monstros neutros da Selva, qual é o nome do mais poderoso",
+                "answers": [
+                    "nashor",
+                    "barão nashor",
+                    "barão na shor",
+                    "na shor",
+                    "baron"
+                ],
+                "difficulty": "medio"
             }
         ]
     },
@@ -414,7 +641,7 @@
                 "answers": [
                     "Alemanha", "Germany"
                 ],
-                "dificulty": "medio"
+                "difficulty": "dificil"
             },
             {
                 "question": "Quantas facas a Jett possui no R",
@@ -422,7 +649,7 @@
                     "5",
                     "cinco"
                 ],
-                "dificulty": "facil"
+                "difficulty": "medio"
             },
             {
                 "question": "Quantos Rounds é necessário ganhar para ser o vencedor do jogo",
@@ -430,7 +657,7 @@
                     "13",
                     "treze"
                 ],
-                "dificulty": "facil"
+                "difficulty": "facil"
             },
             {
                 "question": "Quem é a desenvolvedora de Valorant",
@@ -438,21 +665,21 @@
                     "Riot",
                     "Riot Games"
                 ],
-                "dificulty": "facil"
+                "difficulty": "facil"
             },
             {
                 "question": "Em que ano Valorant foi lançado",
                 "answers": [
                     "2020"
                 ],
-                "dificulty": "facil"
+                "difficulty": "facil"
             },
             {
                 "question": "Qual é o verdadeiro nome da Viper",
                 "answers": [
                     "Sabine"
                 ],
-                "dificulty": "dificil"
+                "difficulty": "dificil"
             },
             {
                 "question": "Qual foi o primeiro personagem a ser anunciado em Valorant",
@@ -460,14 +687,116 @@
                     "Phoenix",
                     "Fenix"
                 ],
-                "dificulty": "medio"
+                "difficulty": "medio"
             },
             {
                 "question": "De que país é o personagem Cypher",
                 "answers": [
                     "Marrocos"
                 ],
-                "dificulty": "medio"
+                "difficulty": "dificil"
+            },
+            {
+                "question": "Qual é o nome da moeda utilizada para realizar compras em valorant",
+                "answers": [
+                    "Valorant points",
+                    "VP",
+                    "Valorantpoints",
+                    "Vavapoints",
+                    "VavaP"
+                ],
+                "difficulty": "facil"
+            },
+            {
+                "question": "Quantos mapas existem em Valorant",
+                "answers": [
+                    "7",
+                    "Sete"
+                ],
+                "difficulty": "medio"
+            },
+            {
+                "question": "Qual é o menor mapa de Valorant",
+                "answers": [
+                    "Haven"
+                ],
+                "difficulty": "dificil"
+            },
+            {
+                "question": "Quanto tempo leva para uma Spike detonar em Valorant",
+                "answers": [
+                    "45",
+                    "45s",
+                    "45 s",
+                    "45 segundos"
+                ],
+                "difficulty": "medio"
+            },
+            {
+                "question": "Quantos Agentes de classe Controlador existem atualmente em Valorant",
+                "answers": [
+                    "4",
+                    "quatro",
+                    "4 agentes"
+                ],
+                "difficulty": "medio"
+            },
+            {
+                "question": "Qual é a Pump mais barata em Valorant",
+                "answers": [
+                    "bucky"
+                ],
+                "difficulty": "medio"
+            },
+            {
+                "question": "Qual é o menor valor que pode ser gasto em Valorant, para a compra de VPs",
+                "answers": [
+                    "16,90 reais",
+                    "17",
+                    "17 reais",
+                    "16,90"
+                ],
+                "difficulty": "medio"
+            },
+            {
+                "question": "Em valorant, 5k é o nome dado ao jogador que sozinho elimina todo o time inimigo, outro nome utilizado como sinonimo à 5k é",
+                "answers": [
+                    "ace"
+                ],
+                "difficulty": "dificil"
+            },
+            {
+                "question": "Qual foi o nome do primeiro campeonato oficial de Valorant",
+                "answers": [
+                    "First Strike"
+                ],
+                "difficulty": "dificil"
+            },
+            {
+                "question": "Quanto custa o passe de batalha, em moedas do jogo, no Valorant",
+                "answers": [
+                    "1000",
+                    "1000 VP",
+                    "mil vp",
+                    "mil"
+                ],
+                "difficulty": "facil"
+            },
+            {
+                "question": "Quantos agentes existem atualmente em Valorant",
+                "answers": [
+                    "18",
+                    "18 agentes"
+                ],
+                "difficulty": "facil"
+            },
+            {
+                "question": "Quantas skins de faca existem em valorant ao todo",
+                "answers": [
+                    "45",
+                    "45 skins"
+                ],
+                "difficulty": "dificil"
             }
         ]
     },
@@ -477,11 +806,174 @@
             {
                 "question": "Quanto tempo leva para desarmar a spike sem kit de desarme no CS:GO",
                 "answers": [
-                    10,
+                    "10",
                     "10 segundos",
                     "10 s"
                 ],
-                "dificulty": "dificil"
+                "difficulty": "medio"
+            },
+            {
+                "question": "Em que ano CSGO foi lançado",
+                "answers": [
+                    "2012"
+                ],
+                "difficulty": "facil"
+            },
+            {
+                "question": "Quem é a desenvolvedora de CSGO",
+                "answers": [
+                    "Valve",
+                    "Hidden Path",
+                    "Valve e Hidden Path"
+                ],
+                "difficulty": "medio"
+            },
+            {
+                "question": "Qual é o nome do modo de CSGO que funciona em estilo Battle Royale",
+                "answers": [
+                    "Zona de Perigo",
+                    "Danger zone"
+                ],
+                "difficulty": "dificil"
+            },
+            {
+                "question": "Qual é o menor ranking de CSGO",
+                "answers": [
+                    "Prata",
+                    "Prata I",
+                    "Prata 1",
+                    "prata um"
+                ],
+                "difficulty": "dificil"
+            },
+            {
+                "question": "O que significa a sigla TK, utilizado quando um player mata alguem da própria equipe",
+                "answers": [
+                    "Teamkill",
+                    "Teamkiller",
+                    "fogo amigo"
+                ],
+                "difficulty": "dificil"
+            },
+            {
+                "question": "Quantos campeonatos majors de CSGO costumam ocorrer por ano",
+                "answers": [
+                    "2",
+                    "2 por ano"
+                ],
+                "difficulty": "medio"
+            },
+            {
+                "question": "qual é o nome dos campeonatos mundiais de CSGO que também costumam possuir as maiores premiações da temporada",
+                "answers": [
+                    "major",
+                    "majors"
+                ],
+                "difficulty": "medio"
+            },
+            {
+                "question": "Quando o terrorista segura a C4, é mostrado um código, que código é esse",
+                "answers": [
+                    "7355608"
+                ],
+                "difficulty": "dificil"
+            },
+            {
+                "question": "Qual o preço da granada mais barata em CSGO",
+                "answers": [
+                    "50$",
+                    "$50",
+                    "50"
+                ],
+                "difficulty": "facil"
+            },
+            {
+                "question": "Qual é o preço das pistolas mais baratas de inicio de round",
+                "answers": [
+                    "200",
+                    "$200",
+                    "200$"
+                ],
+                "difficulty": "facil"
+            },
+            {
+                "question": "Ao todo, existem quantas patentes em CSGO",
+                "answers": [
+                    "18",
+                    "18 patentes"
+                ],
+                "difficulty": "facil"
+            },
+            {
+                "question": "Quanto custa o kit de desarme em CSGO",
+                "answers": [
+                    "400",
+                    "$400"
+                ],
+                "difficulty": "medio"
+            },
+            {
+                "question": "Por quantos segundos dura a nuvem de fumaça criada pela smoke bomb",
+                "answers": [
+                    "15",
+                    "15s",
+                    "15 s"
+                ],
+                "difficulty": "facil"
+            },
+            {
+                "question": "Qual animal é possivel encontrar em diversos mapas de CSGO",
+                "answers": [
+                    "galinha",
+                    "galo",
+                    "galos",
+                    "galinhas",
+                    "frango"
+                ],
+                "difficulty": "facil"
+            },
+            {
+                "question": "CsGo surgiu inicialmente como mod de um outro jogo, qual é seu nome",
+                "answers": [
+                    "Half Life"
+                ],
+                "difficulty": "medio"
+            },
+            {
+                "question": "Em competições, quantos jogadores há em cada time",
+                "answers": [
+                    "5",
+                    "cinco",
+                    "5 jogadores"
+                ],
+                "difficulty": "facil"
+            },
+            {
+                "question": "Qual é o nome do mapa mais antigo de CSGO",
+                "answers": [
+                    "Cobblestone",
+                    "pedregulho",
+                    "Coblestone",
+                    "Cobbletone"
+                ],
+                "difficulty": "medio"
+            },
+            {
+                "question": "Como se chama o estilo de facas muito popular entre os jogadores de CSGO",
+                "answers": [
+                    "butterfly",
+                    "canivete",
+                    "borboleta",
+                    "Balisong"
+                ],
+                "difficulty": "medio"
+            },
+            {
+                "question": "Quantas armas existem em CSGO, no total",
+                "answers": [
+                    "34"
+                ],
+                "difficulty": "dificil"
             }
         ]
     },
@@ -495,14 +987,14 @@
                     "anos 90",
                     "90s"
                 ],
-                "dificulty": "medio"
+                "difficulty": "dificil"
             },
             {
                 "question": "Qual é o nome dado à linha de controles de Playstation 1 a Playstation 4",
                 "answers": [
                     "Dualshock"
                 ],
-                "dificulty": "dificil"
+                "difficulty": "medio"
             },
             {
                 "question": "O que é necessário para conseguir se transformar no Super Sonic em seus jogos",
@@ -515,7 +1007,7 @@
                     "Caos",
                     "As esmeraldas do caos"
                 ],
-                "dificulty": "dificil"
+                "difficulty": "medio"
             },
             {
                 "question": "Quantos pokemons haviam na primeira geração, nos jogos de Gameboy ",
@@ -523,7 +1015,7 @@
                     "151",
                     "151 pokemons"
                 ],
-                "dificulty": "dificil"
+                "difficulty": "facil"
             },
             {
                 "question": "Qual é o nome da Fruta presente pela franquia de Crash Bandicoot",
@@ -534,14 +1026,14 @@
                     "Wumpa Fruits",
                     "Wumpa Fruit"
                 ],
-                "dificulty": "dificil"
+                "difficulty": "dificil"
             },
             {
                 "question": "Qual é o lutador Brasileiro em Street Fighter, de Arcade",
                 "answers": [
                     "Blanka"
                 ],
-                "dificulty": "medio"
+                "difficulty": "medio"
             },
             {
                 "question": "Qual é o nome da primeira Zona de Sonic The Hedgehog",
@@ -549,14 +1041,14 @@
                     "Green Hill Zone",
                     "Green Hill"
                 ],
-                "dificulty": "medio"
+                "difficulty": "facil"
             },
             {
                 "question": "De que franquia é a organização anti-terrorismo, STARS",
                 "answers": [
                     "Resident Evil"
                 ],
-                "dificulty": "medio"
+                "difficulty": "facil"
             },
             {
                 "question": "Quem que protagoniza a franquia de Jogos Metroid",
@@ -566,14 +1058,14 @@
                     "A samus",
                     "A Samus Aran"
                 ],
-                "dificulty": "medio"
+                "difficulty": "medio"
             },
             {
                 "question": "Qual é o nome do herói protagonista de The Legend Of Zelda",
                 "answers": [
                     "Link"
                 ],
-                "dificulty": "facil"
+                "difficulty": "facil"
             },
             {
                 "question": "Em The Legend of Zelda Ocarina of Time, quantas canções é possivel aprender em sua ocarina",
@@ -584,7 +1076,7 @@
                     "12 canções",
                     "12 musicas"
                 ],
-                "dificulty": "medio"
+                "difficulty": "dificil"
             },
             {
                 "question": "No jogo de Arcade Donkey Kong, qual era o nome original do personagem que salvava a princesa",
@@ -592,7 +1084,7 @@
                     "jumpman",
                     "jump man"
                 ],
-                "dificulty": "medio"
+                "difficulty": "dificil"
             },
             {
                 "question": "Qual é o nome do Vilão principal do Sonic",
@@ -605,21 +1097,21 @@
                     "Doctor Eggman",
                     "Dr Eggman"
                 ],
-                "dificulty": "facil"
+                "difficulty": "facil"
             },
             {
                 "question": "Qual foi o primeiro jogo a ser lançado para o espaço",
                 "answers": [
                     "Tetris"
                 ],
-                "dificulty": "dificil"
+                "difficulty": "dificil"
             },
             {
                 "question": "Qual é o nome do personagem bigodudo, medroso que enfrenta fantasmas para salvar seu irmão aprisionado",
                 "answers": [
                     "Luigi"
                 ],
-                "dificulty": "facil"
+                "difficulty": "facil"
             },
             {
                 "question": "Haviam quantos personagens jogáveis em Super Smash Bros, de Nintendo 64",
@@ -627,7 +1119,7 @@
                     "10",
                     "dez"
                 ],
-                "dificulty": "medio"
+                "difficulty": "medio"
             },
             {
                 "question": "Qual é o nome completo da Raposa Tails, companheiro de Sonic",
@@ -635,7 +1127,7 @@
                     "Miles Tails Prower",
                     "Miles Prower"
                 ],
-                "dificulty": "dificil"
+                "difficulty": "dificil"
             },
             {
                 "question": "Quantos fantasmas sempre perseguem Pac-man em seus jogos",
@@ -643,7 +1135,7 @@
                     "4",
                     "quatro"
                 ],
-                "dificulty": "facil"
+                "difficulty": "facil"
             },
             {
                 "question": "Quantos filhos possui Bowser, vilão de mario",
@@ -651,7 +1143,7 @@
                     "1",
                     "um"
                 ],
-                "dificulty": "medio"
+                "difficulty": "medio"
             }
         ]
     }
