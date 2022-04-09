@@ -26,7 +26,7 @@ module.exports = {
         const questionNumber = commandParams.length === 0 ? 20 : Number(commandParams[0])
         const timeForAnswers = commandParams.length < 2 ? 30 * 1000 : Number(commandParams[1]) * 1000
         let timeForStart = commandParams.length < 3 ? 40 * 1000 : Number(commandParams[2]) * 1000
-        const difficulty = commandParams.length < 4 ? 'growing' : commandParams[3]
+        const difficultyType = commandParams.length < 4 ? 'ascending' : commandParams[3]
 
         let localRegisteredUsers = []
 
@@ -43,7 +43,8 @@ module.exports = {
                     { name: 'Numero de questões', value: String(questionNumber), inline: true },
                     { name: 'Tempo das rodadas', value: String(timeForAnswers / 1000) + ' segundos', inline: true },
                     { name: 'Tempo para começar', value: String(timeForStart / 1000) + ' segundos', inline: true },
-                    { name: 'Pessoas inscritas', value: localRegisteredUsers.length + ' pessoas', inline: true },
+                    { name: 'Dificuldade', value: `${difficultyType === 'ascending' ? 'crescente' : difficultyType}`, inline: true },
+                    { name: 'Pessoas inscritas', value: localRegisteredUsers.length + ' pessoas'},
                 )
 
             return embedResponse
@@ -61,13 +62,13 @@ module.exports = {
 
             function upadateRegisteredUsers(reaction, user) {
                 if (user.bot) return
-                (!globalRegisteredUsers.find(participant => participant.id === user.id)) {
+                if (!globalRegisteredUsers.find(participant => participant.id === user.id)) {
 
                     const inscribedParticipant = new Participant(user.username, user.id, 0, user.toString(), user.avatarURL(), reaction.message.channelId)
                     globalRegisteredUsers.push(inscribedParticipant)
                     localRegisteredUsers.push(inscribedParticipant)
 
-                    localMessagEmbedResponse.embeds[0].fields[3].value = String(localRegisteredUsers.length)
+                    localMessagEmbedResponse.embeds[0].fields[4].value = String(localRegisteredUsers.length)
                     localMessagEmbedResponse.edit({ embeds: [localMessagEmbedResponse.embeds[0]] })
                 } else if (globalRegisteredUsers.find(participant => participant.channel !== reaction.message.channelId)) {
                     user.send('Você só pode se inscrever em um quiz de cada vez')
@@ -103,14 +104,20 @@ module.exports = {
             }
             const questions = choseCategory()
 
-            let questionsNoSendeds = [...questions]
+            let difficulty = difficultyType === 'ascending' ? 'facil' : difficultyType
+            let questionsNoSendeds = questions.filter(question => question.dificulty === difficulty)
             let index = 0
             while (index < questionNumber) {
                 index++;
 
                 function choseQuestion() {
 
-                    if(questionsNoSendeds.length === 0) questionsNoSendeds = [...questions]
+                    if (difficultyType === 'ascending' && index > questionNumber/3){
+                        difficulty = index <= questionNumber*2/3 ? 'medio' : 'dificil'
+                    }
+                    if (questionsNoSendeds.length === 0) questionsNoSendeds = questions.filter(question => question.dificulty === difficulty)
+                    if (questionsNoSendeds.length === 0) questionsNoSendeds = [...questions] //if the category have not questions on this difficulty
+
                     const randomIndex = Math.floor(Math.random() * questionsNoSendeds.length)
                     let question = questionsNoSendeds[randomIndex]
                     questionsNoSendeds.splice(randomIndex, 1)
@@ -148,6 +155,8 @@ module.exports = {
                             msg = msg.first()
                             const formatedCorrectAnswers = question.answers.map(answer => answer.toString().toLowerCase().split(' ').join(''))
                             const formatedUserAnswer = msg.content.toLowerCase().split(' ').join('')
+                            const almostCorrectAnswers =  formatedCorrectAnswers.map(answer => answer.length > 3 ? answer.slice(1, answer.length -1) : answer)
+                            console.log(almostCorrectAnswers)
 
                             if (formatedCorrectAnswers.some(answer => answer === formatedUserAnswer)) {
                                 msg.delete()
@@ -166,8 +175,15 @@ module.exports = {
                                 correctAnswerUser.score += addScore
                                 msg.channel.send(`${msg.author} ganhou ${addScore} pontos`)
 
-                                if(scoredParticipants.length === localRegisteredUsers.length) answerTimeLeft = 1000
-                            } else {
+                                if (scoredParticipants.length === localRegisteredUsers.length) answerTimeLeft = 1000
+
+                            } else if(almostCorrectAnswers.some(answer => formatedUserAnswer.includes(answer))){
+                                msg.delete()
+                                msg.channel.send({ content: `${msg.author} está próximo!!🤫`})
+                                wrongAnswersCount++
+                            }
+                            
+                            else {
                                 msg.react('❌')
                                 wrongAnswersCount++;
                             }
@@ -180,7 +196,7 @@ module.exports = {
                                     .then(m => m.react('😔'))
 
                             } else if (scoredParticipants.length === localRegisteredUsers.length) localMessagEmbedResponse.channel.send(`**Todos acertaram!!**`)
-                            
+
                             else {
                                 let scoredParticipantsNames = scoredParticipants.map(participant => participant.name)
                                 let singularPlural = scoredParticipantsNames.length === 1 ? 'acertou!!' : 'acertaram!!'
@@ -231,19 +247,18 @@ module.exports = {
                 if (winner) {
                     embedResults
                         .setTitle(winner.name + ' é o vencedor!! 🥳')
-                        .addField('1º Lugar', `${winner.tag}, com ${winner.score} pontos`)
+                        .addField('1º Lugar', `${winner.tag}, com **${winner.score}** pontos`)
                         .setThumbnail(winner.iconURL)
                 }
 
-                if (second) embedResults.addField('2º Lugar', `${second.tag}, com ${second.score} pontos`)
-                if (third) embedResults.addField('3º Lugar', `${third.tag}, com ${third.score} pontos`)
+                if (second) embedResults.addField('2º Lugar', `${second.tag}, com **${second.score}** pontos`)
+                if (third) embedResults.addField('3º Lugar', `${third.tag}, com **${third.score}** pontos`)
 
                 if (descendingNoWinners.length !== 0) {
-                    console.log(descendingNoWinners)
 
-                    noWinnersScores = descendingNoWinners.map(nowinner => nowinner.score)
+                    noWinnersScores = descendingNoWinners.map(nowinner => `**${nowinner.score}**`)
                     noWinnersTags = descendingNoWinners.map(nowinner => nowinner.tag)
-                    noWinnersPlaces = descendingNoWinners.map((nowinner, index) => index + 4)
+                    noWinnersPlaces = descendingNoWinners.map((nowinner, index) => `${index + 4}º`)
 
                     noWinnersTextArray = []
                     for (i = 0; i < descendingNoWinners.length; i++) {
