@@ -105,7 +105,7 @@ module.exports = {
             const questions = choseCategory()
 
             let difficulty = difficultyType === 'ascending' ? 'facil' : difficultyType
-            let questionsNoSendeds = questions.filter(question => question.dificulty === difficulty)
+            let questionsNoSendeds = questions.filter(question => question.difficulty === difficulty)
             let index = 0
             while (index < questionNumber) {
                 index++;
@@ -115,7 +115,7 @@ module.exports = {
                     if (difficultyType === 'ascending' && index > questionNumber/3){
                         difficulty = index <= questionNumber*2/3 ? 'medio' : 'dificil'
                     }
-                    if (questionsNoSendeds.length === 0) questionsNoSendeds = questions.filter(question => question.dificulty === difficulty)
+                    if (questionsNoSendeds.length === 0) questionsNoSendeds = questions.filter(question => question.difficulty === difficulty)
                     if (questionsNoSendeds.length === 0) questionsNoSendeds = [...questions] //if the category have not questions on this difficulty
 
                     const randomIndex = Math.floor(Math.random() * questionsNoSendeds.length)
@@ -125,7 +125,7 @@ module.exports = {
                     return question
                 }
 
-                let question = choseQuestion()
+                let question = questions[12]//choseQuestion()
 
                 const questionEmbed = new MessageEmbed()
                     .setTitle('❓❓' + question.question + '❓❓')
@@ -156,7 +156,6 @@ module.exports = {
                             const formatedCorrectAnswers = question.answers.map(answer => answer.toString().toLowerCase().split(' ').join(''))
                             const formatedUserAnswer = msg.content.toLowerCase().split(' ').join('')
                             const almostCorrectAnswers =  formatedCorrectAnswers.map(answer => answer.length > 3 ? answer.slice(1, answer.length -1) : answer)
-                            console.log(almostCorrectAnswers)
 
                             if (formatedCorrectAnswers.some(answer => answer === formatedUserAnswer)) {
                                 msg.delete()
