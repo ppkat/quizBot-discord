@@ -1,5 +1,5 @@
 const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js')
-const { ParticipantDB } = require('./leaderboard')
+const { ParticipantDB } = require('../database')
 const quiz = require('../quiz.json')
 
 let globalRegisteredUsers = []
@@ -24,14 +24,15 @@ module.exports = {
         if (activeChannels.find(channel => message.channelId === channel)) return message.reply('Já há um game rolando neste canal')
         activeChannels.push(message.channelId)
 
-        const questionNumber = Number(commandParams[0])
-        const timeForAnswers = Number(commandParams[1]) * 1000
-        let timeForStart = Number(commandParams[2]) * 1000
-        const difficultyType = commandParams[3]
+        let questionNumber = commandParams.length === 0 ? 20 : Number(commandParams[0])
+        let timeForAnswers = commandParams.length < 2 ? 30 * 1000 : Number(commandParams[1]) * 1000
+        let timeForStart = commandParams.length < 3 ? 40 * 1000 : Number(commandParams[2]) * 1000
+        let difficultyType = commandParams.length < 4 ? 'ascending' : commandParams[3].toString().toLowerCase()
         if (!questionNumber) questionNumber = 20
         if(!timeForAnswers) timeForAnswers = 30 * 1000
         if(!timeForStart) timeForStart = 40 * 1000
-        if(difficultyType !== 'facil' && difficultyType !== 'medio' && difficultyType !== 'dificil') difficultyType = 'ascending'
+        if(difficultyType !== 'facil' && difficultyType !== 'fácil' && difficultyType !== 'medio' && difficultyType !== 'médio' 
+        && difficultyType !== 'dificil' && difficultyType !== 'difícil') difficultyType = 'ascending'
         if(difficultyType === 'crescente') difficultyType = 'ascending'
 
         let localRegisteredUsers = []

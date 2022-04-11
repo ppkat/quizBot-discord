@@ -1,6 +1,6 @@
 const { Client, Intents } = require('discord.js')
 const fs = require('fs')
-const messageCreate = require('./events/messageCreate')
+require('./commands/leaderboard') //load the leaderboard
 require('dotenv').config()
 
 //create client instance

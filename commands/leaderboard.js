@@ -1,59 +1,25 @@
 const { MessageEmbed } = require('discord.js')
-const { Sequelize, DataTypes } = require('sequelize')
-require('dotenv').config()
+const { updateRank } = require('../database')
 
-const databaseName = 'pbdb'
-const sequelize = new Sequelize(databaseName, 'root', process.env.MYSQL_PASSWORD, {
-    host: "localhost",
-    dialect: "mysql"
-})
+let rankedUsers 
+updateRank().then(users => rankedUsers = users)
 
-sequelize.authenticate().then(() => console.log('Entrou no banco de dados')).catch(err => console.log(err))
-
-const Participant = sequelize.define('Participants', {
-
-    id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-        allowNull: false,
-        primaryKey: true
-    },
-
-    username: {
-        type: DataTypes.STRING,
-        allowNull: true
-    },
-
-    userId: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-
-    score: {
-        type: DataTypes.INTEGER,
-        allowNull: false
+const timeout = 1000 * 60 * 60 // an hour
+setTimeout(async () => {
+    const dt = new Date()
+    if(dt.getHours === 0 || dt.getHours === 12){
+        rankedUsers = await updateRank()
     }
-
-})
-// sequelize.sync({force: true})
+}, timeout);
 
 module.exports = {
     name: 'leaderboard',
-    ParticipantDB: Participant,
-    execute: async ({ message }) => {
+    execute: async ({ message, commandParams }) => {
+        realTime = commandParams[0]? commandParams[0].toString().toLowerCase() : null
 
-        const allUsers = await Participant.findAll()
+        if(realTime === 'realtime' || realTime === 'temporeal' || realTime === 'tempo') rankedUsers = await updateRank()
 
-        let scores = allUsers.map(user => user.score)
-        console.log(scores)
-        let top10 = []
-        for (i = 0; i < 10 && i < allUsers.length; i++) {
-            const biggerScoreIndex = scores.findIndex(score => score === Math.max(...scores))
-
-            top10.push(allUsers.find(user => user.score === Math.max(...scores)))
-            scores.splice(biggerScoreIndex, 1)
-            allUsers.splice(biggerScoreIndex, 1)
-        }
+        let top10 = rankedUsers.filter((user, i) => i < 10)
 
         const embedResponse = new MessageEmbed()
             .setColor('DARK_RED')
