@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js')
-const { ParticipantDB } = require('./leaderboard')
+const { ParticipantDB } = require('../database')
 
 module.exports = {
     name: 'rank',
@@ -14,7 +14,7 @@ module.exports = {
             .setTimestamp()
             .setAuthor({ name: message.author.tag.toString(), iconURL: message.author.avatarURL() })
             .setFooter({ text: 'Quiz info', iconURL: 'https://cdn.discordapp.com/avatars/958377729936457728/6582edbd65772f832a6fe7d3de39e627.png?size=1024' })
-            .addField(`Pontuação total de ${userInf.username}: `, userInf.score.toString() + 'pontos')
+            .addField(`Pontuação total de ${userInf.username}: `, '**' + userInf.score.toString() + '**' + ' pontos')
 
         await message.channel.send({ embeds: [embedResponse] })
     }
