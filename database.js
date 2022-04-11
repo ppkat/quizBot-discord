@@ -40,15 +40,16 @@ const Participant = sequelize.define('Participants', {
 async function updateRank() {
 
     const allUsers = await Participant.findAll()
+    let usersNotRemoved = allUsers.map(users => users.dataValues)
 
-    let scores = allUsers.map(user => user.score)
+    let scores = usersNotRemoved.map(user => user.score)
     let updatedRanks = []
     for (i = 0; i < allUsers.length; i++) {
         const biggerScoreIndex = scores.findIndex(score => score === Math.max(...scores))
 
-        updatedRanks.push(allUsers.find(user => user.score === Math.max(...scores)))
+        updatedRanks.push(usersNotRemoved.find(user => user.score === Math.max(...scores)))
         scores.splice(biggerScoreIndex, 1)
-        allUsers.splice(biggerScoreIndex, 1)
+        usersNotRemoved.splice(biggerScoreIndex, 1)
     }
 
     return updatedRanks
