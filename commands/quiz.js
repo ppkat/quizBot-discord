@@ -1,4 +1,5 @@
 const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js')
+const { ParticipantDB } = require('./leaderboard')
 const quiz = require('../quiz.json')
 
 let globalRegisteredUsers = []
@@ -23,10 +24,15 @@ module.exports = {
         if (activeChannels.find(channel => message.channelId === channel)) return message.reply('Já há um game rolando neste canal')
         activeChannels.push(message.channelId)
 
-        const questionNumber = commandParams.length === 0 ? 20 : Number(commandParams[0])
-        const timeForAnswers = commandParams.length < 2 ? 30 * 1000 : Number(commandParams[1]) * 1000
-        let timeForStart = commandParams.length < 3 ? 40 * 1000 : Number(commandParams[2]) * 1000
-        const difficultyType = commandParams.length < 4 ? 'ascending' : commandParams[3]
+        const questionNumber = Number(commandParams[0])
+        const timeForAnswers = Number(commandParams[1]) * 1000
+        let timeForStart = Number(commandParams[2]) * 1000
+        const difficultyType = commandParams[3]
+        if (!questionNumber) questionNumber = 20
+        if(!timeForAnswers) timeForAnswers = 30 * 1000
+        if(!timeForStart) timeForStart = 40 * 1000
+        if(difficultyType !== 'facil' && difficultyType !== 'medio' && difficultyType !== 'dificil') difficultyType = 'ascending'
+        if(difficultyType === 'crescente') difficultyType = 'ascending'
 
         let localRegisteredUsers = []
 
@@ -44,7 +50,7 @@ module.exports = {
                     { name: 'Tempo das rodadas', value: String(timeForAnswers / 1000) + ' segundos', inline: true },
                     { name: 'Tempo para começar', value: String(timeForStart / 1000) + ' segundos', inline: true },
                     { name: 'Dificuldade', value: `${difficultyType === 'ascending' ? 'crescente' : difficultyType}`, inline: true },
-                    { name: 'Pessoas inscritas', value: localRegisteredUsers.length + ' pessoas'},
+                    { name: 'Pessoas inscritas', value: localRegisteredUsers.length + ' pessoas' },
                 )
 
             return embedResponse
@@ -112,8 +118,9 @@ module.exports = {
 
                 function choseQuestion() {
 
-                    if (difficultyType === 'ascending' && index > questionNumber/3){
-                        difficulty = index <= questionNumber*2/3 ? 'medio' : 'dificil'
+                    if (difficultyType === 'ascending' && index > questionNumber / 3) {
+                        difficulty = index <= questionNumber * 2 / 3 ? 'medio' : 'dificil'
+                        questionsNoSendeds = []
                     }
                     if (questionsNoSendeds.length === 0) questionsNoSendeds = questions.filter(question => question.difficulty === difficulty)
                     if (questionsNoSendeds.length === 0) questionsNoSendeds = [...questions] //if the category have not questions on this difficulty
@@ -125,7 +132,7 @@ module.exports = {
                     return question
                 }
 
-                let question = questions[12]//choseQuestion()
+                let question = choseQuestion()
 
                 const questionEmbed = new MessageEmbed()
                     .setTitle('❓❓' + question.question + '❓❓')
@@ -155,7 +162,7 @@ module.exports = {
                             msg = msg.first()
                             const formatedCorrectAnswers = question.answers.map(answer => answer.toString().toLowerCase().split(' ').join(''))
                             const formatedUserAnswer = msg.content.toLowerCase().split(' ').join('')
-                            const almostCorrectAnswers =  formatedCorrectAnswers.map(answer => answer.length > 3 ? answer.slice(1, answer.length -1) : answer)
+                            const almostCorrectAnswers = formatedCorrectAnswers.map(answer => answer.length > 3 ? answer.slice(1, answer.length - 1) : answer)
 
                             if (formatedCorrectAnswers.some(answer => answer === formatedUserAnswer)) {
                                 msg.delete()
@@ -176,12 +183,12 @@ module.exports = {
 
                                 if (scoredParticipants.length === localRegisteredUsers.length) answerTimeLeft = 1000
 
-                            } else if(almostCorrectAnswers.some(answer => formatedUserAnswer.includes(answer))){
+                            } else if (almostCorrectAnswers.some(answer => formatedUserAnswer.includes(answer))) {
                                 msg.delete()
-                                msg.channel.send({ content: `${msg.author} está próximo!!🤫`})
+                                msg.channel.send({ content: `${msg.author} está próximo!!🤫` })
                                 wrongAnswersCount++
                             }
-                            
+
                             else {
                                 msg.react('❌')
                                 wrongAnswersCount++;
@@ -276,6 +283,28 @@ module.exports = {
                 globalRegisteredUsers = globalRegisteredUsers.filter(participant => participant.channel !== message.channelId)
                 activeChannels.splice(activeChannels.findIndex(channel => channel === message.channelId), 1)
                 localMessagEmbedResponse.delete()
+
+                async function storeOnDatabase() {
+
+                    localRegisteredUsers.forEach(async participant => {
+
+                        const [ParticipantDBInstance, isCreated] = await ParticipantDB.findOrCreate({
+                            where: { userId: participant.id, },
+                            defaults: {
+                                username: participant.name,
+                                userId: participant.id,
+                                score: participant.score
+                            }
+                        })
+
+                        if (!isCreated) {
+                            ParticipantDBInstance.score += participant.score
+                            ParticipantDBInstance.username = participant.name
+                            ParticipantDBInstance.save()
+                        }
+                    })
+                }
+                storeOnDatabase()
             }
             await endQuiz()
         }
