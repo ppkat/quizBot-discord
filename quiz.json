@@ -639,7 +639,8 @@
             {
                 "question": "De que país é a personagem Killjoy",
                 "answers": [
-                    "Alemanha", "Germany"
+                    "Alemanha",
+                    "Germany"
                 ],
                 "difficulty": "dificil"
             },
@@ -1144,6 +1145,29 @@
                     "um"
                 ],
                 "difficulty": "medio"
+            }
+        ]
+    },
+    {
+        "categoryName": "(qual",
+        "questions": [
+            {
+                "question": " o prefixo do ppkat",
+                "answers": [
+                    "pp",
+                    " 2p",
+                    " px2"
+                ],
+                "difficulty": "facil"
+            },
+            {
+                "question": " o prefixo do ppkat",
+                "answers": [
+                    "pp",
+                    " 2p",
+                    " px2"
+                ],
+                "difficulty": "facil"
             }
         ]
     }
