@@ -120,9 +120,19 @@ module.exports = {
                 function choseQuestion() {
 
                     if (difficultyType === 'ascending' && index > questionNumber / 3) {
-                        difficulty = index <= questionNumber * 2 / 3 ? 'medio' : 'dificil'
-                        questionsNoSendeds = []
+
+                        if(difficulty === 'facil'){
+                            questionsNoSendeds = []
+                            difficulty = 'medio'
+                        } 
+
+                        if(difficulty === 'medio' && index > questionNumber*2/3){
+                            questionsNoSendeds = []
+                            difficulty = 'dificil'
+                        }
+
                     }
+                    console.log(difficulty)
                     if (questionsNoSendeds.length === 0) questionsNoSendeds = questions.filter(question => question.difficulty === difficulty)
                     if (questionsNoSendeds.length === 0) questionsNoSendeds = [...questions] //if the category have not questions on this difficulty
 
