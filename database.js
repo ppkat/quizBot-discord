@@ -1,10 +1,15 @@
 const { Sequelize, DataTypes } = require('sequelize')
 require('dotenv').config()
 
-const sequelize = new Sequelize(process.env.DATABASE_NAME, process.env.DATABASE_USER, process.env.MYSQL_PASSWORD, {
+const sequelize = new Sequelize(
+  process.env.DATABASE_NAME,
+  process.env.DATABASE_USER,
+  process.env.DATABASE_PASSWORD,
+  {
     host: process.env.DATABASE_HOST,
-    dialect: "mysql"
-})
+    dialect: "mysql",
+  }
+);
 
 sequelize.authenticate().then(() => console.log('Entrou no banco de dados')).catch(err => console.log(err))
 
