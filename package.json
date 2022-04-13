@@ -16,6 +16,7 @@
     "discord.js": "^13.6.0",
     "dotenv": "^16.0.0",
     "mysql2": "^2.3.3",
-    "sequelize": "^6.18.0"
+    "sequelize": "^6.18.0",
+    "tedious": "^14.4.0"
   }
 }

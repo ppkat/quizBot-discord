@@ -29,11 +29,11 @@ module.exports = {
         let timeForStart = commandParams.length < 3 ? 40 * 1000 : Number(commandParams[2]) * 1000
         let difficultyType = commandParams.length < 4 ? 'ascending' : commandParams[3].toString().toLowerCase()
         if (!questionNumber) questionNumber = 20
-        if(!timeForAnswers) timeForAnswers = 30 * 1000
-        if(!timeForStart) timeForStart = 40 * 1000
-        if(difficultyType !== 'facil' && difficultyType !== 'fácil' && difficultyType !== 'medio' && difficultyType !== 'médio' 
-        && difficultyType !== 'dificil' && difficultyType !== 'difícil') difficultyType = 'ascending'
-        if(difficultyType === 'crescente') difficultyType = 'ascending'
+        if (!timeForAnswers) timeForAnswers = 30 * 1000
+        if (!timeForStart) timeForStart = 40 * 1000
+        if (difficultyType !== 'facil' && difficultyType !== 'fácil' && difficultyType !== 'medio' && difficultyType !== 'médio'
+            && difficultyType !== 'dificil' && difficultyType !== 'difícil') difficultyType = 'ascending'
+        if (difficultyType === 'crescente') difficultyType = 'ascending'
 
         let localRegisteredUsers = []
 
@@ -65,26 +65,26 @@ module.exports = {
         localMessagEmbedResponse.react('<:Freefire:961415685920157716>')
         localMessagEmbedResponse.react('<:LeageOfLegends:961356872047280178>')
 
+        function updateRegisteredUsers({ reaction, user, channelId }) {
+            if (user.bot) return
+            if (!globalRegisteredUsers.find(participant => participant.id === user.id)) {
+
+                const inscribedParticipant = new Participant(user.username, user.id, 0, user.toString(), user.avatarURL(), channelId)
+                globalRegisteredUsers.push(inscribedParticipant)
+                localRegisteredUsers.push(inscribedParticipant)
+
+                localMessagEmbedResponse.embeds[0].fields[4].value = String(localRegisteredUsers.length)
+                localMessagEmbedResponse.edit({ embeds: [localMessagEmbedResponse.embeds[0]] })
+            } else if (globalRegisteredUsers.find(participant => participant.channel !== channelId)) {
+                user.send('Você só pode se inscrever em um quiz de cada vez')
+                reaction.users.remove(user)
+            }
+        }
+
         async function getEmojInteraction() {
 
-            function upadateRegisteredUsers(reaction, user) {
-                if (user.bot) return
-                if (!globalRegisteredUsers.find(participant => participant.id === user.id)) {
-
-                    const inscribedParticipant = new Participant(user.username, user.id, 0, user.toString(), user.avatarURL(), reaction.message.channelId)
-                    globalRegisteredUsers.push(inscribedParticipant)
-                    localRegisteredUsers.push(inscribedParticipant)
-
-                    localMessagEmbedResponse.embeds[0].fields[4].value = String(localRegisteredUsers.length)
-                    localMessagEmbedResponse.edit({ embeds: [localMessagEmbedResponse.embeds[0]] })
-                } else if (globalRegisteredUsers.find(participant => participant.channel !== reaction.message.channelId)) {
-                    user.send('Você só pode se inscrever em um quiz de cada vez')
-                    reaction.users.remove(user)
-                }
-            }
-
             const collector = localMessagEmbedResponse.createReactionCollector()
-            collector.on('collect', (reaction, user) => upadateRegisteredUsers(reaction, user));
+            collector.on('collect', (reaction, user) => updateRegisteredUsers({ reaction, user, channelId: reaction.message.channelId }));
 
             collector.on('end', collected => {
                 console.log(`após coletar ${collected.size} reações e a mensagem ser excluida, este evento é encerrado`)
@@ -121,18 +121,17 @@ module.exports = {
 
                     if (difficultyType === 'ascending' && index > questionNumber / 3) {
 
-                        if(difficulty === 'facil'){
+                        if (difficulty === 'facil') {
                             questionsNoSendeds = []
                             difficulty = 'medio'
-                        } 
+                        }
 
-                        if(difficulty === 'medio' && index > questionNumber*2/3){
+                        if (difficulty === 'medio' && index > questionNumber * 2 / 3) {
                             questionsNoSendeds = []
                             difficulty = 'dificil'
                         }
 
                     }
-                    console.log(difficulty)
                     if (questionsNoSendeds.length === 0) questionsNoSendeds = questions.filter(question => question.difficulty === difficulty)
                     if (questionsNoSendeds.length === 0) questionsNoSendeds = [...questions] //if the category have not questions on this difficulty
 
@@ -166,11 +165,21 @@ module.exports = {
 
                 async function usersAnswersHandle() { //round
 
-                    const filter = m => localRegisteredUsers.find(participant => participant.id === m.author.id)
+                    const filter = m => {
+
+                        if (!localRegisteredUsers.find(participant => participant.id === m.author.id)) {
+                            if (globalRegisteredUsers.find(participant => participant.id === m.author.id)) {
+                                m.delete()
+                                m.author.send('Você já está participando de um quiz! Envie !sair no chat do outro quiz para sair')
+                            }
+                            else updateRegisteredUsers({ user: m.author, channelId: m.channelId })
+                        }
+                        return localRegisteredUsers.find(participant => participant.id === m.author.id)
+                    }
                     await message.channel.awaitMessages({ filter, max: 1, time: answerTimeLeft, errors: ['time'] })
                         .then(async msg => {
-
                             msg = msg.first()
+
                             const formatedCorrectAnswers = question.answers.map(answer => answer.toString().toLowerCase().split(' ').join(''))
                             const formatedUserAnswer = msg.content.toLowerCase().split(' ').join('')
                             const almostCorrectAnswers = formatedCorrectAnswers.map(answer => answer.length > 3 ? answer.slice(1, answer.length - 1) : answer)
@@ -179,21 +188,23 @@ module.exports = {
                                 msg.delete()
 
                                 const correctAnswerUser = localRegisteredUsers.find(participant => participant.id === msg.author.id)
-                                if (scoredParticipants.some(participant => participant.id === correctAnswerUser.id))
-                                    return msg.author.send({ content: 'Sem trapacear' })
-                                scoredParticipants.push(correctAnswerUser)
+                                if (scoredParticipants.some(participant => participant.id === correctAnswerUser.id)) {
+                                    msg.author.send({ content: 'Sem trapacear' })
 
-                                const addScore = scoredParticipants.length === 1 ? firstPoints
-                                    : scoredParticipants.length === 2 ? secondPoints
-                                        : scoredParticipants.length === 3 ? thirdPoints
-                                            : scoredParticipants.length === 4 ? forthPoints
-                                                : restPoints
+                                } else {
+                                    scoredParticipants.push(correctAnswerUser)
 
-                                correctAnswerUser.score += addScore
-                                msg.channel.send(`${msg.author} ganhou ${addScore} pontos`)
+                                    const addScore = scoredParticipants.length === 1 ? firstPoints
+                                        : scoredParticipants.length === 2 ? secondPoints
+                                            : scoredParticipants.length === 3 ? thirdPoints
+                                                : scoredParticipants.length === 4 ? forthPoints
+                                                    : restPoints
 
-                                if (scoredParticipants.length === localRegisteredUsers.length) answerTimeLeft = 1000
+                                    correctAnswerUser.score += addScore
+                                    msg.channel.send(`${msg.author} ganhou ${addScore} pontos`)
 
+                                    if (scoredParticipants.length === localRegisteredUsers.length) answerTimeLeft = 1000
+                                }
                             } else if (almostCorrectAnswers.some(answer => formatedUserAnswer.includes(answer))) {
                                 msg.delete()
                                 msg.channel.send({ content: `${msg.author} está próximo!!🤫` })
@@ -208,6 +219,7 @@ module.exports = {
                         })
                         .catch((error) => {
 
+                            console.log(error)
                             if (scoredParticipants.length === 0) {
                                 localMessagEmbedResponse.channel.send(`Sem acertos nesta rodada! ${wrongAnswersCount} Respostas erradas`)
                                     .then(m => m.react('😔'))

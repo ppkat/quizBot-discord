@@ -11,7 +11,9 @@ const sequelize = new Sequelize(
   }
 );
 
-sequelize.authenticate().then(() => console.log('Entrou no banco de dados')).catch(err => console.log(err))
+// const sequelize = new Sequelize('pbdb', 'root', '0/6?Szgo)JFf*98@:e', { host: 'localhost', dialect: 'mysql' })
+
+// sequelize.authenticate().then(() => console.log('Entrou no banco de dados')).catch(err => console.log(err))
 
 const Participant = sequelize.define('Participants', {
 
