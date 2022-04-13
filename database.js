@@ -1,9 +1,8 @@
 const { Sequelize, DataTypes } = require('sequelize')
 require('dotenv').config()
 
-const databaseName = 'pbdb'
-const sequelize = new Sequelize(databaseName, 'root', process.env.MYSQL_PASSWORD, {
-    host: "localhost",
+const sequelize = new Sequelize(process.env.DATABASE_NAME, process.env.DATABASE_USER, process.env.MYSQL_PASSWORD, {
+    host: process.env.DATABASE_HOST,
     dialect: "mysql"
 })
 
