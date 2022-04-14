@@ -111,8 +111,14 @@ module.exports = {
 
                 let reactionsCounts = localMessagEmbedResponse.reactions.cache.map(reaction => reaction.count)
                 const categoryWinnerIndex = reactionsCounts.findIndex(item => item === Math.max(...reactionsCounts))
-                const categoryWinnerNames = localMessagEmbedResponse.reactions.cache.map(reaction => reaction.emoji.name)
-                const categoryWinnerName = categoryWinnerNames[categoryWinnerIndex]
+                const categoryNames = localMessagEmbedResponse.reactions.cache.map(reaction => reaction.emoji.name)
+                const categoryWinnerName = categoryNames[categoryWinnerIndex]
+
+                if(categoryWinnerName === 'aleatorio' || categoryWinnerName === 'random'){
+                    let questions = []
+                    quiz.forEach(category => category.questions.forEach(question => questions.push(question)))
+                    return questions
+                } 
 
                 const categoryWinnerJSONIndex = quiz.findIndex(item => item.categoryName === categoryWinnerName)
                 const categoryWinnerJSON = quiz[categoryWinnerJSONIndex]
@@ -120,6 +126,7 @@ module.exports = {
                 return categoryWinnerJSON.questions
             }
             const questions = choseCategory()
+            console.log(questions)
 
             let difficulty = difficultyType === 'ascending' ? 'facil' : difficultyType
             let questionsNoSendeds = questions.filter(question => question.difficulty === difficulty)

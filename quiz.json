@@ -583,7 +583,7 @@
                 "answers": [
                     "Singed"
                 ],
-                "difficulty": "medio "
+                "difficulty": "medio"
             },
             {
                 "question": "Até quantos sinos Bardo pode pegar por vez",
@@ -1145,57 +1145,6 @@
                     "um"
                 ],
                 "difficulty": "medio"
-            }
-        ]
-    },
-    {
-        "categoryName": "(qual",
-        "questions": [
-            {
-                "question": " o prefixo do ppkat",
-                "answers": [
-                    "pp",
-                    " 2p",
-                    " px2"
-                ],
-                "difficulty": "facil"
-            },
-            {
-                "question": " o prefixo do ppkat",
-                "answers": [
-                    "pp",
-                    " 2p",
-                    " px2"
-                ],
-                "difficulty": "facil"
-            }
-        ]
-    },
-    {
-        "categoryName": "categoriaTroll",
-        "questions": [
-            {
-                "question": "qual é a categoria mais troll que existe nesse planeta?",
-                "answers": [
-                    "essa",
-                    " essa que está sendo criada agora",
-                    " this"
-                ],
-                "difficulty": "medio"
-            }
-        ]
-    },
-    {
-        "categoryName": "legueoflegendas",
-        "questions": [
-            {
-                "question": "qual é o nome da legenda dos vingadores",
-                "answers": [
-                    "avengers",
-                    " vingalegenda",
-                    " legendarios"
-                ],
-                "difficulty": "dificil"
             }
         ]
     }
