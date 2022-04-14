@@ -1,7 +1,14 @@
+const { SlashCommandBuilder } = require("@discordjs/builders")
+
 module.exports = {
-    name: 'ping',
-    execute : async ({ client, message }) => {
-        const pingMessage = await message.channel.send('Ping')
-        pingMessage.edit(`Pong! Ping é ${pingMessage.createdTimestamp - message.createdTimestamp} ms. O ping da API é ${client.ws.ping}`)
+    data: new SlashCommandBuilder()
+        .setName('ping')
+        .setDescription('Retorna o ping do bot'),
+
+    execute: async ({ client, interaction: message }) => {
+        await message.reply('Ping')
+        message.fetchReply().then(msg => {
+            message.editReply(`Pong! Ping é ${msg.createdTimestamp - message.createdTimestamp} ms. O ping da API é ${client.ws.ping}`)
+        })
     }
 }

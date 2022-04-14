@@ -1,21 +1,39 @@
+const { SlashCommandBuilder } = require('@discordjs/builders')
 const fs = require('fs')
 
 const permitedUsersIds = ['233276507814887426' ,'845836299742216203']
 
 module.exports = {
-    name: 'post',
-    execute: async ({ message, commandParams }) => {
-        if (!permitedUsersIds.some(id => id === message.author.id)) return message.reply('Você não tem permissão para usar este comando')
+    data: new SlashCommandBuilder()
+        .setName('post')
+        .setDescription('adiciona perguntas ao quiz')
+        .addStringOption(option => 
+            option.setName('categoria')
+                .setDescription('A categoria que a pergunta deve ser adicionada. Ignorará espaços')
+                .setRequired(true))
+        .addStringOption(option => 
+            option.setName('pergunta')
+                .setDescription('A pergunta a ser feita')
+                .setRequired(true))
+        .addStringOption(option =>
+            option.setName('respostas')
+                .setDescription('As respostas para a pergunta separadas por vírgula')
+                .setRequired(true))
+        .addStringOption(option =>
+            option.setName('dificuldade')
+                .setDescription('A dificuldade da pergunta em questão')
+                .setRequired(true)
+                .addChoice('Fácil', 'facil')
+                .addChoice('Médio', 'medio')
+                .addChoice('Difícil', 'dificil')),
+                
+    execute: async ({ interaction : message }) => {
+        if (!permitedUsersIds.some(id => id === message.user.id)) return message.reply('Você não tem permissão para usar este comando')
 
-        category = commandParams.splice(0, 1)[0]
-        question = commandParams.splice(0, commandParams.findIndex(word => word.endsWith(')')) + 1).join(' ').slice(1, -1)
-        answers = commandParams.splice(0, commandParams.findIndex(word => word.endsWith(')')) + 1).join(' ').slice(1, -1).split(',')
-        difficulty = commandParams[0]
-
-        if(!category || !question || !answers || !difficulty) return message.reply('Você precisa definir todos os parâmetros')
-        if(difficulty === 'fácil') difficulty = 'facil'
-        if(difficulty === 'médio') difficulty = 'medio'
-        if(difficulty === 'difícil') difficulty = 'dificil'
+        category = message.options.getString('categoria').split(' ').join('')
+        question = message.options.getString('pergunta')
+        answers = message.options.getString('respostas').split(',')
+        difficulty = message.options.getString('dificuldade')
 
         const filePath = './quiz.json'
         const stringData = fs.readFileSync(filePath, 'utf-8')
@@ -34,6 +52,6 @@ module.exports = {
         }
         writeJSON()
 
-        message.reply(`JSON alterado na categoria ${category} \n question: **${question}**, answers: **${answers}**, difficulty: **${difficulty}**`)
+        message.reply(`JSON alterado na categoria **${category}** \nquestion: **${question}**, answers: **${answers}**, difficulty: **${difficulty}**`)
     }
 }
