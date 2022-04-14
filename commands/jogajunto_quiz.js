@@ -3,11 +3,10 @@ const { ParticipantDB } = require('../database')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { updateRankedUsers } = require('./rank')
 const quiz = require('../quiz.json')
+const config = require('../config.json')
 
 let globalRegisteredUsers = []
 let activeChannels = []
-const emojis = ['<:valorant:961355782018957353>', '<:csgo:961355723747508225>', '<:JogosClassicos:961417061383434331>', '<:Fortnite:961415475693252629>',
-    '<:Freefire:961415685920157716>', '<:LeageOfLegends:961356872047280178>']
 
 class Participant {
     constructor(name, id, score, tag, iconURL, channel) {
@@ -74,7 +73,7 @@ module.exports = {
         }
 
         const localMessagEmbedResponse = await message.channel.send({ embeds: [embedResponse()] }).then(msg => msg)
-        emojis.forEach(emoji => localMessagEmbedResponse.react(emoji))
+        config.emojis.forEach(emoji => localMessagEmbedResponse.react(emoji))
 
         function updateRegisteredUsers({ reaction, user, channelId }) {
             if (user.bot) return
@@ -167,11 +166,10 @@ module.exports = {
 
                 const decressAnswerTimeLeftId = setInterval(() => {
                     answerTimeLeft -= 100
-                    if (answerTimeLeft === 30 * 1000) localMessagEmbedResponse.channel.send('https://www.shareicon.net/data/2015/09/20/643693_30_512x512.png')
-                    else if (answerTimeLeft === 20 * 1000) localMessagEmbedResponse.channel.send('https://www.hit4hit.org/img/icon/256/20-seconds-timer.png')
-                    else if (answerTimeLeft === 10 * 1000) localMessagEmbedResponse.channel.send(
-                        'http://developer.mobilecaddy.net/wp-content/themes/mc-dev/assets/img/icons/stopwatch_10b.png')
-                    else if (answerTimeLeft === 5 * 1000) localMessagEmbedResponse.channel.send('https://cdn2.iconfinder.com/data/icons/ux-and-ui-coral-vol-1/256/5-second-test-512.png')
+                    if (answerTimeLeft === 30 * 1000) localMessagEmbedResponse.channel.send(config.gifs['30seconds'])
+                    else if (answerTimeLeft === 20 * 1000) localMessagEmbedResponse.channel.send(config.gifs['20seconds'])
+                    else if (answerTimeLeft === 10 * 1000) localMessagEmbedResponse.channel.send(config.gifs['10seconds'])
+                    else if (answerTimeLeft === 5 * 1000) localMessagEmbedResponse.channel.send(config.gifs['5seconds'])
                 }, 100)
 
                 async function usersAnswersHandle() { //round
