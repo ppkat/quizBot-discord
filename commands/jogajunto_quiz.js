@@ -1,10 +1,13 @@
-const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js')
+const { MessageEmbed } = require('discord.js')
 const { ParticipantDB } = require('../database')
+const { SlashCommandBuilder } = require('@discordjs/builders')
 const { updateRankedUsers } = require('./rank')
 const quiz = require('../quiz.json')
 
 let globalRegisteredUsers = []
 let activeChannels = []
+const emojis = ['<:valorant:961355782018957353>', '<:csgo:961355723747508225>', '<:JogosClassicos:961417061383434331>', '<:Fortnite:961415475693252629>',
+    '<:Freefire:961415685920157716>', '<:LeageOfLegends:961356872047280178>']
 
 class Participant {
     constructor(name, id, score, tag, iconURL, channel) {
@@ -19,22 +22,34 @@ class Participant {
 }
 
 module.exports = {
+    data: new SlashCommandBuilder()
+        .setName('jogajunto_quiz')
+        .setDescription('Inicia um game quiz')
+        .addIntegerOption(option =>
+            option.setName('perguntas')
+                .setDescription('O número total de perguntas que o quiz terá. Se ocultado terá 20 perguntas'))
+        .addNumberOption(option =>
+            option.setName('resposta')
+                .setDescription('O tempo máximo para responder cada pergunta do quiz. Se ocultado será 30 segundos'))
+        .addNumberOption(option =>
+            option.setName('iniciar')
+                .setDescription('O tempo de espera para iniciar o quiz. Se ocultado será 40 segundos'))
+        .addStringOption(option =>
+            option.setName('dificuldade')
+                .setDescription('A dificuldade das perguntas. Caso oculto a dificuldade será crescente')
+                .addChoice('Fácil', 'facil')
+                .addChoice('Médio', 'medio')
+                .addChoice('Difícil', 'dificil')),
 
-    name: 'jogajunto_quiz',
-    execute: async ({ client, message, commandParams }) => {
+    execute: async ({ interaction: message }) => {
         if (activeChannels.find(channel => message.channelId === channel)) return message.reply('Já há um game rolando neste canal')
+        else message.reply('Um quiz foi iniciado!!')
         activeChannels.push(message.channelId)
 
-        let questionNumber = commandParams.length === 0 ? 20 : Number(commandParams[0])
-        let timeForAnswers = commandParams.length < 2 ? 30 * 1000 : Number(commandParams[1]) * 1000
-        let timeForStart = commandParams.length < 3 ? 40 * 1000 : Number(commandParams[2]) * 1000
-        let difficultyType = commandParams.length < 4 ? 'ascending' : commandParams[3].toString().toLowerCase()
-        if (!questionNumber) questionNumber = 20
-        if (!timeForAnswers) timeForAnswers = 30 * 1000
-        if (!timeForStart) timeForStart = 40 * 1000
-        if (difficultyType !== 'facil' && difficultyType !== 'fácil' && difficultyType !== 'medio' && difficultyType !== 'médio'
-            && difficultyType !== 'dificil' && difficultyType !== 'difícil') difficultyType = 'ascending'
-        if (difficultyType === 'crescente') difficultyType = 'ascending'
+        const questionNumber = message.options.getInteger('perguntas') ?? 20
+        const timeForAnswers = message.options.getNumber('resposta') ? message.options.getNumber('resposta') * 1000 : 30 * 1000
+        let timeForStart = message.options.getNumber('iniciar') ? message.options.getNumber('iniciar') * 1000 : 40 * 1000
+        const difficultyType = message.options.getString('dificuldade') ?? 'ascending'
 
         let localRegisteredUsers = []
 
@@ -43,8 +58,8 @@ module.exports = {
             const embedResponse = new MessageEmbed()
                 .setColor('DARK_RED')
                 .setTimestamp()
-                .setAuthor({ name: message.author.tag.toString(), iconURL: message.author.avatarURL() })
-                .setTitle(message.author.username + ' Iniciou um game quiz')
+                .setAuthor({ name: message.user.tag.toString(), iconURL: message.user.avatarURL() })
+                .setTitle(message.user.username + ' Iniciou um game quiz')
                 .setDescription('Reaja para votar em uma ou mais categorias')
                 .setFooter({ text: 'Game Quiz', iconURL: 'https://cdn.discordapp.com/avatars/958377729936457728/6582edbd65772f832a6fe7d3de39e627.png?size=1024' })
                 .addFields(
@@ -59,12 +74,7 @@ module.exports = {
         }
 
         const localMessagEmbedResponse = await message.channel.send({ embeds: [embedResponse()] }).then(msg => msg)
-        localMessagEmbedResponse.react('<:valorant:961355782018957353>')
-        localMessagEmbedResponse.react('<:csgo:961355723747508225>')
-        localMessagEmbedResponse.react('<:JogosClassicos:961417061383434331>')
-        localMessagEmbedResponse.react('<:Fortnite:961415475693252629>')
-        localMessagEmbedResponse.react('<:Freefire:961415685920157716>')
-        localMessagEmbedResponse.react('<:LeageOfLegends:961356872047280178>')
+        emojis.forEach(emoji => localMessagEmbedResponse.react(emoji))
 
         function updateRegisteredUsers({ reaction, user, channelId }) {
             if (user.bot) return
@@ -227,7 +237,7 @@ module.exports = {
                         })
                         .catch((error) => {
 
-                            console.log(error)
+                            //console.log(error)
                             if (scoredParticipants.length === 0) {
                                 localMessagEmbedResponse.channel.send(`Sem acertos nesta rodada! ${wrongAnswersCount} Respostas erradas`)
                                     .then(m => m.react('😔'))
@@ -243,7 +253,7 @@ module.exports = {
                             localMessagEmbedResponse.channel.send(`${singularPlural} ${question.answers.map(item => `**${item}**`).join(', ')}`)
                         });
                 }
-                // console.log('chegou1 ', index)
+
                 await usersAnswersHandle()
                 clearInterval(decressAnswerTimeLeftId)
             }

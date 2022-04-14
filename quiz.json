@@ -1170,5 +1170,33 @@
                 "difficulty": "facil"
             }
         ]
+    },
+    {
+        "categoryName": "categoriaTroll",
+        "questions": [
+            {
+                "question": "qual é a categoria mais troll que existe nesse planeta?",
+                "answers": [
+                    "essa",
+                    " essa que está sendo criada agora",
+                    " this"
+                ],
+                "difficulty": "medio"
+            }
+        ]
+    },
+    {
+        "categoryName": "legueoflegendas",
+        "questions": [
+            {
+                "question": "qual é o nome da legenda dos vingadores",
+                "answers": [
+                    "avengers",
+                    " vingalegenda",
+                    " legendarios"
+                ],
+                "difficulty": "dificil"
+            }
+        ]
     }
 ]
