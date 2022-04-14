@@ -1,7 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const fs = require('fs')
-
-const permitedUsersIds = ['233276507814887426' ,'845836299742216203']
+const config = require('../config.json')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -28,7 +27,7 @@ module.exports = {
                 .addChoice('Difícil', 'dificil')),
                 
     execute: async ({ interaction : message }) => {
-        if (!permitedUsersIds.some(id => id === message.user.id)) return message.reply('Você não tem permissão para usar este comando')
+        if (!config['permitedUsersIdsToUse!post'].some(id => id === message.user.id)) return message.reply('Você não tem permissão para usar este comando')
 
         category = message.options.getString('categoria').split(' ').join('')
         question = message.options.getString('pergunta')
