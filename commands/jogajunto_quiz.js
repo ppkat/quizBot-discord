@@ -1,5 +1,6 @@
 const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js')
 const { ParticipantDB } = require('../database')
+const { updateRankedUsers } = require('./rank')
 const quiz = require('../quiz.json')
 
 let globalRegisteredUsers = []
@@ -19,7 +20,7 @@ class Participant {
 
 module.exports = {
 
-    name: 'quiz',
+    name: 'jogajunto_quiz',
     execute: async ({ client, message, commandParams }) => {
         if (activeChannels.find(channel => message.channelId === channel)) return message.reply('Já há um game rolando neste canal')
         activeChannels.push(message.channelId)
@@ -170,7 +171,7 @@ module.exports = {
                         if (!localRegisteredUsers.find(participant => participant.id === m.author.id)) {
                             if (globalRegisteredUsers.find(participant => participant.id === m.author.id)) {
                                 m.delete()
-                                m.author.send('Você já está participando de um quiz! Envie !sair no chat do outro quiz para sair')
+                                m.author.send('Você já está participando de um quiz! Envie "sair" no chat do outro quiz para sair')
                             }
                             else updateRegisteredUsers({ user: m.author, channelId: m.channelId })
                         }
@@ -184,7 +185,14 @@ module.exports = {
                             const formatedUserAnswer = msg.content.toLowerCase().split(' ').join('')
                             const almostCorrectAnswers = formatedCorrectAnswers.map(answer => answer.length > 3 ? answer.slice(1, answer.length - 1) : answer)
 
-                            if (formatedCorrectAnswers.some(answer => answer === formatedUserAnswer)) {
+                            if (formatedUserAnswer === 'sair' || formatedUserAnswer === 'leave') {
+                                localRegisteredUsers.splice(localRegisteredUsers.findIndex(participant => participant.id === msg.author.id), 1)
+                                globalRegisteredUsers.splice(globalRegisteredUsers.findIndex(participant => participant.id === msg.author.id), 1)
+                                msg.author.send('Você saiu do quiz')
+                                msg.react('☑️')
+                            }
+
+                            else if (formatedCorrectAnswers.some(answer => answer === formatedUserAnswer)) {
                                 msg.delete()
 
                                 const correctAnswerUser = localRegisteredUsers.find(participant => participant.id === msg.author.id)
@@ -328,6 +336,7 @@ module.exports = {
                     })
                 }
                 storeOnDatabase()
+                updateRankedUsers()
             }
             await endQuiz()
         }
