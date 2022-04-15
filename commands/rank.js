@@ -4,8 +4,8 @@ const { ParticipantDB, updateRank } = require('../database')
 
 let rankedUsers = []
 updateRank().then(updatedRank => rankedUsers = updatedRank)
-function updateRankedUsers() {
-    rankedUsers = updateRank()
+async function updateRankedUsers() {
+    rankedUsers = await updateRank()
 }
 
 module.exports = {
