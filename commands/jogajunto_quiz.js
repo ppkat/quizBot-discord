@@ -75,7 +75,7 @@ module.exports = {
         const localMessagEmbedResponse = await message.channel.send({ embeds: [embedResponse()] }).then(msg => msg)
         config.emojis.forEach(emoji => localMessagEmbedResponse.react(emoji))
 
-        function updateRegisteredUsers({ reaction, user, channelId }) {
+        async function updateRegisteredUsers({ reaction, user, channelId }) {
             if (user.bot) return
             if (!globalRegisteredUsers.find(participant => participant.id === user.id)) {
 
@@ -84,7 +84,7 @@ module.exports = {
                 localRegisteredUsers.push(inscribedParticipant)
 
                 localMessagEmbedResponse.embeds[0].fields[4].value = String(localRegisteredUsers.length)
-                localMessagEmbedResponse.edit({ embeds: [localMessagEmbedResponse.embeds[0]] })
+                await localMessagEmbedResponse.edit({ embeds: [localMessagEmbedResponse.embeds[0]] })
             } else if (globalRegisteredUsers.find(participant => participant.channel !== channelId)) {
                 user.send('Você só pode se inscrever em um quiz de cada vez')
                 reaction.users.remove(user)
@@ -126,7 +126,6 @@ module.exports = {
                 return categoryWinnerJSON.questions
             }
             const questions = choseCategory()
-            console.log(questions)
 
             let difficulty = difficultyType === 'ascending' ? 'facil' : difficultyType
             let questionsNoSendeds = questions.filter(question => question.difficulty === difficulty)
