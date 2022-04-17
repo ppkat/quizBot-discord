@@ -541,10 +541,10 @@ module.exports = {
         }
 
         async function sendWinnerRewards() {
-          message.user.send("teste!!");
           const winnablePercentage = Math.floor(
             Math.random() * (100 - 0 + 1) + 0
           );
+          message.user.send(winnablePercentage);
           if (winnablePercentage <= 30) {
             let rewards = await getNoRedeemedRewards();
             const randomReward =
