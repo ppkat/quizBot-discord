@@ -546,39 +546,27 @@ module.exports = {
             Math.random() * (100 - 0 + 1) + 0
           );
           const winnerUser = client.users.cache.find((u) => u.id === winner.id);
-          console.log(" ------------------------- ");
-          console.log(" ------------------------- ");
-          console.log(" ------------------------- ");
-          console.log(" ------------------------- ");
-          console.log(winnerUser);
-          console.log(" ------------------------- ");
-          console.log(" ------------------------- ");
-          console.log(" ------------------------- ");
-          console.log(" ------------------------- ");
 
           winnerUser.send("teste: " + winnablePercentage);
 
           if (winnablePercentage <= 30) {
             let rewards = await getNoRedeemedRewards();
             console.log(" ------------------------- ");
-            console.log(" ------------------------- ");
-            console.log(" ------------------------- ");
             console.log(rewards);
-            console.log(" ------------------------- ");
-            console.log(" ------------------------- ");
             console.log(" ------------------------- ");
             const randomReward =
               rewards[Math.floor(Math.random() * rewards.length)];
             console.log(" ------------------------- ");
             console.log(randomReward);
             console.log(" ------------------------- ");
-            randomReward.set({
+            randomReward.update({
               redeemed: true,
               winnerDiscordId: winner.id,
             });
             randomReward.save();
 
-            winnerUser.send(
+            await winnerUser.send(config.gifs["reward"]);
+            await winnerUser.send(
               `Parabéns! Ao ganhar o game quiz da Player's Bank, você ganhou **${randomReward.name}**\n${randomReward.description}` +
                 "Logo a equipe entrará em contato para passar o seu prêmio!!"
             );

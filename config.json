@@ -9,6 +9,7 @@
     "<:aleatorio:964293491616264242>"
   ],
   "gifs": {
+    "reward": "https://playersbankquiz.s3.sa-east-1.amazonaws.com/reward.gif",
     "ended": "https://playersbankquiz.s3.sa-east-1.amazonaws.com/acabou.png",
     "60seconds": "https://playersbankquiz.s3.sa-east-1.amazonaws.com/60s.png",
     "50seconds": "https://playersbankquiz.s3.sa-east-1.amazonaws.com/50s.png",
