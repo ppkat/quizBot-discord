@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js')
-const { ParticipantDB } = require('../database')
+const { ParticipantDB, getNoRedeemedRewards } = require('../database')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { updateRankedUsers } = require('./rank')
 const quiz = require('../quiz.json')
@@ -114,11 +114,11 @@ module.exports = {
                 const categoryNames = localMessagEmbedResponse.reactions.cache.map(reaction => reaction.emoji.name)
                 const categoryWinnerName = categoryNames[categoryWinnerIndex]
 
-                if(categoryWinnerName === 'aleatorio' || categoryWinnerName === 'random'){
+                if (categoryWinnerName === 'aleatorio' || categoryWinnerName === 'random') {
                     let questions = []
                     quiz.forEach(category => category.questions.forEach(question => questions.push(question)))
                     return questions
-                } 
+                }
 
                 const categoryWinnerJSONIndex = quiz.findIndex(item => item.categoryName === categoryWinnerName)
                 const categoryWinnerJSON = quiz[categoryWinnerJSONIndex]
@@ -319,6 +319,20 @@ module.exports = {
                     noWinnersText = noWinnersTextArray.join('\n')
                     embedResults.addField('\u200b', noWinnersText)
                 }
+
+                async function sendWinnerRewards() {
+                    let rewards = await getNoRedeemedRewards()
+                    const randomReward = rewards[Math.floor(Math.random() * rewards.length)]
+                    randomReward.set({
+                        redeemed: true,
+                        winnerDiscordId: message.user.id
+                    })
+                    randomReward.save()
+
+                    message.user.send(`Parabéns! Ao ganhar o game quiz da Player's Bank, você ganhou **${randomReward.name}**\n${randomReward.description}` + 
+                    'Logo a equipe entrará em contato para passar o seu prêmio!!')
+                }
+                sendWinnerRewards()
 
                 await message.channel.send({ embeds: [embedResults] })
             }
