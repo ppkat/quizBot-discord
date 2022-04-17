@@ -506,16 +506,7 @@ module.exports = {
             )
             .setThumbnail(winner.iconURL);
 
-          console.log(" ------------------------- ");
-          console.log(" ------------------------- ");
-          console.log(" ------------------------- ");
-          console.log(" ------------------------- ");
-          console.log(winner);
-          console.log(" ------------------------- ");
-          console.log(" ------------------------- ");
-          console.log(" ------------------------- ");
-          console.log(" ------------------------- ");
-          await sendWinnerRewards();
+          await sendWinnerRewards(winner);
         }
 
         if (second)
@@ -549,17 +540,29 @@ module.exports = {
           embedResults.addField("\u200b", noWinnersText);
         }
 
-        async function sendWinnerRewards() {
+        async function sendWinnerRewards(winner) {
           const winnablePercentage = Math.floor(
             Math.random() * (100 - 0 + 1) + 0
           );
+
+          const winnerUser = message.guild.cache.get(winner.id);
+          console.log(" ------------------------- ");
+          console.log(" ------------------------- ");
+          console.log(" ------------------------- ");
+          console.log(" ------------------------- ");
+          console.log(winnerUser);
+          console.log(" ------------------------- ");
+          console.log(" ------------------------- ");
+          console.log(" ------------------------- ");
+          console.log(" ------------------------- ");
+
           if (winnablePercentage <= 30) {
             let rewards = await getNoRedeemedRewards();
             const randomReward =
               rewards[Math.floor(Math.random() * rewards.length)];
             randomReward.set({
               redeemed: true,
-              winnerDiscordId: message.user.id,
+              winnerDiscordId: winner.id,
             });
             randomReward.save();
 
