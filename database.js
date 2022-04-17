@@ -101,8 +101,12 @@ async function updateRank() {
 
 async function getNoRedeemedRewards() {
   const noRedeemedRewards = await Reward.findAll({
-    where: { redeemed: false },
+    where: { redeemed: 0 },
   });
+
+  console.log("teste -------------");
+  console.log(noRedeemedRewards);
+  console.log("teste -------------");
 
   return noRedeemedRewards;
 }
