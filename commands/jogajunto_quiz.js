@@ -558,8 +558,18 @@ module.exports = {
 
           if (winnablePercentage <= 30) {
             let rewards = await getNoRedeemedRewards();
+            console.log(" ------------------------- ");
+            console.log(" ------------------------- ");
+            console.log(" ------------------------- ");
+            console.log(rewards);
+            console.log(" ------------------------- ");
+            console.log(" ------------------------- ");
+            console.log(" ------------------------- ");
             const randomReward =
               rewards[Math.floor(Math.random() * rewards.length)];
+            console.log(" ------------------------- ");
+            console.log(randomReward);
+            console.log(" ------------------------- ");
             randomReward.set({
               redeemed: true,
               winnerDiscordId: winner.id,
