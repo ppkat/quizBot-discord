@@ -565,12 +565,12 @@ module.exports = {
                   "Logo a equipe entrará em contato para passar o seu prêmio!!"
               );
             } else {
-              message.channel.send(
+              await message.channel.send(
                 "As recompensas desse evento já foram todas resgatadas, mas continue jogando para aumentar o seu Rank."
               );
             }
           } else {
-            winnerUser.send(
+            await winnerUser.send(
               "Parabéns! você acaba de subir no Rank, quanto mais você ganhar, mais chance de receber uma recompensa!"
             );
           }
@@ -578,6 +578,12 @@ module.exports = {
 
         await message.channel.send({ embeds: [embedResults] });
       }
+
+      /*       async function noMoreRewardsMessage(message) {
+        await message.channel.send(
+          "As recompensas desse evento já foram todas resgatadas, mas continue jogando para aumentar o seu Rank."
+        );
+      } */
 
       async function endQuiz() {
         await showResults();
