@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "",
-    "password": "",
-    "database": "",
-    "host": "",
+    "username": "root",
+    "password": "AReiV7oW;6u}VpuV.3hLdVqC?XHi<qj3",
+    "database": "dbpb_quiz",
+    "host": "ls-ea180fa03532317f451e16a36af12672b070b63e.cjbkoseenndi.us-east-2.rds.amazonaws.com",
     "dialect": "mysql"
   },
   "test": {
