@@ -505,6 +505,8 @@ module.exports = {
               `${winner.tag}, com **${winner.score}** pontos`
             )
             .setThumbnail(winner.iconURL);
+
+          sendWinnerRewards();
         }
 
         if (second)
@@ -559,8 +561,6 @@ module.exports = {
             );
           }
         }
-
-        sendWinnerRewards();
 
         await message.channel.send({ embeds: [embedResults] });
       }
