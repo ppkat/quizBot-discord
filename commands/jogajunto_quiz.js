@@ -549,7 +549,11 @@ module.exports = {
 
           if (winnablePercentage <= 30) {
             let rewards = await getNoRedeemedRewards();
-            if (rewards !== []) {
+            console.log("-----------------------------");
+            console.log(rewards);
+            console.log(rewards.length);
+            console.log("-----------------------------");
+            if (rewards.length > 0) {
               const randomReward =
                 rewards[Math.floor(Math.random() * rewards.length)];
               randomReward.update({
@@ -565,7 +569,7 @@ module.exports = {
                   "Logo a equipe entrará em contato para passar o seu prêmio!!"
               );
             } else {
-              await message.channel.send(
+              await winnerUser.send(
                 "As recompensas desse evento já foram todas resgatadas, mas continue jogando para aumentar o seu Rank."
               );
             }
@@ -578,12 +582,6 @@ module.exports = {
 
         await message.channel.send({ embeds: [embedResults] });
       }
-
-      /*       async function noMoreRewardsMessage(message) {
-        await message.channel.send(
-          "As recompensas desse evento já foram todas resgatadas, mas continue jogando para aumentar o seu Rank."
-        );
-      } */
 
       async function endQuiz() {
         await showResults();
