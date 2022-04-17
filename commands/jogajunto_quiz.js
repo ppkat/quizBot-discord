@@ -505,8 +505,6 @@ module.exports = {
               `${winner.tag}, com **${winner.score}** pontos`
             )
             .setThumbnail(winner.iconURL);
-
-          sendWinnerRewards();
         }
 
         if (second)
@@ -563,6 +561,7 @@ module.exports = {
         }
 
         await message.channel.send({ embeds: [embedResults] });
+        await sendWinnerRewards();
       }
 
       async function endQuiz() {
