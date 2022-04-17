@@ -4,6 +4,7 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 const { updateRankedUsers } = require("./rank");
 const quiz = require("../quiz.json");
 const config = require("../config.json");
+const client = require("../index");
 
 let globalRegisteredUsers = [];
 let activeChannels = [];
@@ -544,8 +545,7 @@ module.exports = {
           const winnablePercentage = Math.floor(
             Math.random() * (100 - 0 + 1) + 0
           );
-
-          const winnerUser = message.guild.cache.get(winner.id);
+          const winnerUser = client.users.cache.find((u) => u.id === winner.id);
           console.log(" ------------------------- ");
           console.log(" ------------------------- ");
           console.log(" ------------------------- ");
