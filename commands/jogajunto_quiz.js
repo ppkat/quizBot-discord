@@ -547,28 +547,31 @@ module.exports = {
           );
           const winnerUser = client.users.cache.find((u) => u.id === winner.id);
 
-          winnerUser.send("teste: " + winnablePercentage);
-
           if (winnablePercentage <= 30) {
             let rewards = await getNoRedeemedRewards();
-            console.log(" ------------------------- ");
-            console.log(rewards);
-            console.log(" ------------------------- ");
-            const randomReward =
-              rewards[Math.floor(Math.random() * rewards.length)];
-            console.log(" ------------------------- ");
-            console.log(randomReward);
-            console.log(" ------------------------- ");
-            randomReward.update({
-              redeemed: true,
-              winnerDiscordId: winner.id,
-            });
-            randomReward.save();
+            if (rewards.length > 0) {
+              const randomReward =
+                rewards[Math.floor(Math.random() * rewards.length)];
+              randomReward.update({
+                redeemed: true,
+                winnerDiscordId: winner.id,
+              });
+              randomReward.save();
 
-            await winnerUser.send(config.gifs["reward"]);
-            await winnerUser.send(
-              `Parabéns! Ao ganhar o game quiz da Player's Bank, você ganhou **${randomReward.name}**\n${randomReward.description}` +
-                "Logo a equipe entrará em contato para passar o seu prêmio!!"
+              await winnerUser.send(config.gifs["reward"]);
+
+              await winnerUser.send(
+                `Parabéns! Ao ganhar o game quiz da Player's Bank, você ganhou **${randomReward.name}**\n${randomReward.description}` +
+                  "Logo a equipe entrará em contato para passar o seu prêmio!!"
+              );
+            } else {
+              message.channel.send(
+                "As recompensas desse evento já foram todas resgatadas, mas continue jogando para aumentar o seu Rank."
+              );
+            }
+          } else {
+            winnerUser.send(
+              "Parabéns! você acaba de subir no Rank, quanto mais você ganhar, mais chance de receber uma recompensa!"
             );
           }
         }
