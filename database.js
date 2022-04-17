@@ -100,10 +100,9 @@ async function updateRank() {
 }
 
 async function getNoRedeemedRewards() {
-  const allRewards = (await Reward.findAll()).map((reward) => reward);
-  const noRedeemedRewards = allRewards.filter(
-    (reward) => !reward.dataValues.redeemed
-  );
+  const noRedeemedRewards = await Reward.findAll({
+    where: { redeemed: false },
+  });
 
   return noRedeemedRewards;
 }
