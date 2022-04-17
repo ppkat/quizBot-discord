@@ -160,26 +160,20 @@ module.exports = {
 
     async function getEmojInteraction() {
       const collector = localMessagEmbedResponse.createReactionCollector();
-
       collector.on("collect", (reaction, user) => {
         user
           .send("👌")
           .then(async () => {
-            user.reply("teste");
+            reaction.channel.send(user.tag + " entrou no quiz!");
           })
-          .catch(async (err) =>
-            user.reply(
+          .catch(async (err) => {
+            reaction.channel.send(
               user.tag + " você precisa ter sua DM liberada para participar!"
-            )
-          );
-      });
-
-      collector.on("end", (collected) => {
-        console.log(
-          `após coletar ${collected.size} reações e a mensagem ser excluida, este evento é encerrado`
-        );
+            );
+          });
       });
     }
+
     getEmojInteraction();
 
     async function quizStart() {
