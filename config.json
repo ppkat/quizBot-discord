@@ -1,18 +1,18 @@
 {
-    "emojis": [
-        "<:valorant:961355782018957353>",
-        "<:csgo:961355723747508225>",
-        "<:JogosClassicos:961417061383434331>",
-        "<:Fortnite:961415475693252629>",
-        "<:Freefire:961415685920157716>",
-        "<:LeageOfLegends:961356872047280178>",
-        "<:aleatorio:964293491616264242>"
-    ],
-    "gifs": {
-        "30seconds": "https://www.shareicon.net/data/2015/09/20/643693_30_512x512.png",
-        "20seconds": "https://www.hit4hit.org/img/icon/256/20-seconds-timer.png",
-        "10seconds": "http://developer.mobilecaddy.net/wp-content/themes/mc-dev/assets/img/icons/stopwatch_10b.png",
-        "5seconds": "https://cdn2.iconfinder.com/data/icons/ux-and-ui-coral-vol-1/256/5-second-test-512.png"
-    },
-    "permitedUsersIdsToUse!post" : ["233276507814887426" ,"845836299742216203"]
+  "emojis": [
+    "<:valorant:961355782018957353>",
+    "<:csgo:961355723747508225>",
+    "<:JogosClassicos:961417061383434331>",
+    "<:Fortnite:961415475693252629>",
+    "<:Freefire:961415685920157716>",
+    "<:LeageOfLegends:961356872047280178>",
+    "<:aleatorio:964293491616264242>"
+  ],
+  "gifs": {
+    "30seconds": "https://drive.google.com/uc?export=view&id=1QyWyLfevlVk3jkxbSQHos0Or5nNfy7L4",
+    "20seconds": "https://drive.google.com/uc?export=view&id=1pu0YFiMEPHp4eNeq4eyTOCXxil3sVCqh",
+    "10seconds": "https://drive.google.com/uc?export=view&id=1R-XTR1sZ5o9cq0jx8PuSeltCsnpaZgJT",
+    "5seconds": "https://drive.google.com/uc?export=view&id=1qmdLKbJONqmHWjLel_1EPDXQx6t11fNq"
+  },
+  "permitedUsersIdsToUse!post": ["233276507814887426", "845836299742216203"]
 }
