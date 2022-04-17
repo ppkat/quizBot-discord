@@ -41,7 +41,44 @@ const Participant = sequelize.define('Participants', {
 
 })
 
-// sequelize.sync({force: true})
+const Reward = sequelize.define('Rewards', {
+
+    id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        allowNull: false,
+        primaryKey: true
+    },
+
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+
+    description: {
+        type: DataTypes.TEXT,
+        allowNull: false
+    },
+
+    redeemed: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+        allowNull: false
+    },
+
+    rewardCode: {
+        type: DataTypes.TEXT,
+        allowNull: false
+    },
+
+    winnerDiscordId: {
+        type: DataTypes.TEXT
+    }
+
+})
+
+// sequelize.sync({force: true}) //add the models on database generating tables
+
 
 async function updateRank() {
 
@@ -61,7 +98,16 @@ async function updateRank() {
     return updatedRanks
 }
 
+async function getNoRedeemedRewards() {
+
+    const allRewards = (await Reward.findAll()).map(reward => reward)
+    const noRedeemedRewards = allRewards.filter(reward => !reward.dataValues.redeemed)
+
+    return noRedeemedRewards
+}
+
 module.exports = {
     ParticipantDB: Participant,
-    updateRank
+    updateRank,
+    getNoRedeemedRewards
 }
