@@ -161,17 +161,29 @@ module.exports = {
     async function getEmojInteraction() {
       const collector = localMessagEmbedResponse.createReactionCollector();
       collector.on("collect", (reaction, user) => {
+        if (user.bot) return;
         user
           .send("👌")
-          .then(async () => {
+          .then(async (m) => {
+            setTimeout(() => {
+              m.delete();
+            }, 2000);
+
             localMessagEmbedResponse.channel.send(
               user.tag + " entrou no quiz!"
             );
-            console.log(user.tag + " entrou no quiz!");
+
+            await updateRegisteredUsers({
+              reaction,
+              user,
+              channelId: reaction.message.channelId,
+            });
           })
           .catch(async (err) => {
             localMessagEmbedResponse.channel.send(
-              user.tag + " você precisa ter sua DM liberada para participar!"
+              "@" +
+                user.tag +
+                " você precisa ter sua DM liberada para participar!"
             );
           });
       });
