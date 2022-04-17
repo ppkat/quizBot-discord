@@ -163,17 +163,18 @@ module.exports = {
 
       collector.on("collect", (reaction, user) => {
         try {
-          user.send("👌");
+          user.send("👌").then(() => {
+            updateRegisteredUsers({
+              reaction,
+              user,
+              channelId: reaction.message.channelId,
+            });
+          });
         } catch (error) {
+          console.log(error);
           reaction.reply(
             user.tag + " você precisa ter sua DM liberada para participar!"
           );
-        } finally {
-          updateRegisteredUsers({
-            reaction,
-            user,
-            channelId: reaction.message.channelId,
-          });
         }
       });
 
