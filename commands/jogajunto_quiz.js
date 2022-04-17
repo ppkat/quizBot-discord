@@ -164,10 +164,13 @@ module.exports = {
         user
           .send("👌")
           .then(async () => {
-            reaction.channel.send(user.tag + " entrou no quiz!");
+            localMessagEmbedResponse.channel.send(
+              user.tag + " entrou no quiz!"
+            );
+            console.log(user.tag + " entrou no quiz!");
           })
           .catch(async (err) => {
-            reaction.channel.send(
+            localMessagEmbedResponse.channel.send(
               user.tag + " você precisa ter sua DM liberada para participar!"
             );
           });
