@@ -505,6 +505,8 @@ module.exports = {
               `${winner.tag}, com **${winner.score}** pontos`
             )
             .setThumbnail(winner.iconURL);
+
+          sendWinnerRewards();
         }
 
         if (second)
@@ -542,7 +544,8 @@ module.exports = {
           const winnablePercentage = Math.floor(
             Math.random() * (100 - 0 + 1) + 0
           );
-          message.user.send(winnablePercentage);
+          message.user.send("teste!!");
+          message.user.send("teste2 : " + winnablePercentage);
           if (winnablePercentage <= 30) {
             let rewards = await getNoRedeemedRewards();
             const randomReward =
@@ -561,7 +564,6 @@ module.exports = {
         }
 
         await message.channel.send({ embeds: [embedResults] });
-        await sendWinnerRewards();
       }
 
       async function endQuiz() {
