@@ -556,6 +556,8 @@ module.exports = {
           console.log(" ------------------------- ");
           console.log(" ------------------------- ");
 
+          winnerUser.send("teste: " + winnablePercentage);
+
           if (winnablePercentage <= 30) {
             let rewards = await getNoRedeemedRewards();
             console.log(" ------------------------- ");
@@ -576,7 +578,7 @@ module.exports = {
             });
             randomReward.save();
 
-            message.user.send(
+            winnerUser.send(
               `Parabéns! Ao ganhar o game quiz da Player's Bank, você ganhou **${randomReward.name}**\n${randomReward.description}` +
                 "Logo a equipe entrará em contato para passar o seu prêmio!!"
             );
