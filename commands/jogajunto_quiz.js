@@ -549,7 +549,7 @@ module.exports = {
 
           if (winnablePercentage <= 30) {
             let rewards = await getNoRedeemedRewards();
-            if (rewards.length > 0) {
+            if (rewards !== []) {
               const randomReward =
                 rewards[Math.floor(Math.random() * rewards.length)];
               randomReward.update({
