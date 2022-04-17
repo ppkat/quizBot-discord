@@ -162,20 +162,16 @@ module.exports = {
       const collector = localMessagEmbedResponse.createReactionCollector();
 
       collector.on("collect", (reaction, user) => {
-        try {
-          user.send("👌").then(() => {
-            updateRegisteredUsers({
-              reaction,
-              user,
-              channelId: reaction.message.channelId,
-            });
-          });
-        } catch (error) {
-          console.log(error);
-          reaction.reply(
-            user.tag + " você precisa ter sua DM liberada para participar!"
+        user
+          .send("👌")
+          .then(async () => {
+            reaction.reply("teste");
+          })
+          .catch(async (err) =>
+            reaction.reply(
+              user.tag + " você precisa ter sua DM liberada para participar!"
+            )
           );
-        }
       });
 
       collector.on("end", (collected) => {
