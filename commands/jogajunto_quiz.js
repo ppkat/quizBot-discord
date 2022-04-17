@@ -160,13 +160,22 @@ module.exports = {
 
     async function getEmojInteraction() {
       const collector = localMessagEmbedResponse.createReactionCollector();
-      collector.on("collect", (reaction, user) =>
-        updateRegisteredUsers({
-          reaction,
-          user,
-          channelId: reaction.message.channelId,
-        })
-      );
+
+      collector.on("collect", (reaction, user) => {
+        try {
+          user.send("👌");
+        } catch (error) {
+          reaction.reply(
+            user.tag + " você precisa ter sua DM liberada para participar!"
+          );
+        } finally {
+          updateRegisteredUsers({
+            reaction,
+            user,
+            channelId: reaction.message.channelId,
+          });
+        }
+      });
 
       collector.on("end", (collected) => {
         console.log(
@@ -549,10 +558,6 @@ module.exports = {
 
           if (winnablePercentage <= 30) {
             let rewards = await getNoRedeemedRewards();
-            console.log("-----------------------------");
-            console.log(rewards);
-            console.log(rewards.length);
-            console.log("-----------------------------");
             if (rewards.length > 0) {
               const randomReward =
                 rewards[Math.floor(Math.random() * rewards.length)];

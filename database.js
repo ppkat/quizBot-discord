@@ -104,10 +104,6 @@ async function getNoRedeemedRewards() {
     where: { redeemed: 0 },
   });
 
-  console.log("teste -------------");
-  console.log(noRedeemedRewards);
-  console.log("teste -------------");
-
   return noRedeemedRewards;
 }
 
