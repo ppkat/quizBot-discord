@@ -556,6 +556,8 @@ module.exports = {
               `Parabéns! Ao ganhar o game quiz da Player's Bank, você ganhou **${randomReward.name}**\n${randomReward.description}` +
                 "Logo a equipe entrará em contato para passar o seu prêmio!!"
             );
+          } else {
+            message.user.send(`Você não ganhou nada`);
           }
         }
 
