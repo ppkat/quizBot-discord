@@ -263,7 +263,7 @@ module.exports = {
         let scoredParticipants = [];
 
         const decressAnswerTimeLeftId = setInterval(() => {
-          answerTimeLeft -= 100;
+          answerTimeLeft -= 101;
           if (answerTimeLeft === 60 * 1000)
             localMessagEmbedResponse.channel.send(config.gifs["60seconds"]);
           else if (answerTimeLeft === 50 * 1000)
@@ -539,20 +539,26 @@ module.exports = {
         }
 
         async function sendWinnerRewards() {
-          let rewards = await getNoRedeemedRewards();
-          const randomReward =
-            rewards[Math.floor(Math.random() * rewards.length)];
-          randomReward.set({
-            redeemed: true,
-            winnerDiscordId: message.user.id,
-          });
-          randomReward.save();
-
-          message.user.send(
-            `Parabéns! Ao ganhar o game quiz da Player's Bank, você ganhou **${randomReward.name}**\n${randomReward.description}` +
-              "Logo a equipe entrará em contato para passar o seu prêmio!!"
+          const winnablePercentage = Math.floor(
+            Math.random() * (100 - 0 + 1) + 0
           );
+          if (winnablePercentage <= 30) {
+            let rewards = await getNoRedeemedRewards();
+            const randomReward =
+              rewards[Math.floor(Math.random() * rewards.length)];
+            randomReward.set({
+              redeemed: true,
+              winnerDiscordId: message.user.id,
+            });
+            randomReward.save();
+
+            message.user.send(
+              `Parabéns! Ao ganhar o game quiz da Player's Bank, você ganhou **${randomReward.name}**\n${randomReward.description}` +
+                "Logo a equipe entrará em contato para passar o seu prêmio!!"
+            );
+          }
         }
+
         sendWinnerRewards();
 
         await message.channel.send({ embeds: [embedResults] });
