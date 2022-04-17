@@ -165,10 +165,10 @@ module.exports = {
         user
           .send("👌")
           .then(async () => {
-            reaction.reply("teste");
+            user.reply("teste");
           })
           .catch(async (err) =>
-            reaction.reply(
+            user.reply(
               user.tag + " você precisa ter sua DM liberada para participar!"
             )
           );
