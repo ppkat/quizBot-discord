@@ -9,10 +9,15 @@
     "<:aleatorio:964293491616264242>"
   ],
   "gifs": {
-    "30seconds": "https://drive.google.com/uc?export=view&id=1QyWyLfevlVk3jkxbSQHos0Or5nNfy7L4",
-    "20seconds": "https://drive.google.com/uc?export=view&id=1pu0YFiMEPHp4eNeq4eyTOCXxil3sVCqh",
+    "ended": "https://playersbankquiz.s3.sa-east-1.amazonaws.com/acabou.png",
+    "60seconds": "https://playersbankquiz.s3.sa-east-1.amazonaws.com/60s.png",
+    "50seconds": "https://playersbankquiz.s3.sa-east-1.amazonaws.com/50s.png",
+    "40seconds": "https://playersbankquiz.s3.sa-east-1.amazonaws.com/40s.png",
+    "30seconds": "https://playersbankquiz.s3.sa-east-1.amazonaws.com/30s.png",
+    "20seconds": "https://playersbankquiz.s3.sa-east-1.amazonaws.com/20s.png",
+    "15seconds": "https://playersbankquiz.s3.sa-east-1.amazonaws.com/15s.png",
     "10seconds": "https://playersbankquiz.s3.sa-east-1.amazonaws.com/10s.png",
-    "5seconds": "https://drive.google.com/uc?export=view&id=1qmdLKbJONqmHWjLel_1EPDXQx6t11fNq"
+    "5seconds": "https://playersbankquiz.s3.sa-east-1.amazonaws.com/5s.png"
   },
   "permitedUsersIdsToUse!post": ["233276507814887426", "845836299742216203"]
 }
