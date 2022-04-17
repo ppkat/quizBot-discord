@@ -506,7 +506,6 @@ module.exports = {
             )
             .setThumbnail(winner.iconURL);
 
-          winner.send("teste 494949");
           await sendWinnerRewards();
         }
 
