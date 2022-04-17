@@ -506,6 +506,15 @@ module.exports = {
             )
             .setThumbnail(winner.iconURL);
 
+          console.log(" ------------------------- ");
+          console.log(" ------------------------- ");
+          console.log(" ------------------------- ");
+          console.log(" ------------------------- ");
+          console.log(winner);
+          console.log(" ------------------------- ");
+          console.log(" ------------------------- ");
+          console.log(" ------------------------- ");
+          console.log(" ------------------------- ");
           await sendWinnerRewards();
         }
 
@@ -544,8 +553,6 @@ module.exports = {
           const winnablePercentage = Math.floor(
             Math.random() * (100 - 0 + 1) + 0
           );
-          message.user.send("teste!!");
-          message.user.send("teste2 : " + winnablePercentage);
           if (winnablePercentage <= 30) {
             let rewards = await getNoRedeemedRewards();
             const randomReward =

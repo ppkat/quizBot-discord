@@ -58,6 +58,14 @@ module.exports = {
       winnerDiscordId: {
         type: Sequelize.TEXT,
       },
+      createdAt: {
+        type: Sequelize.DATE,
+        allowNull: false,
+      },
+      updatedAt: {
+        type: Sequelize.DATE,
+        allowNull: false,
+      },
     });
   },
 
