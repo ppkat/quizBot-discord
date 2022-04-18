@@ -123,7 +123,7 @@ module.exports = {
         .then(msg => {
           msg = msg.first()
           const removedUser = localRegisteredUsers.splice(localRegisteredUsers.findIndex((participant) => participant.id === msg.author.id), 1)
-         if (removedUser.length !== 0) {
+          if (removedUser.length !== 0) {
             globalRegisteredUsers.splice(globalRegisteredUsers.findIndex((participant) => participant.id === msg.author.id), 1)
             msg.author.send("Você saiu do quiz")
             msg.react("☑️")
@@ -479,7 +479,8 @@ module.exports = {
       }
 
       async function showResults() {
-        const { winner, second, third, descendingNoWinners } = choseWinners();
+        let { winner, second, third, descendingNoWinners } = choseWinners();
+        if (localRegisteredUsers.length < 5) [winner, second, third, descendingNoWinners ]= [null, null, null, []]
 
         const embedResults = new MessageEmbed()
           .setColor("DARK_RED")
