@@ -4,7 +4,6 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 const { updateRankedUsers } = require("./rank");
 const quiz = require("../quiz.json");
 const config = require("../config.json");
-const client = require("../index");
 
 let globalRegisteredUsers = [];
 let activeChannels = [];
@@ -56,7 +55,7 @@ module.exports = {
         .addChoice("Difícil", "dificil")
     ),
 
-  execute: async ({ interaction: message }) => {
+  execute: async ({ interaction: message, client }) => {
     if (activeChannels.find((channel) => message.channelId === channel))
       return message.reply("Já há um game rolando neste canal");
     else message.reply("Um quiz foi iniciado!!");
@@ -170,7 +169,7 @@ module.exports = {
             }, 2000);
 
             localMessagEmbedResponse.channel.send(
-              user.tag + " entrou no quiz!"
+              user.tag.toString() + " entrou no quiz!"
             );
 
             await updateRegisteredUsers({
@@ -181,8 +180,7 @@ module.exports = {
           })
           .catch(async (err) => {
             localMessagEmbedResponse.channel.send(
-              "@" +
-                user.tag +
+                user.tag.toString() +
                 " você precisa ter sua DM liberada para participar!"
             );
           });
@@ -522,7 +520,7 @@ module.exports = {
             )
             .setThumbnail(winner.iconURL);
 
-          await sendWinnerRewards(winner);
+          await sendWinnerRewards();
         }
 
         if (second)
@@ -556,7 +554,7 @@ module.exports = {
           embedResults.addField("\u200b", noWinnersText);
         }
 
-        async function sendWinnerRewards(winner) {
+        async function sendWinnerRewards() {
           const winnablePercentage = Math.floor(
             Math.random() * (100 - 0 + 1) + 0
           );
