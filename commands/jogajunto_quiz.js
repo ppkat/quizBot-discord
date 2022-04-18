@@ -62,14 +62,9 @@ module.exports = {
     activeChannels.push(message.channelId);
 
     const questionNumber = message.options.getInteger("perguntas") ?? 20;
-    const timeForAnswers = message.options.getNumber("resposta")
-      ? message.options.getNumber("resposta") * 1000
-      : 30 * 1000;
-    let timeForStart = message.options.getNumber("iniciar")
-      ? message.options.getNumber("iniciar") * 1000
-      : 40 * 1000;
-    const difficultyType =
-      message.options.getString("dificuldade") ?? "ascending";
+    const timeForAnswers = message.options.getNumber("resposta") ? message.options.getNumber("resposta") * 1000 : 30 * 1000;
+    let timeForStart = message.options.getNumber("iniciar") ? message.options.getNumber("iniciar") * 1000 : 40 * 1000;
+    const difficultyType = message.options.getString("dificuldade") ?? "ascending";
 
     let localRegisteredUsers = [];
 
@@ -106,9 +101,8 @@ module.exports = {
           },
           {
             name: "Dificuldade",
-            value: `${
-              difficultyType === "ascending" ? "crescente" : difficultyType
-            }`,
+            value: `${difficultyType === "ascending" ? "crescente" : difficultyType
+              }`,
             inline: true,
           },
           {
@@ -120,16 +114,12 @@ module.exports = {
       return embedResponse;
     };
 
-    const localMessagEmbedResponse = await message.channel
-      .send({ embeds: [embedResponse()] })
-      .then((msg) => msg);
+    const localMessagEmbedResponse = await message.channel.send({ embeds: [embedResponse()] }).then((msg) => msg);
     config.emojis.forEach((emoji) => localMessagEmbedResponse.react(emoji));
 
     async function updateRegisteredUsers({ reaction, user, channelId }) {
       if (user.bot) return;
-      if (
-        !globalRegisteredUsers.find((participant) => participant.id === user.id)
-      ) {
+      if (!globalRegisteredUsers.find((participant) => participant.id === user.id)) {
         const inscribedParticipant = new Participant(
           user.username,
           user.id,
@@ -147,11 +137,9 @@ module.exports = {
         await localMessagEmbedResponse.edit({
           embeds: [localMessagEmbedResponse.embeds[0]],
         });
-      } else if (
-        globalRegisteredUsers.find(
-          (participant) => participant.channel !== channelId
-        )
-      ) {
+
+        localMessagEmbedResponse.channel.send(user.toString() + " entrou no quiz!");
+      } else if (globalRegisteredUsers.find((participant) => participant.channel !== channelId)) {
         user.send("Você só pode se inscrever em um quiz de cada vez");
         reaction.users.remove(user);
       }
@@ -160,30 +148,11 @@ module.exports = {
     async function getEmojInteraction() {
       const collector = localMessagEmbedResponse.createReactionCollector();
       collector.on("collect", (reaction, user) => {
-        if (user.bot) return;
-        user
-          .send("👌")
-          .then(async (m) => {
-            setTimeout(() => {
-              m.delete();
-            }, 2000);
-
-            localMessagEmbedResponse.channel.send(
-              user.tag.toString() + " entrou no quiz!"
-            );
-
-            await updateRegisteredUsers({
-              reaction,
-              user,
-              channelId: reaction.message.channelId,
-            });
-          })
-          .catch(async (err) => {
-            localMessagEmbedResponse.channel.send(
-                user.tag.toString() +
-                " você precisa ter sua DM liberada para participar!"
-            );
-          });
+        updateRegisteredUsers({
+          reaction,
+          user,
+          channelId: reaction.message.channelId,
+        });
       });
     }
 
@@ -192,8 +161,7 @@ module.exports = {
     async function quizStart() {
       if (localRegisteredUsers.length === 0) return await endQuiz();
 
-      const [firstPoints, secondPoints, thirdPoints, forthPoints, restPoints] =
-        [50, 30, 20, 10, 5];
+      const [firstPoints, secondPoints, thirdPoints, forthPoints, restPoints] = [50, 30, 20, 10, 5];
 
       function choseCategory() {
         let reactionsCounts = localMessagEmbedResponse.reactions.cache.map(
@@ -382,12 +350,12 @@ module.exports = {
                     scoredParticipants.length === 1
                       ? firstPoints
                       : scoredParticipants.length === 2
-                      ? secondPoints
-                      : scoredParticipants.length === 3
-                      ? thirdPoints
-                      : scoredParticipants.length === 4
-                      ? forthPoints
-                      : restPoints;
+                        ? secondPoints
+                        : scoredParticipants.length === 3
+                          ? thirdPoints
+                          : scoredParticipants.length === 4
+                            ? forthPoints
+                            : restPoints;
 
                   correctAnswerUser.score += addScore;
                   msg.channel.send(`${msg.author} ganhou ${addScore} pontos`);
@@ -567,8 +535,8 @@ module.exports = {
 
                 await winnerUser.send(
                   `Parabéns! Ao ganhar o game quiz da Player's Bank, você ganhou **${randomReward.name}**\n${randomReward.description}` +
-                    "No prazo de 48 horas equipe entrará em contato para passar o seu prêmio!" +
-                    `\n\n${randomReward.rewardCode}`
+                  "No prazo de 48 horas equipe entrará em contato para passar o seu prêmio!" +
+                  `\n\n${randomReward.rewardCode}`
                 );
               } catch (error) {
                 console.log(error);
@@ -629,18 +597,22 @@ module.exports = {
     }
 
     const waitQuizStartId = setInterval(() => {
-      timeForStart -= 1 * 1000;
-      localMessagEmbedResponse.embeds[0].fields[2].value =
-        (timeForStart / 1000).toString() === 1
-          ? (timeForStart / 1000).toString() + " segundo"
-          : (timeForStart / 1000).toString() + " segundos";
-      localMessagEmbedResponse.edit({
-        embeds: [localMessagEmbedResponse.embeds[0]],
-      });
 
       if (timeForStart <= 0) {
-        clearInterval(waitQuizStartId);
-        quizStart();
+        if (localMessagEmbedResponse.reactions.cache.size === config.emojis.length) {
+          setTimeout(() => quizStart(), 1000) //the user has to be time for react in the last reaction
+          clearInterval(waitQuizStartId);
+        } else {
+          localMessagEmbedResponse.embeds[0].fields[2].value = 'O jogo começará logo após todas a reações aparecerem'
+          localMessagEmbedResponse.edit({ embeds: [localMessagEmbedResponse.embeds[0]] })
+        }
+      } else {
+        timeForStart -= 1 * 1000;
+        localMessagEmbedResponse.embeds[0].fields[2].value =
+          (timeForStart / 1000).toString() === 1
+            ? (timeForStart / 1000).toString() + " segundo"
+            : (timeForStart / 1000).toString() + " segundos";
+        localMessagEmbedResponse.edit({ embeds: [localMessagEmbedResponse.embeds[0]] })
       }
     }, 1000);
   },
