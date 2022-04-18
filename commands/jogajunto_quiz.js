@@ -573,22 +573,30 @@ module.exports = {
               });
               randomReward.save();
 
-              await winnerUser.send(config.gifs["reward"]);
+              try {
+                await winnerUser.send(config.gifs["reward"]);
 
-              await winnerUser.send(
-                `Parabéns! Ao ganhar o game quiz da Player's Bank, você ganhou **${randomReward.name}**\n${randomReward.description}` +
-                  "No prazo de 48 horas equipe entrará em contato para passar o seu prêmio!" +
-                  `\n\n${randomReward.rewardCode}`
-              );
+                await winnerUser.send(
+                  `Parabéns! Ao ganhar o game quiz da Player's Bank, você ganhou **${randomReward.name}**\n${randomReward.description}` +
+                    "No prazo de 48 horas equipe entrará em contato para passar o seu prêmio!" +
+                    `\n\n${randomReward.rewardCode}`
+                );
+              } catch (error) {
+                console.log(error);
+              }
             } else {
               await winnerUser.send(
                 "As recompensas desse evento já foram todas resgatadas, mas continue jogando para aumentar o seu Rank."
               );
             }
           } else {
-            await winnerUser.send(
-              "Parabéns! você acaba de subir no Rank, quanto mais você ganhar, mais chance de receber uma recompensa!"
-            );
+            try {
+              await winnerUser.send(
+                "Parabéns! você acaba de subir no Rank, quanto mais você ganhar, mais chance de receber uma recompensa!"
+              );
+            } catch (error) {
+              console.log(error);
+            }
           }
         }
 
