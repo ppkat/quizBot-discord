@@ -577,7 +577,8 @@ module.exports = {
 
               await winnerUser.send(
                 `Parabéns! Ao ganhar o game quiz da Player's Bank, você ganhou **${randomReward.name}**\n${randomReward.description}` +
-                  "Logo a equipe entrará em contato para passar o seu prêmio!!"
+                  "No prazo de 48 horas equipe entrará em contato para passar o seu prêmio!" +
+                  `\n\n${randomReward.rewardCode}`
               );
             } else {
               await winnerUser.send(
