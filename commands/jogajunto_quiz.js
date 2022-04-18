@@ -115,7 +115,8 @@ module.exports = {
     };
 
     const localMessagEmbedResponse = await message.channel.send({ embeds: [embedResponse()] }).then((msg) => msg);
-    config.emojis.forEach((emoji) => localMessagEmbedResponse.react(emoji));
+    //config.emojis.forEach((emoji) => localMessagEmbedResponse.react(emoji));
+    localMessagEmbedResponse.react('<:aleatorio:964293491616264242>')
 
     function waitUsersLeave() {
       const filter = m => m.content.toLowerCase() === 'sair'
