@@ -32,5 +32,3 @@ client.once("ready", (c) => {
 });
 
 client.login(process.env.BOT_TOKEN);
-
-module.exports = client;
