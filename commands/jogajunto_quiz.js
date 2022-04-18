@@ -181,7 +181,7 @@ module.exports = {
     getEmojInteraction();
 
     async function quizStart() {
-      if (localRegisteredUsers.length < 5) return await endQuiz();
+      if (localRegisteredUsers.length < 1) return await endQuiz();
 
       const [firstPoints, secondPoints, thirdPoints, forthPoints, restPoints] = [50, 30, 20, 10, 5];
 
@@ -622,13 +622,14 @@ module.exports = {
     const waitQuizStartId = setInterval(() => {
 
       if (timeForStart <= 0) {
-        if (localMessagEmbedResponse.reactions.cache.size === config.emojis.length) {
+        console.log(localMessagEmbedResponse.reactions.cache.size)
+        // if (localMessagEmbedResponse.reactions.cache.size === config.emojis.length) {
           setTimeout(() => quizStart(), 1000) //the user has to be time for react in the last reaction
           clearInterval(waitQuizStartId);
-        } else {
-          localMessagEmbedResponse.embeds[0].fields[2].value = 'O jogo começará logo após todas a reações aparecerem'
-          localMessagEmbedResponse.edit({ embeds: [localMessagEmbedResponse.embeds[0]] })
-        }
+        // } else {
+        //   localMessagEmbedResponse.embeds[0].fields[2].value = 'O jogo começará logo após todas a reações aparecerem'
+        //   localMessagEmbedResponse.edit({ embeds: [localMessagEmbedResponse.embeds[0]] })
+        // }
       } else {
         timeForStart -= 1 * 1000;
         localMessagEmbedResponse.embeds[0].fields[2].value =
