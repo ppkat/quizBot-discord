@@ -1,17 +1,17 @@
 const { Sequelize, DataTypes } = require("sequelize");
 require("dotenv").config();
 
-// const sequelize = new Sequelize(
-//   process.env.DATABASE_NAME,
-//   process.env.DATABASE_USER,
-//   process.env.DATABASE_PASSWORD,
-//   {
-//     host: process.env.DATABASE_HOST,
-//     dialect: "mysql",
-//   }
-// );
+const sequelize = new Sequelize(
+  process.env.DATABASE_NAME,
+  process.env.DATABASE_USER,
+  process.env.DATABASE_PASSWORD,
+  {
+    host: process.env.DATABASE_HOST,
+    dialect: "mysql",
+  }
+);
 
-const sequelize = new Sequelize('pbdb', 'root', '0/6?Szgo)JFf*98@:e', { host: 'localhost', dialect: 'mysql' })
+// const sequelize = new Sequelize('pbdb', 'root', '0/6?Szgo)JFf*98@:e', { host: 'localhost', dialect: 'mysql' })
 
 sequelize
   .authenticate()
