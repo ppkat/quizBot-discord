@@ -117,6 +117,27 @@ module.exports = {
     const localMessagEmbedResponse = await message.channel.send({ embeds: [embedResponse()] }).then((msg) => msg);
     config.emojis.forEach((emoji) => localMessagEmbedResponse.react(emoji));
 
+    function waitUsersLeave() {
+      const filter = m => m.content.toLowerCase() === 'sair'
+      localMessagEmbedResponse.channel.awaitMessages({ filter, max: 1, time: timeForStart < 10 * 1000 ? 10 * 1000 /*10s more */ : timeForStart + 10 * 1000, errors: ['time'] })
+        .then(msg => {
+          msg = msg.first()
+          const removedUser = localRegisteredUsers.splice(localRegisteredUsers.findIndex((participant) => participant.id === msg.author.id), 1)
+         if (removedUser.length !== 0) {
+            globalRegisteredUsers.splice(globalRegisteredUsers.findIndex((participant) => participant.id === msg.author.id), 1)
+            msg.author.send("Você saiu do quiz")
+            msg.react("☑️")
+          } else {
+            msg.reply('Você não está inscrito')
+          }
+          waitUsersLeave()
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
+    waitUsersLeave()
+
     async function updateRegisteredUsers({ reaction, user, channelId }) {
       if (user.bot) return;
       if (!globalRegisteredUsers.find((participant) => participant.id === user.id)) {
