@@ -277,25 +277,16 @@ module.exports = {
         let scoredParticipants = [];
 
         const decressAnswerTimeLeftId = setInterval(() => {
-          answerTimeLeft -= 101;
-          if (answerTimeLeft === 60 * 1000)
-            localMessagEmbedResponse.channel.send(config.gifs["60seconds"]);
-          else if (answerTimeLeft === 50 * 1000)
-            localMessagEmbedResponse.channel.send(config.gifs["50seconds"]);
-          else if (answerTimeLeft === 40 * 1000)
-            localMessagEmbedResponse.channel.send(config.gifs["40seconds"]);
-          else if (answerTimeLeft === 30 * 1000)
-            localMessagEmbedResponse.channel.send(config.gifs["30seconds"]);
-          else if (answerTimeLeft === 20 * 1000)
-            localMessagEmbedResponse.channel.send(config.gifs["20seconds"]);
-          else if (answerTimeLeft === 15 * 1000)
-            localMessagEmbedResponse.channel.send(config.gifs["15seconds"]);
-          else if (answerTimeLeft === 10 * 1000)
-            localMessagEmbedResponse.channel.send(config.gifs["10seconds"]);
-          else if (answerTimeLeft === 5 * 1000)
-            localMessagEmbedResponse.channel.send(config.gifs["5seconds"]);
-          else if (answerTimeLeft === 0)
-            localMessagEmbedResponse.channel.send(config.gifs["ended"]);
+          answerTimeLeft -= 100;
+          if (answerTimeLeft === 60 * 1000) localMessagEmbedResponse.channel.send(config.gifs["60seconds"]);
+          else if (answerTimeLeft === 50 * 1000) localMessagEmbedResponse.channel.send(config.gifs["50seconds"]);
+          else if (answerTimeLeft === 40 * 1000) localMessagEmbedResponse.channel.send(config.gifs["40seconds"]);
+          else if (answerTimeLeft === 30 * 1000) localMessagEmbedResponse.channel.send(config.gifs["30seconds"]);
+          else if (answerTimeLeft === 20 * 1000) localMessagEmbedResponse.channel.send(config.gifs["20seconds"]);
+          else if (answerTimeLeft === 15 * 1000) localMessagEmbedResponse.channel.send(config.gifs["15seconds"]);
+          else if (answerTimeLeft === 10 * 1000) localMessagEmbedResponse.channel.send(config.gifs["10seconds"]);
+          else if (answerTimeLeft === 5 * 1000) localMessagEmbedResponse.channel.send(config.gifs["5seconds"]);
+          else if (answerTimeLeft === 0) localMessagEmbedResponse.channel.send(config.gifs["ended"]);
         }, 100);
 
         async function usersAnswersHandle() {
