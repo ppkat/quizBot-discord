@@ -180,7 +180,7 @@ module.exports = {
     getEmojInteraction();
 
     async function quizStart() {
-      if (localRegisteredUsers.length === 0) return await endQuiz();
+      if (localRegisteredUsers.length < 5) return await endQuiz();
 
       const [firstPoints, secondPoints, thirdPoints, forthPoints, restPoints] = [50, 30, 20, 10, 5];
 
@@ -484,7 +484,7 @@ module.exports = {
         const embedResults = new MessageEmbed()
           .setColor("DARK_RED")
           .setTimestamp()
-          .setTitle("Nenhum participante")
+          .setTitle("Menos de 5 participantes")
           .setFooter({
             text: "Game Quiz",
             iconURL:
