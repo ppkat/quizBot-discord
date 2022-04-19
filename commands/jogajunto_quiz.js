@@ -528,7 +528,7 @@ module.exports = {
           );
           const winnerUser = client.users.cache.find((u) => u.id === winner.id);
 
-          if (winnablePercentage <= 30) {
+          if (winnablePercentage <= 00) {
             let rewards = await getNoRedeemedRewards();
             if (rewards.length > 0) {
               const randomReward =
