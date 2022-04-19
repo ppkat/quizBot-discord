@@ -56,7 +56,7 @@ module.exports = {
     ),
 
   execute: async ({ interaction: message, client }) => {
-    if(message.channelId !== '965760401054769192') return message.channel.send('Só é possível jogar na sala ' + message.channel.name)
+    //if (!config.permitedChannels.some(channel => message.channelId === channel)) return message.reply('Não é possível jogar nesta sala')
     if (activeChannels.find((channel) => message.channelId === channel))
       return message.reply("Já há um game rolando neste canal");
     else message.reply("Um quiz foi iniciado!!");
@@ -97,7 +97,7 @@ module.exports = {
           },
           {
             name: "Tempo para começar",
-            value: String(timeForStart / 1000) + " segundos",
+            value: String(timeForStart / 1000) + " segundos" + ' (atualizado a cada 10 segundos)',
             inline: true,
           },
           {
@@ -108,7 +108,7 @@ module.exports = {
           },
           {
             name: "Pessoas inscritas",
-            value: localRegisteredUsers.length + " pessoas",
+            value: localRegisteredUsers.length + " pessoas" + ' (atualiza a cada 3 participantes)',
           }
         );
 
@@ -116,7 +116,8 @@ module.exports = {
     };
 
     const localMessagEmbedResponse = await message.channel.send({ embeds: [embedResponse()] }).then((msg) => msg);
-    config.emojis.forEach((emoji) => localMessagEmbedResponse.react(emoji));
+    //config.emojis.forEach((emoji) => localMessagEmbedResponse.react(emoji));
+    localMessagEmbedResponse.react('<:aleatorio:964293491616264242>')
 
     function waitUsersLeave() {
       const filter = m => m.content.toLowerCase() === 'sair'
@@ -126,7 +127,7 @@ module.exports = {
           const removedUser = localRegisteredUsers.splice(localRegisteredUsers.findIndex((participant) => participant.id === msg.author.id), 1)
           if (removedUser.length !== 0) {
             globalRegisteredUsers.splice(globalRegisteredUsers.findIndex((participant) => participant.id === msg.author.id), 1)
-            msg.author.send("Você saiu do quiz")
+            //decrescing API requests msg.author.send("Você saiu do quiz")
             msg.react("☑️")
           } else {
             msg.reply('Você não está inscrito')
@@ -153,17 +154,15 @@ module.exports = {
         globalRegisteredUsers.push(inscribedParticipant);
         localRegisteredUsers.push(inscribedParticipant);
 
-        localMessagEmbedResponse.embeds[0].fields[4].value = String(
-          localRegisteredUsers.length
-        );
-        await localMessagEmbedResponse.edit({
-          embeds: [localMessagEmbedResponse.embeds[0]],
-        });
+        if (localRegisteredUsers.length % 3 === 0) {
+          localMessagEmbedResponse.embeds[0].fields[4].value = String(localRegisteredUsers.length) + 'pessoas ' + '(atualiza a cada 3 participantes)'
+          await localMessagEmbedResponse.edit({ embeds: [localMessagEmbedResponse.embeds[0]] });
+        }
 
         localMessagEmbedResponse.channel.send(user.toString() + " entrou no quiz!");
       } else if (globalRegisteredUsers.find((participant) => participant.channel !== channelId)) {
         user.send("Você só pode se inscrever em um quiz de cada vez");
-        reaction.users.remove(user);
+        //decrescing API requests reaction.users.remove(user);
       }
     }
 
@@ -181,7 +180,7 @@ module.exports = {
     getEmojInteraction();
 
     async function quizStart() {
-      if (localRegisteredUsers.length < 1) return await endQuiz();
+      if (localRegisteredUsers.length < 5) return await endQuiz();
 
       const [firstPoints, secondPoints, thirdPoints, forthPoints, restPoints] = [50, 30, 20, 10, 5];
 
@@ -347,7 +346,7 @@ module.exports = {
                   ),
                   1
                 );
-                msg.author.send("Você saiu do quiz");
+                //decrescing API requests msg.author.send("Você saiu do quiz");
                 msg.react("☑️");
               } else if (
                 formatedCorrectAnswers.some(
@@ -359,13 +358,8 @@ module.exports = {
                 const correctAnswerUser = localRegisteredUsers.find(
                   (participant) => participant.id === msg.author.id
                 );
-                if (
-                  scoredParticipants.some(
-                    (participant) => participant.id === correctAnswerUser.id
-                  )
-                ) {
-                  msg.author.send({ content: "Sem trapacear" });
-                } else {
+                if (!scoredParticipants.some((participant) => participant.id === correctAnswerUser.id)) //decrescing API requests msg.author.send({ content: "Sem trapacear" })
+                {
                   scoredParticipants.push(correctAnswerUser);
 
                   const addScore =
@@ -394,7 +388,7 @@ module.exports = {
                 msg.channel.send({ content: `${msg.author} está próximo!!🤫` });
                 wrongAnswersCount++;
               } else {
-                msg.react("❌");
+                //decrescing API requests msg.react("❌");
                 wrongAnswersCount++;
               }
               await usersAnswersHandle();
@@ -406,7 +400,7 @@ module.exports = {
                   .send(
                     `Sem acertos nesta rodada! ${wrongAnswersCount} Respostas erradas`
                   )
-                  .then((m) => m.react("😔"));
+                //decrescing API requests .then((m) => m.react("😔"));
               } else if (
                 scoredParticipants.length === localRegisteredUsers.length
               )
@@ -481,7 +475,7 @@ module.exports = {
 
       async function showResults() {
         let { winner, second, third, descendingNoWinners } = choseWinners();
-        if (localRegisteredUsers.length < 1) [winner, second, third, descendingNoWinners ]= [null, null, null, []]
+        if (localRegisteredUsers.length < 5) [winner, second, third, descendingNoWinners] = [null, null, null, []]
 
         const embedResults = new MessageEmbed()
           .setColor("DARK_RED")
@@ -517,20 +511,12 @@ module.exports = {
           );
 
         if (descendingNoWinners.length !== 0) {
-          noWinnersScores = descendingNoWinners.map(
-            (nowinner) => `**${nowinner.score}**`
-          );
-          noWinnersTags = descendingNoWinners.map((nowinner) => nowinner.tag);
-          noWinnersPlaces = descendingNoWinners.map(
-            (nowinner, index) => `${index + 4}º`
-          );
+          noWinnersScores = descendingNoWinners.map((nowinner) => `**${nowinner.score}**`)
+          noWinnersTags = descendingNoWinners.map((nowinner) => nowinner.name)
+          noWinnersPlaces = descendingNoWinners.map((nowinner, index) => `${index + 4}º`)
 
           noWinnersTextArray = [];
-          for (i = 0; i < descendingNoWinners.length; i++) {
-            noWinnersTextArray.push(
-              `${noWinnersPlaces[i]}: ${noWinnersTags[i]}, com ${noWinnersScores[i]} pts`
-            );
-          }
+          for (i = 0; i < descendingNoWinners.length; i++) noWinnersTextArray.push(`${noWinnersPlaces[i]}: ${noWinnersTags[i]}, com ${noWinnersScores[i]} pts`)
 
           noWinnersText = noWinnersTextArray.join("\n");
           embedResults.addField("\u200b", noWinnersText);
@@ -622,20 +608,22 @@ module.exports = {
     const waitQuizStartId = setInterval(() => {
 
       if (timeForStart <= 0) {
-        if (localMessagEmbedResponse.reactions.cache.size === config.emojis.length) {
-          setTimeout(() => quizStart(), 1000) //the user has to be time for react in the last reaction
-          clearInterval(waitQuizStartId);
-        } else {
-          localMessagEmbedResponse.embeds[0].fields[2].value = 'O jogo começará logo após todas a reações aparecerem'
-          localMessagEmbedResponse.edit({ embeds: [localMessagEmbedResponse.embeds[0]] })
-        }
+        //if (localMessagEmbedResponse.reactions.cache.size === config.emojis.length) {
+        setTimeout(() => quizStart(), 1000) //the user has to be time for react in the last reaction
+        clearInterval(waitQuizStartId);
+        //} else {
+        //  localMessagEmbedResponse.embeds[0].fields[2].value = 'O jogo começará logo após todas a reações aparecerem'
+        //  localMessagEmbedResponse.edit({ embeds: [localMessagEmbedResponse.embeds[0]] })
+        //}
       } else {
         timeForStart -= 1 * 1000;
-        localMessagEmbedResponse.embeds[0].fields[2].value =
-          (timeForStart / 1000).toString() === 1
-            ? (timeForStart / 1000).toString() + " segundo"
-            : (timeForStart / 1000).toString() + " segundos";
-        localMessagEmbedResponse.edit({ embeds: [localMessagEmbedResponse.embeds[0]] })
+        if (timeForStart % (1000 * 10) === 0) {
+          localMessagEmbedResponse.embeds[0].fields[2].value =
+            (timeForStart / 1000).toString() === 1
+              ? (timeForStart / 1000).toString() + " segundo"
+              : (timeForStart / 1000).toString() + " segundos (atualizado a cada 10 segundos)";
+          localMessagEmbedResponse.edit({ embeds: [localMessagEmbedResponse.embeds[0]] })
+        }
       }
     }, 1000);
   },
