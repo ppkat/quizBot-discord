@@ -599,7 +599,7 @@ module.exports = {
             }
           });
         }
-        storeOnDatabase();
+        //storeOnDatabase();
         updateRankedUsers();
       }
       await endQuiz();
