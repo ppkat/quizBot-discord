@@ -528,7 +528,7 @@ module.exports = {
           );
           const winnerUser = client.users.cache.find((u) => u.id === winner.id);
 
-          if (winnablePercentage <= 00) {
+          if (winnablePercentage <= 15) {
             let rewards = await getNoRedeemedRewards();
             if (rewards.length > 0) {
               const randomReward =
@@ -599,7 +599,7 @@ module.exports = {
             }
           });
         }
-        //storeOnDatabase();
+        storeOnDatabase();
         updateRankedUsers();
       }
       await endQuiz();
