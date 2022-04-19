@@ -56,6 +56,7 @@ module.exports = {
     ),
 
   execute: async ({ interaction: message, client }) => {
+    if(message.channelId !== '965760401054769192') return 'Só é possível jogar na sala ' + message.channel.name
     if (activeChannels.find((channel) => message.channelId === channel))
       return message.reply("Já há um game rolando neste canal");
     else message.reply("Um quiz foi iniciado!!");
@@ -115,8 +116,7 @@ module.exports = {
     };
 
     const localMessagEmbedResponse = await message.channel.send({ embeds: [embedResponse()] }).then((msg) => msg);
-    //config.emojis.forEach((emoji) => localMessagEmbedResponse.react(emoji));
-    localMessagEmbedResponse.react('<:aleatorio:964293491616264242>')
+    config.emojis.forEach((emoji) => localMessagEmbedResponse.react(emoji));
 
     function waitUsersLeave() {
       const filter = m => m.content.toLowerCase() === 'sair'
@@ -542,7 +542,7 @@ module.exports = {
           );
           const winnerUser = client.users.cache.find((u) => u.id === winner.id);
 
-          if (winnablePercentage <= 15) {
+          if (winnablePercentage <= 30) {
             let rewards = await getNoRedeemedRewards();
             if (rewards.length > 0) {
               const randomReward =
@@ -622,14 +622,13 @@ module.exports = {
     const waitQuizStartId = setInterval(() => {
 
       if (timeForStart <= 0) {
-        console.log(localMessagEmbedResponse.reactions.cache.size)
-        // if (localMessagEmbedResponse.reactions.cache.size === config.emojis.length) {
+        if (localMessagEmbedResponse.reactions.cache.size === config.emojis.length) {
           setTimeout(() => quizStart(), 1000) //the user has to be time for react in the last reaction
           clearInterval(waitQuizStartId);
-        // } else {
-        //   localMessagEmbedResponse.embeds[0].fields[2].value = 'O jogo começará logo após todas a reações aparecerem'
-        //   localMessagEmbedResponse.edit({ embeds: [localMessagEmbedResponse.embeds[0]] })
-        // }
+        } else {
+          localMessagEmbedResponse.embeds[0].fields[2].value = 'O jogo começará logo após todas a reações aparecerem'
+          localMessagEmbedResponse.edit({ embeds: [localMessagEmbedResponse.embeds[0]] })
+        }
       } else {
         timeForStart -= 1 * 1000;
         localMessagEmbedResponse.embeds[0].fields[2].value =
