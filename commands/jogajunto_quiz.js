@@ -56,7 +56,7 @@ module.exports = {
     ),
 
   execute: async ({ interaction: message, client }) => {
-    if(message.channelId !== '965760401054769192') return 'Só é possível jogar na sala ' + message.channel.name
+    if(message.channelId !== '965760401054769192') return message.channel.send('Só é possível jogar na sala ' + message.channel.name)
     if (activeChannels.find((channel) => message.channelId === channel))
       return message.reply("Já há um game rolando neste canal");
     else message.reply("Um quiz foi iniciado!!");
@@ -181,7 +181,7 @@ module.exports = {
     getEmojInteraction();
 
     async function quizStart() {
-      if (localRegisteredUsers.length < 5) return await endQuiz();
+      if (localRegisteredUsers.length < 1) return await endQuiz();
 
       const [firstPoints, secondPoints, thirdPoints, forthPoints, restPoints] = [50, 30, 20, 10, 5];
 
@@ -481,7 +481,7 @@ module.exports = {
 
       async function showResults() {
         let { winner, second, third, descendingNoWinners } = choseWinners();
-        if (localRegisteredUsers.length < 5) [winner, second, third, descendingNoWinners ]= [null, null, null, []]
+        if (localRegisteredUsers.length < 1) [winner, second, third, descendingNoWinners ]= [null, null, null, []]
 
         const embedResults = new MessageEmbed()
           .setColor("DARK_RED")
