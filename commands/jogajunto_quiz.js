@@ -116,8 +116,7 @@ module.exports = {
     };
 
     const localMessagEmbedResponse = await message.channel.send({ embeds: [embedResponse()] }).then((msg) => msg);
-    //config.emojis.forEach((emoji) => localMessagEmbedResponse.react(emoji));
-    localMessagEmbedResponse.react('<:aleatorio:964293491616264242>')
+    config.emojis.forEach((emoji) => localMessagEmbedResponse.react(emoji));
 
     function waitUsersLeave() {
       const filter = m => m.content.toLowerCase() === 'sair'
@@ -180,36 +179,23 @@ module.exports = {
     getEmojInteraction();
 
     async function quizStart() {
-      if (localRegisteredUsers.length < 5) return await endQuiz();
+      if (localRegisteredUsers.length < 3) return await endQuiz(); // min 3 participants per quiz
 
       const [firstPoints, secondPoints, thirdPoints, forthPoints, restPoints] = [50, 30, 20, 10, 5];
 
       function choseCategory() {
-        let reactionsCounts = localMessagEmbedResponse.reactions.cache.map(
-          (reaction) => reaction.count
-        );
-        const categoryWinnerIndex = reactionsCounts.findIndex(
-          (item) => item === Math.max(...reactionsCounts)
-        );
-        const categoryNames = localMessagEmbedResponse.reactions.cache.map(
-          (reaction) => reaction.emoji.name
-        );
+        let reactionsCounts = localMessagEmbedResponse.reactions.cache.map((reaction) => reaction.count)
+        const categoryWinnerIndex = reactionsCounts.findIndex((item) => item === Math.max(...reactionsCounts))
+        const categoryNames = localMessagEmbedResponse.reactions.cache.map((reaction) => reaction.emoji.name)
         const categoryWinnerName = categoryNames[categoryWinnerIndex];
 
-        if (
-          categoryWinnerName === "aleatorio" ||
-          categoryWinnerName === "random"
-        ) {
-          let questions = [];
-          quiz.forEach((category) =>
-            category.questions.forEach((question) => questions.push(question))
-          );
-          return questions;
+        if (categoryWinnerName === "aleatorio" || categoryWinnerName === "random") {
+          let questions = []
+          quiz.forEach((category) => category.questions.forEach((question) => questions.push(question)))
+          return questions
         }
 
-        const categoryWinnerJSONIndex = quiz.findIndex(
-          (item) => item.categoryName === categoryWinnerName
-        );
+        const categoryWinnerJSONIndex = quiz.findIndex((item) => item.categoryName === categoryWinnerName)
         const categoryWinnerJSON = quiz[categoryWinnerJSONIndex];
 
         return categoryWinnerJSON.questions;
@@ -475,7 +461,7 @@ module.exports = {
 
       async function showResults() {
         let { winner, second, third, descendingNoWinners } = choseWinners();
-        if (localRegisteredUsers.length < 5) [winner, second, third, descendingNoWinners] = [null, null, null, []]
+        if (localRegisteredUsers.length < 3) [winner, second, third, descendingNoWinners] = [null, null, null, []]
 
         const embedResults = new MessageEmbed()
           .setColor("DARK_RED")
@@ -499,16 +485,8 @@ module.exports = {
           await sendWinnerRewards();
         }
 
-        if (second)
-          embedResults.addField(
-            "2º Lugar",
-            `${second.tag}, com **${second.score}** pontos`
-          );
-        if (third)
-          embedResults.addField(
-            "3º Lugar",
-            `${third.tag}, com **${third.score}** pontos`
-          );
+        if (second) embedResults.addField("2º Lugar", `${second.tag}, com **${second.score}** pontos`)
+        if (third) embedResults.addField("3º Lugar", `${third.tag}, com **${third.score}** pontos`)
 
         if (descendingNoWinners.length !== 0) {
           noWinnersScores = descendingNoWinners.map((nowinner) => `**${nowinner.score}**`)
@@ -523,11 +501,10 @@ module.exports = {
         }
 
         async function sendWinnerRewards() {
-          const winnablePercentage = Math.floor(
-            Math.random() * (100 - 0 + 1) + 0
-          );
+          const winnablePercentage = Math.floor(Math.random() * (100 - 0 + 1) + 0)
           const winnerUser = client.users.cache.find((u) => u.id === winner.id);
 
+          if (config["event?"]) return winnerUser.send("Não há eventos rolando no momento, porém você pode continuar aumentando seu rank global")
           if (winnablePercentage <= 15) {
             let rewards = await getNoRedeemedRewards();
             if (rewards.length > 0) {
@@ -551,9 +528,7 @@ module.exports = {
                 console.log(error);
               }
             } else {
-              await winnerUser.send(
-                "As recompensas desse evento já foram todas resgatadas, mas continue jogando para aumentar o seu Rank."
-              );
+              await winnerUser.send("As recompensas desse evento já foram todas resgatadas, mas continue jogando para aumentar o seu Rank.")
             }
           } else {
             try {
@@ -608,13 +583,13 @@ module.exports = {
     const waitQuizStartId = setInterval(() => {
 
       if (timeForStart <= 0) {
-        //if (localMessagEmbedResponse.reactions.cache.size === config.emojis.length) {
-        setTimeout(() => quizStart(), 1000) //the user has to be time for react in the last reaction
-        clearInterval(waitQuizStartId);
-        //} else {
-        //  localMessagEmbedResponse.embeds[0].fields[2].value = 'O jogo começará logo após todas a reações aparecerem'
-        //  localMessagEmbedResponse.edit({ embeds: [localMessagEmbedResponse.embeds[0]] })
-        //}
+        if (localMessagEmbedResponse.reactions.cache.size === config.emojis.length) {
+          setTimeout(() => quizStart(), 1000) //the user has to be time for react in the last reaction
+          clearInterval(waitQuizStartId);
+        } else {
+          localMessagEmbedResponse.embeds[0].fields[2].value = 'O jogo começará logo após todas a reações aparecerem'
+          localMessagEmbedResponse.edit({ embeds: [localMessagEmbedResponse.embeds[0]] })
+        }
       } else {
         timeForStart -= 1 * 1000;
         if (timeForStart % (1000 * 10) === 0) {
