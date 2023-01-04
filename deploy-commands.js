@@ -13,6 +13,8 @@ for (file of commandFiles) {
 
 const rest = new REST({ version: '9' }).setToken(process.env.BOT_TOKEN)
 
-rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.DISCORD_SERVER_ID), { body: commands })
-    .then(() => console.log('commands set'))
-    .catch(err => console.log(err))
+client.application.commands.set(commands);
+
+// rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.DISCORD_SERVER_ID), { body: commands })
+//     .then(() => console.log('commands set'))
+//     .catch(err => console.log(err))

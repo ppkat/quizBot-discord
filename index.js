@@ -29,6 +29,17 @@ eventFiles.forEach((file) => {
 //start log
 client.once("ready", (c) => {
   console.log(`Bot online!! id: ${c.user.id}`);
+  const fs = require('fs')
+
+  const commands = []
+  const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'))
+
+  for (file of commandFiles) {
+    const command = require(`./commands/${file}`)
+    commands.push(command.data.toJSON())
+  }
+
+  client.application.commands.set(commands);
 });
 
 client.login(process.env.BOT_TOKEN);
