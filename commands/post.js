@@ -6,11 +6,11 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('post')
         .setDescription('adiciona perguntas ao quiz')
-        .addStringOption(option => 
+        .addStringOption(option =>
             option.setName('categoria')
                 .setDescription('A categoria que a pergunta deve ser adicionada. Ignorará espaços')
                 .setRequired(true))
-        .addStringOption(option => 
+        .addStringOption(option =>
             option.setName('pergunta')
                 .setDescription('A pergunta a ser feita')
                 .setRequired(true))
@@ -25,9 +25,9 @@ module.exports = {
                 .addChoice('Fácil', 'facil')
                 .addChoice('Médio', 'medio')
                 .addChoice('Difícil', 'dificil')),
-                
-    execute: async ({ interaction : message }) => {
-        if (!config['permitedUsersIdsToUse!post'].some(id => id === message.user.id)) return message.reply('Você não tem permissão para usar este comando')
+
+    execute: async ({ interaction: message }) => {
+        //if (!config['permitedUsersIdsToUse!post'].some(id => id === message.user.id)) return message.reply('Você não tem permissão para usar este comando')
 
         category = message.options.getString('categoria').split(' ').join('')
         question = message.options.getString('pergunta')

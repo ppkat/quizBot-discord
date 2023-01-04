@@ -1147,5 +1147,19 @@
                 "difficulty": "medio"
             }
         ]
+    },
+    {
+        "categoryName": "kimetsuNoYaba",
+        "questions": [
+            {
+                "question": "Qual é o nome do protagonista de kimetsu?",
+                "answers": [
+                    "tanjiro",
+                    " tanjiro kamado",
+                    " kamado"
+                ],
+                "difficulty": "facil"
+            }
+        ]
     }
 ]

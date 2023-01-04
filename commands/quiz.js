@@ -21,8 +21,15 @@ class Participant {
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("jogajunto_quiz")
+    .setName("quiz")
     .setDescription("Inicia um game quiz")
+    .addStringOption(option =>
+      option
+        .setName('modo')
+        .setDescription('O modo de jogo. Se ocultado será modo tempo por padrão')
+        .addChoice('Tempo', 'tempo')
+        .addChoice('Primeiro', 'primeiro')
+    )
     .addIntegerOption((option) =>
       option
         .setName("perguntas")
@@ -57,11 +64,11 @@ module.exports = {
 
   execute: async ({ interaction: message, client }) => {
     //if (!config.permitedChannels.some(channel => message.channelId === channel)) return message.reply('Não é possível jogar nesta sala')
-    if (activeChannels.find((channel) => message.channelId === channel))
-      return message.reply("Já há um game rolando neste canal");
+    if (activeChannels.find((channel) => message.channelId === channel)) return message.reply("Já há um game rolando neste canal");
     else message.reply("Um quiz foi iniciado!!");
     activeChannels.push(message.channelId);
 
+    const gameMode = message.options.getString('modo') ?? 'tempo'
     const questionNumber = message.options.getInteger("perguntas") ?? 20;
     const timeForAnswers = message.options.getNumber("resposta") ? message.options.getNumber("resposta") * 1000 : 30 * 1000;
     let timeForStart = message.options.getNumber("iniciar") ? message.options.getNumber("iniciar") * 1000 : 40 * 1000;
@@ -97,7 +104,7 @@ module.exports = {
           },
           {
             name: "Tempo para começar",
-            value: String(timeForStart / 1000) + " segundos" + ' (atualizado a cada 10 segundos)',
+            value: String(timeForStart / 1000) + " segundos",
             inline: true,
           },
           {
@@ -108,7 +115,7 @@ module.exports = {
           },
           {
             name: "Pessoas inscritas",
-            value: localRegisteredUsers.length + " pessoas" + ' (atualiza a cada 3 participantes)',
+            value: localRegisteredUsers.length + " pessoas",
           }
         );
 
@@ -126,7 +133,6 @@ module.exports = {
           const removedUser = localRegisteredUsers.splice(localRegisteredUsers.findIndex((participant) => participant.id === msg.author.id), 1)
           if (removedUser.length !== 0) {
             globalRegisteredUsers.splice(globalRegisteredUsers.findIndex((participant) => participant.id === msg.author.id), 1)
-            //decrescing API requests msg.author.send("Você saiu do quiz")
             msg.react("☑️")
           } else {
             msg.reply('Você não está inscrito')
@@ -153,10 +159,8 @@ module.exports = {
         globalRegisteredUsers.push(inscribedParticipant);
         localRegisteredUsers.push(inscribedParticipant);
 
-        if (localRegisteredUsers.length % 3 === 0) {
-          localMessagEmbedResponse.embeds[0].fields[4].value = String(localRegisteredUsers.length) + 'pessoas ' + '(atualiza a cada 3 participantes)'
-          await localMessagEmbedResponse.edit({ embeds: [localMessagEmbedResponse.embeds[0]] });
-        }
+        localMessagEmbedResponse.embeds[0].fields[4].value = String(localRegisteredUsers.length) + ' pessoas'
+        await localMessagEmbedResponse.edit({ embeds: [localMessagEmbedResponse.embeds[0]] });
 
         localMessagEmbedResponse.channel.send(user.toString() + " entrou no quiz!");
       } else if (globalRegisteredUsers.find((participant) => participant.channel !== channelId)) {
@@ -179,7 +183,7 @@ module.exports = {
     getEmojInteraction();
 
     async function quizStart() {
-      if (localRegisteredUsers.length < 3) return await endQuiz(); // min 3 participants per quiz
+      //if (localRegisteredUsers.length < 3) return await endQuiz(); // min 3 participants per quiz
 
       const [firstPoints, secondPoints, thirdPoints, forthPoints, restPoints] = [50, 30, 20, 10, 5];
 
@@ -202,8 +206,7 @@ module.exports = {
       }
       const questions = choseCategory();
 
-      let difficulty =
-        difficultyType === "ascending" ? "facil" : difficultyType;
+      let difficulty = difficultyType === "ascending" ? "facil" : difficultyType;
       let questionsNoSendeds = questions.filter(
         (question) => question.difficulty === difficulty
       );
@@ -267,31 +270,24 @@ module.exports = {
         async function usersAnswersHandle() {
           //round
 
+          const formatedCorrectAnswers = question.answers.map((answer) => answer.toString().toLowerCase().replace(' ', ''))
+          const almostCorrectAnswers = formatedCorrectAnswers.map((answer) => answer.length > 3 ? answer.slice(1, answer.length - 1) : answer)
+          const formatedUserAnswer = m => m.content.toLowerCase().replace(' ', '');
+
           const filter = (m) => {
-            if (
-              !localRegisteredUsers.find(
-                (participant) => participant.id === m.author.id
-              )
-            ) {
-              if (
-                globalRegisteredUsers.find(
-                  (participant) => participant.id === m.author.id
-                )
-              ) {
+            if (!localRegisteredUsers.find((participant) => participant.id === m.author.id)) {
+              if (globalRegisteredUsers.find((participant) => participant.id === m.author.id)) {
                 m.delete();
-                m.author.send(
-                  'Você já está participando de um quiz! Envie "sair" no chat do outro quiz para sair'
-                );
-              } else
-                updateRegisteredUsers({
-                  user: m.author,
-                  channelId: m.channelId,
-                });
+                m.author.send('Você já está participando de um quiz! Envie "sair" no chat do outro quiz para sair')
+              } else updateRegisteredUsers({ user: m.author, channelId: m.channelId });
             }
-            return localRegisteredUsers.find(
-              (participant) => participant.id === m.author.id
-            );
-          };
+
+            if (formatedCorrectAnswers.some((answer) => answer === formatedUserAnswer(m))) {
+              if (gameMode === 'tempo') m.delete()
+              else m.react('✅')
+            }
+            return localRegisteredUsers.find((participant) => participant.id === m.author.id)
+          }
           await message.channel
             .awaitMessages({
               filter,
@@ -302,82 +298,46 @@ module.exports = {
             .then(async (msg) => {
               msg = msg.first();
 
-              const formatedCorrectAnswers = question.answers.map((answer) =>
-                answer.toString().toLowerCase().split(" ").join("")
-              );
-              const formatedUserAnswer = msg.content
-                .toLowerCase()
-                .split(" ")
-                .join("");
-              const almostCorrectAnswers = formatedCorrectAnswers.map(
-                (answer) =>
-                  answer.length > 3
-                    ? answer.slice(1, answer.length - 1)
-                    : answer
-              );
+              if (formatedUserAnswer(msg) === "sair" || formatedUserAnswer(msg) === "leave") {
 
-              if (
-                formatedUserAnswer === "sair" ||
-                formatedUserAnswer === "leave"
-              ) {
-                localRegisteredUsers.splice(
-                  localRegisteredUsers.findIndex(
-                    (participant) => participant.id === msg.author.id
-                  ),
-                  1
-                );
-                globalRegisteredUsers.splice(
-                  globalRegisteredUsers.findIndex(
-                    (participant) => participant.id === msg.author.id
-                  ),
-                  1
-                );
-                //decrescing API requests msg.author.send("Você saiu do quiz");
+                localRegisteredUsers.splice(localRegisteredUsers.findIndex((participant) => participant.id === msg.author.id), 1);
+                globalRegisteredUsers.splice(globalRegisteredUsers.findIndex((participant) => participant.id === msg.author.id), 1);
                 msg.react("☑️");
-              } else if (
-                formatedCorrectAnswers.some(
-                  (answer) => answer === formatedUserAnswer
-                )
-              ) {
-                msg.delete();
+              } else if (formatedCorrectAnswers.some((answer) => answer === formatedUserAnswer(msg))) {
 
-                const correctAnswerUser = localRegisteredUsers.find(
-                  (participant) => participant.id === msg.author.id
-                );
-                if (!scoredParticipants.some((participant) => participant.id === correctAnswerUser.id)) //decrescing API requests msg.author.send({ content: "Sem trapacear" })
-                {
-                  scoredParticipants.push(correctAnswerUser);
+                const correctAnswerUser = localRegisteredUsers.find((participant) => participant.id === msg.author.id);
+                if (scoredParticipants.some((participant) => participant.id === correctAnswerUser.id)) return msg.author.send({ content: "Sem trapacear" })
 
-                  const addScore =
-                    scoredParticipants.length === 1
-                      ? firstPoints
-                      : scoredParticipants.length === 2
-                        ? secondPoints
-                        : scoredParticipants.length === 3
-                          ? thirdPoints
-                          : scoredParticipants.length === 4
-                            ? forthPoints
-                            : restPoints;
+                scoredParticipants.push(correctAnswerUser);
 
-                  correctAnswerUser.score += addScore;
-                  msg.channel.send(`${msg.author} ganhou ${addScore} pontos`);
+                const addScore =
+                  scoredParticipants.length === 1
+                    ? firstPoints
+                    : scoredParticipants.length === 2
+                      ? secondPoints
+                      : scoredParticipants.length === 3
+                        ? thirdPoints
+                        : scoredParticipants.length === 4
+                          ? forthPoints
+                          : restPoints;
 
-                  if (scoredParticipants.length === localRegisteredUsers.length)
-                    answerTimeLeft = 1000;
-                }
-              } else if (
-                almostCorrectAnswers.some((answer) =>
-                  formatedUserAnswer.includes(answer)
-                )
-              ) {
-                msg.delete();
-                msg.channel.send({ content: `${msg.author} está próximo!!🤫` });
-                wrongAnswersCount++;
+                correctAnswerUser.score += addScore;
+                msg.channel.send(`${msg.author} ganhou ${addScore} pontos`);
+
+                if (scoredParticipants.length === localRegisteredUsers.length) return answerTimeLeft = 1000;
+
               } else {
-                //decrescing API requests msg.react("❌");
-                wrongAnswersCount++;
+                wrongAnswersCount++
+
+                if (almostCorrectAnswers.some((answer) => formatedUserAnswer(msg).includes(answer))) {
+                  msg.channel.send({ content: `${msg.author} está próximo!!🤫` });
+                  msg.delete()
+                } else msg.react("❌")
+
+                return await usersAnswersHandle()
               }
-              await usersAnswersHandle();
+
+              if (gameMode === 'tempo') await usersAnswersHandle()
             })
             .catch((error) => {
               //console.log(error)
@@ -386,11 +346,8 @@ module.exports = {
                   .send(
                     `Sem acertos nesta rodada! ${wrongAnswersCount} Respostas erradas`
                   )
-                //decrescing API requests .then((m) => m.react("😔"));
-              } else if (
-                scoredParticipants.length === localRegisteredUsers.length
-              )
-                localMessagEmbedResponse.channel.send(`**Todos acertaram!!**`);
+                  .then((m) => m.react("😔"));
+              } else if (scoredParticipants.length === localRegisteredUsers.length) localMessagEmbedResponse.channel.send(`**Todos acertaram!!**`);
               else {
                 let scoredParticipantsNames = scoredParticipants.map(
                   (participant) => participant.name
@@ -461,7 +418,7 @@ module.exports = {
 
       async function showResults() {
         let { winner, second, third, descendingNoWinners } = choseWinners();
-        if (localRegisteredUsers.length < 3) [winner, second, third, descendingNoWinners] = [null, null, null, []]
+        //if (localRegisteredUsers.length < 3) [winner, second, third, descendingNoWinners] = [null, null, null, []]
 
         const embedResults = new MessageEmbed()
           .setColor("DARK_RED")
@@ -504,7 +461,7 @@ module.exports = {
           const winnablePercentage = Math.floor(Math.random() * (100 - 0 + 1) + 0)
           const winnerUser = client.users.cache.find((u) => u.id === winner.id);
 
-          if (config["event?"]) return winnerUser.send("Não há eventos rolando no momento, porém você pode continuar aumentando seu rank global")
+          if (!config["event?"]) return
           if (winnablePercentage <= 15) {
             let rewards = await getNoRedeemedRewards();
             if (rewards.length > 0) {
@@ -592,13 +549,11 @@ module.exports = {
         }
       } else {
         timeForStart -= 1 * 1000;
-        if (timeForStart % (1000 * 10) === 0) {
-          localMessagEmbedResponse.embeds[0].fields[2].value =
-            (timeForStart / 1000).toString() === 1
-              ? (timeForStart / 1000).toString() + " segundo"
-              : (timeForStart / 1000).toString() + " segundos (atualizado a cada 10 segundos)";
-          localMessagEmbedResponse.edit({ embeds: [localMessagEmbedResponse.embeds[0]] })
-        }
+        localMessagEmbedResponse.embeds[0].fields[2].value =
+          (timeForStart / 1000).toString() === 1
+            ? (timeForStart / 1000).toString() + " segundo"
+            : (timeForStart / 1000).toString() + " segundos";
+        localMessagEmbedResponse.edit({ embeds: [localMessagEmbedResponse.embeds[0]] })
       }
     }, 1000);
   },
