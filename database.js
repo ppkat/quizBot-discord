@@ -76,10 +76,11 @@ const Reward = sequelize.define("Rewards", {
   },
 });
 
-// sequelize.sync({force: true}) //add the models on database generating tables
+//sequelize.sync({ force: true }) //add the models on database generating tables
 
 async function updateRank() {
   const allUsers = await Participant.findAll();
+  console.log(allUsers)
   let usersNotRemoved = allUsers.map((users) => users.dataValues);
 
   let scores = usersNotRemoved.map((user) => user.score);

@@ -20,7 +20,15 @@
     "10seconds": "https://playersbankquiz.s3.sa-east-1.amazonaws.com/10s.png",
     "5seconds": "https://playersbankquiz.s3.sa-east-1.amazonaws.com/5s.png"
   },
-  "permitedUsersIdsToUse!post": ["233276507814887426", "845836299742216203"],
-  "permitedChannels": ["966113470858821702"],
-  "event?" : false
+  "permitedUsersIdsToUse!post": [
+    "233276507814887426",
+    "845836299742216203"
+  ],
+  "permitedChannels": [
+    "966113470858821702",
+    "1068281304094879785",
+    "1058320718229671976",
+    "1110244473738375348"
+  ],
+  "event?": false
 }

@@ -630,6 +630,49 @@
                     "baron"
                 ],
                 "difficulty": "medio"
+            },
+            {
+                "question": "Qual é o nome do Yeti companheiro de Nunu?",
+                "answers": [
+                    "Willump"
+                ],
+                "difficulty": "medio"
+            },
+            {
+                "question": "Qual é o verdadeiro nome de Mordekaiser?",
+                "answers": [
+                    "San Uzal",
+                    " Sahn-Uzal"
+                ],
+                "difficulty": "dificil"
+            },
+            {
+                "question": "Qual é o verdadeiro nome da Vayne?",
+                "answers": [
+                    "Shauna"
+                ],
+                "difficulty": "medio"
+            },
+            {
+                "question": "Qual é o verdadeiro nome do Brand?",
+                "answers": [
+                    "Kegan Rodhe"
+                ],
+                "difficulty": "dificil"
+            },
+            {
+                "question": "Que personagem ganhou uma skin com o nome \"Caçador de Chuveiros\" na Rússia?",
+                "answers": [
+                    "Kayn"
+                ],
+                "difficulty": "dificil"
+            },
+            {
+                "question": "Qual é o nome da mestra da Yuumi?",
+                "answers": [
+                    "Norra"
+                ],
+                "difficulty": "medio"
             }
         ]
     },

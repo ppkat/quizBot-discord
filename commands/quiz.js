@@ -63,7 +63,7 @@ module.exports = {
     ),
 
   execute: async ({ interaction: message, client }) => {
-    //if (!config.permitedChannels.some(channel => message.channelId === channel)) return message.reply('Não é possível jogar nesta sala')
+    if (!config.permitedChannels.some(channel => message.channelId === channel)) return message.reply('Não é possível jogar nesta sala')
     if (activeChannels.find((channel) => message.channelId === channel)) return message.reply("Já há um game rolando neste canal");
     else message.reply("Um quiz foi iniciado!!");
     activeChannels.push(message.channelId);
@@ -183,7 +183,7 @@ module.exports = {
     getEmojInteraction();
 
     async function quizStart() {
-      //if (localRegisteredUsers.length < 3) return await endQuiz(); // min 3 participants per quiz
+      if (localRegisteredUsers.length < 2) return await endQuiz(); // min x participants per quiz
 
       const [firstPoints, secondPoints, thirdPoints, forthPoints, restPoints] = [50, 30, 20, 10, 5];
 
@@ -423,7 +423,7 @@ module.exports = {
         const embedResults = new MessageEmbed()
           .setColor("DARK_RED")
           .setTimestamp()
-          .setTitle("Menos de 5 participantes")
+          .setTitle("Menos de 2 participantes")
           .setFooter({
             text: "Game Quiz",
             iconURL:
